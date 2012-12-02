@@ -1,16 +1,8 @@
 *.class
 
 # Package Files #
-<<<<<<< HEAD
 target
 *.jar
 *.war
 *.ear
-=======
-*.jar
-*.war
-*.ear
-.classpath
-.project
-.settings
->>>>>>> 6684fc6e5aeeaef5d3f19d72370a6ba48b9c4d80
+
