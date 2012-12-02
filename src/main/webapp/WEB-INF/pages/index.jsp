@@ -55,7 +55,8 @@
              <a href="show.jsp">阅读(100)</a>&nbsp;&nbsp;&nbsp;&nbsp;
              <a href="show.jsp#reply_article">评论(0)</a>&nbsp;&nbsp;&nbsp;&nbsp;
              <a href="javascript:void(0)">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
-             <a href="javascript:void(0)">删除</a></p>
+             <a href="javascript:void(0)">删除</a>
+          </p>
     </div>
 
     <div class="explanation">
@@ -107,8 +108,8 @@
         </div>
 
     <div id="footer">
-           Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
-        </div>
+       Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
+    </div>
 
   </div>
 
@@ -123,7 +124,7 @@
           <li><a href="javascript:void(0)">Ruby(0)</a></li>
           <li><a href="javascript:void(0)">Ruby On Rails(0)</a></li>
           <li><a href="javascript:void(0)">Javascript/Ajax(0)</a></li>
-                    <li><a href="javascript:void(0)">网络转载</a></li>
+          <li><a href="javascript:void(0)">网络转载</a></li>
         </ul>
       </div>
 
@@ -132,11 +133,11 @@
         <ul>
           <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
           <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-                    <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
           <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-                    <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
           <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-                    <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
+          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
+          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
+          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
           <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
         </ul>
       </div>
@@ -145,18 +146,18 @@
         <h3 class="resources"><span>网站链接:</span></h3>
         <ul>
           <li><a href="http://blog.csdn.net/xianqiang1">CSDN</a></li>
-                    <li><a href="http://my.oschina.net/websoft">OSChina</a></li>
-                    <li><a href="http://weibo.com/lzqwebsoft">Sina微博</a></li>
+          <li><a href="http://my.oschina.net/websoft">OSChina</a></li>
+          <li><a href="http://weibo.com/lzqwebsoft">Sina微博</a></li>
           <li><a href="https://twitter.com/lzqwebsoft">Twitter</a></li>
         </ul>
       </div>
             
-            <div id="lconnect">
+      <div id="lconnect">
         <h3 class="connect"><span>联系我:</span></h3>
-                <ul>
-          <li>lzqwebsoft@gmail.com</li>
-                  <li>751939573@qq.com</li>
-                </ul>
+          <ul>
+              <li>lzqwebsoft@gmail.com</li>
+              <li>751939573@qq.com</li>
+          </ul>
       </div>
     </div>
   </div>

@@ -358,9 +358,7 @@ abbr, acronym {
 #linkList #lselect ul a {
     color: #A9A867;
     display: block;
-    font-size: 12px;
-    font-style: italic;
-    font-weight: normal;
+    font-size: 14px;
     line-height: 14px;
 }
 #linkList #lselect ul a.c {
