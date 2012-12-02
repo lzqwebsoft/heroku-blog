@@ -18,7 +18,7 @@
 </head>
 
 <body id="css-zen-garden">
-<%@ include file="/WEB-INF/pages/common/header.jspf" %>
+<%@ include file="/WEB-INF/pages/common/header.jsp" %>
 
 <div id="container">
   <div id="intro">
@@ -163,6 +163,6 @@
 
 </div>
 
-<%@ include file="/WEB-INF/pages/common/footer.jspf" %>
+<%@ include file="/WEB-INF/pages/common/footer.jsp" %>
 </body>
 </html>
