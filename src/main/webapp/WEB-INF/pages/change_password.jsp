@@ -4,59 +4,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>修改密码-lzqwebsoft's blog</title>
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/comment.css" />
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/change_password.css" />
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/comment.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/default.js"></script>
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/change_password.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 </head>
 
 <body>
-<div id="modTopbar" class="mod-topbar">
-  <div class="wrapper-box clearfix">
-  
-     <div class="left-box">&nbsp;</div>
-     
-     <div class="center-box">
-         <ul class="q-menubox">
-           <li class="q-menuitem">
-              <a href="http://lzqwebsoft.herokuapp.com">首页</a>
-           </li>
-           <li class="q-menuitem">
-              <a href="javascript:void(0)" onclick="show_about_dialog()">关于</a>
-           </li>
-         </ul>
-     </div>
-     
-     <div class="right-box">
-        <ul class="q-navbox">
-           <li class="q-navitem">
-              <a href="javascript:void(0)"><img alt="管理" src="resource/images/set_icon.png"/></a>
-              <!--子菜单-->
-              <ul>
-                <li>
-                   <a href="javascript:void(0)" onclick="show_login_dialog();" >登&nbsp;&nbsp;&nbsp;录</a>
-                </li>
-                <li>
-                   <a href="new.jsp">发表博客</a>
-                </li>
-                <li>
-                   <a href="change_password.jsp">修改密码</a>
-                </li>
-                <li>
-                   <a href="set.jsp">设&nbsp;&nbsp;&nbsp;置</a>
-                </li>
-             </ul>
-           </li>
-        </ul>
-     </div>
-     
-  </div>
-  
-</div>
-
-<div class="goBackToTop">
-   <a id="gototop" title="回到顶端" href="#container">TOP</a>
-</div>
+<jsp:include page="/WEB-INF/pages/common/header.jsp" />
 
 <div id="container">
     <div id="content-div">
@@ -64,10 +19,31 @@
       
       <div id="login_content">
          <p id="error_info" style="display::none;">&nbsp;</p>
-         <p><label for="username">旧密码：</label><input type="text" name="username" /></p>
-         <p><label for="password">新密码：</label><input type="password" name="password" /></p>
-         <p><label for="confirm">确&nbsp;&nbsp;&nbsp;&nbsp;认：</label><input type="password" name="confirm" /></p>
-         <p align="center"><input type="submit" value="确定" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="取消" /></p>
+         <table cellspacing="10" border="0">
+         <tr>
+            <td width="40%" align="right">
+               <label for="password">旧密码：</label>
+            </td>
+            <td align="left"><input type="text" name="password" /></td>
+         </tr>
+         <tr>
+           <td align="right">
+               <label for="newPassword">新密码：</label>
+           </td>
+           <td align="left"><input type="password" name="newPassword" /></td>
+         </tr>
+         <tr>
+           <td align="right">
+              <label for="confirmPassword">确&nbsp;&nbsp;认：</label>
+           </td>
+           <td align="left"><input type="password" name="confirmPassword" /></td>
+         </tr>
+         <tr>
+            <td align="center" colspan="2">
+               <input type="submit" value="确定" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="取消" />
+            </td>
+         </tr>
+         </table>
       </div>
       
       <div class="copyright_declare">
@@ -75,6 +51,7 @@
       </div>
     </div>
 </div>
-<div id="extraDiv1"><span></span></div>
+
+<%@ include file="/WEB-INF/pages/common/footer.jsp" %>
 </body>
 </html>

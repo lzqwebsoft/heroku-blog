@@ -6,6 +6,7 @@
 <title>编辑博客-lzqwebsoft's blog</title>
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/new.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/new.js"></script>
@@ -26,7 +27,7 @@
             <option value="2">转载</option>
             <option value="3">翻译</option>
          </select>
-         <input type="text" name="title" maxlength="200" size="80" />
+         <input type="text" name="title" maxlength="200" style="width:460px" />
       </p>
       <p><label for="article_content">博客内容</label></p>
       <p><textarea name="content"></textarea></p>
