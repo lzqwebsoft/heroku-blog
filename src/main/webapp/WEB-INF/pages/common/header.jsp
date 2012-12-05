@@ -25,13 +25,13 @@
                    <a id="login-link" href="javascript:void(0)">登&nbsp;&nbsp;&nbsp;录</a>
                 </li>
                 <li>
-                   <a href="new.html">发表博客</a>
+                   <a href="<%= request.getContextPath() %>/new.html">发表博客</a>
                 </li>
                 <li>
-                   <a href="change_password.jsp">修改密码</a>
+                   <a href="<%= request.getContextPath() %>/change_password.html">修改密码</a>
                 </li>
                 <li>
-                   <a href="set.jsp">设&nbsp;&nbsp;&nbsp;置</a>
+                   <a href="<%= request.getContextPath() %>/set.html">设&nbsp;&nbsp;&nbsp;置</a>
                 </li>
              </ul>
            </li>
