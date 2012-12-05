@@ -4,61 +4,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>编辑博客-lzqwebsoft's blog</title>
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/comment.css" />
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/new.css" />
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/comment.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/default.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/new.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/kindeditor3.5/kindeditor.js"></script>
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/new.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/new.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
 </head>
 
 <body>
-<div id="modTopbar" class="mod-topbar">
-  <div class="wrapper-box clearfix">
-  
-     <div class="left-box">&nbsp;</div>
-     
-     <div class="center-box">
-         <ul class="q-menubox">
-           <li class="q-menuitem">
-              <a href="http://lzqwebsoft.herokuapp.com">首页</a>
-           </li>
-           <li class="q-menuitem">
-              <a href="javascript:void(0)" onclick="show_about_dialog()">关于</a>
-           </li>
-         </ul>
-     </div>
-     
-     <div class="right-box">
-        <ul class="q-navbox">
-           <li class="q-navitem">
-              <a href="javascript:void(0)"><img alt="管理" src="resource/images/set_icon.png"/></a>
-              <!--子菜单-->
-              <ul>
-                <li>
-                   <a href="javascript:void(0)" onclick="show_login_dialog();" >登&nbsp;&nbsp;&nbsp;录</a>
-                </li>
-                <li>
-                   <a href="javascript:void(0)">发表博客</a>
-                </li>
-                <li>
-                   <a href="change_password.jsp">修改密码</a>
-                </li>
-                <li>
-                   <a href="set.jsp">设&nbsp;&nbsp;&nbsp;置</a>
-                </li>
-             </ul>
-           </li>
-        </ul>
-     </div>
-     
-  </div>
-  
-</div>
-
-<div class="goBackToTop">
-   <a id="gototop" title="回到顶端" href="#container">TOP</a>
-</div>
+<%@ include file="/WEB-INF/pages/common/header.jsp" %>
 
 <div id="container">
    <div id="content-div">
@@ -163,6 +118,7 @@
       </div>
    </div>
 </div>
-<div id="extraDiv1"><span></span></div>
+
+<%@ include file="/WEB-INF/pages/common/footer.jsp" %>
 </body>
 </html>

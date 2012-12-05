@@ -4,65 +4,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>MSNLite表情包制作生成器（Java实现）-lzqwebsoft's blog</title>
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/comment.css" />
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/show.css" />
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/comment.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/default.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/show.js"></script>
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/javascript/shl/styles/shCoreDefault.css" />  
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/javascript/shl/styles/shThemeDefault.css" />  
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/javascript/shl/styles/shCore.css" />
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/shl/scripts/shCore.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/shl/scripts/shAutoloader.js"></script>
-<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>resources/javascript/kindeditor3.5/kindeditor.js"></script>
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/show.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/show.js"></script>
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shCoreDefault.css" />  
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shThemeDefault.css" />  
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shCore.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/shl/scripts/shCore.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/shl/scripts/shAutoloader.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
 </head>
 
 <body>
-<div id="modTopbar" class="mod-topbar">
-  <div class="wrapper-box clearfix">
-  
-     <div class="left-box">&nbsp;</div>
-     
-     <div class="center-box">
-         <ul class="q-menubox">
-           <li class="q-menuitem">
-              <a href="http://lzqwebsoft.herokuapp.com">首页</a>
-           </li>
-           <li class="q-menuitem">
-              <a href="javascript:void(0)" onclick="show_about_dialog()">关于</a>
-           </li>
-         </ul>
-     </div>
-     
-     <div class="right-box">
-        <ul class="q-navbox">
-           <li class="q-navitem">
-              <a href="javascript:void(0)"><img alt="管理" src="resource/images/set_icon.png"/></a>
-              <!--子菜单-->
-              <ul>
-                <li>
-                   <a href="javascript:void(0)" onclick="show_login_dialog();" >登&nbsp;&nbsp;&nbsp;录</a>
-                </li>
-                <li>
-                   <a href="new.jsp">发表博客</a>
-                </li>
-                <li>
-                   <a href="change_password.jsp">修改密码</a>
-                </li>
-                <li>
-                   <a href="set.jsp">设&nbsp;&nbsp;&nbsp;置</a>
-                </li>
-             </ul>
-           </li>
-        </ul>
-     </div>
-     
-  </div>
-</div>
-
-<div class="goBackToTop">
-   <a id="gototop" title="回到顶端" href="#container">TOP</a>
-</div>
+<%@ include file="/WEB-INF/pages/common/header.jsp" %>
 
 <div id="container">
 	<div id="intro">
@@ -242,7 +199,7 @@ function path()
       ;
        
   for(var i = 0; i < args.length; i++)
-      result.push(args[i].replace('@', 'resource/javascript/shl/scripts/'));
+      result.push(args[i].replace('@', '../resources/javascript/shl/scripts/'));
        
   return result;
 };
@@ -312,8 +269,6 @@ KE.show({
 });
 </script>
 
-<!-- These extra divs/spans may be used as catch-alls to add extra imagery. -->
-<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div><div id="extraDiv3"><span></span></div>
-<div id="extraDiv4"><span></span></div><div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
+<%@ include file="/WEB-INF/pages/common/footer.jsp" %>
 </body>
 </html>
