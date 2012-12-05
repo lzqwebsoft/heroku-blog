@@ -34,10 +34,4 @@ public class LoginController {
     public String logout() {
         return "index";
     }
-    
-    
-    @RequestMapping(value="/change_password")
-    public String changePassword(){
-        return "change_password";
-    }
 }

@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -46,7 +46,7 @@
                  </select>
                  &nbsp;
                  <label for="title">标题：</label>
-                 <input type="text" name="title" maxlength="30" size="50" />
+                 <input type="text" name="title" maxlength="30" style="width:400px" />
               </p>
            </div>
            <table id="lstBox" cellspacing="0">
@@ -148,7 +148,7 @@
            </tr>
            </table>
            <div id="add_type_div">
-              <input id="txtCat" class="t_input" type="text" maxlength="30" size="50" />
+              <input id="txtCat" class="t_input" type="text" maxlength="30" size="40" />
               <input id="btnAdd" class="t_btn" type="button" value="添加分类" />
            </div>
         </div>
@@ -232,9 +232,9 @@
         </div>
         
         <div id="configure_info" style="display:none;">
-           <p>博客名称<br /><input type="text" name="blog_name" maxlength="30" size="50" /></p>
-           <p>个性签名<br /><input type="text" name="signature" maxlength="30" size="50" /></p>
-           <p>关联邮箱<br /><input type="text" name="blog_email" maxlength="30" size="50" /></p>
+           <p>博客名称<br /><input type="text" name="blog_name" maxlength="30" style="width:430px"/></p>
+           <p>个性签名<br /><input type="text" name="signature" maxlength="30" style="width:430px" /></p>
+           <p>关联邮箱<br /><input type="text" name="blog_email" maxlength="30" style="width:430px" /></p>
            <p>
               博客描述<br />
               <textarea id="blog_description" name="blog_description"></textarea>
@@ -250,7 +250,7 @@
 					height : "200px", //编辑器的高度为100px
 					filterMode : false, //不会过滤HTML代码
 					resizeMode : 0, //编辑器只能调整高度
-					items: ['fontname', 'fontsize', '|', 'textcolor','bgcolor', 'bold', 'italic',
+					items: ['source', '|','fontname', 'fontsize', '|', 'textcolor','bgcolor', 'bold', 'italic',
 							'underline', 'strikethrough', 'removeformat', '|', 'hr', 'link', 'unlink']
 			   });
 		   </script>

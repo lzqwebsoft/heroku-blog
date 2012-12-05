@@ -139,8 +139,8 @@ function createFrame(arg) {
 	var height=arg.height||300;
 	var frame=document.createElement('div');
 	frame.className="dialog_frame dialog_frame_shadow";
-	frame.style.width = width+"px";
-	frame.style.height= height+"px";
+	frame.style.minWidth = width+"px";
+	frame.style.minHeight= height+"px";
 	frame.style.zIndex=arg.zIndex||999;
 	// 设置窗体显示的坐标
 	var pos = getPos(width, height);
