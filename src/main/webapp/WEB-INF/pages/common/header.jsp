@@ -18,14 +18,14 @@
      <div class="right-box">
         <ul class="q-navbox">
            <li class="q-navitem">
-              <a href="javascript:void(0)"><img alt="管理" src="resources/images/set_icon.png"/></a>
+              <a href="javascript:void(0)"><img alt="管理" src="<%= request.getContextPath() %>/resources/images/set_icon.png"/></a>
               <!--子菜单-->
               <ul>
                 <li>
                    <a id="login-link" href="javascript:void(0)">登&nbsp;&nbsp;&nbsp;录</a>
                 </li>
                 <li>
-                   <a href="new.jsp">发表博客</a>
+                   <a href="new.html">发表博客</a>
                 </li>
                 <li>
                    <a href="change_password.jsp">修改密码</a>

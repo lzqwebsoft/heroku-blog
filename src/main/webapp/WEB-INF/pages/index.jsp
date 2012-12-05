@@ -48,7 +48,7 @@
 
   <div id="supportingText">
     <div class="explanation">
-      <h3><a href="show.jsp">MSNLite表情包制作生成器（Java实现）</a></h3>
+      <h3><a href="show/2012125.html">MSNLite表情包制作生成器（Java实现）</a></h3>
           <p class="article_date">发表于：2012-9-25&nbsp;10:28</p>
           <p class="article_description">最近看到一则新闻说小米收购了MSNLite（hada.me）团队，打算开发PC端的米聊客户端，于是对MSNLite产生了兴趣，同时也在自己的机器上安装了MSNLite，乖乖，使用了几天确实感觉她比以前的MSN快多了，并且功能强大，无广告；但唯一让我感觉不足的是表情包太难找了(不知是不是我的搜索技术不过关)。找来找去发现在她的官方论坛上有一篇关于表情包的解释（http://bbs.hada.me/t... </p>
           <p>
