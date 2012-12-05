@@ -4,66 +4,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>博客设置-lzqwebsoft's blog</title>
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/comment.css" />
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/set.css" />
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/comment.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/default.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/set.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/kindeditor3.5/kindeditor.js"></script>
-<link rel="stylesheet" href="<%= request.getContextPath() %>resources/style/lightbox.css" type="text/css" media="screen" />
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/lightbox2.05/prototype.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/lightbox2.05/scriptaculous.js?load=effects,builder"></script>
-<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>resources/javascript/lightbox2.05/lightbox.js"></script>
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/set.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/set.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/lightbox.css" type="text/css" media="screen" />
+<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/lightbox/lightbox.js"></script>
 
 </head>
 
 <body>
-<div id="modTopbar" class="mod-topbar">
-  <div class="wrapper-box clearfix">
-  
-     <div class="left-box">&nbsp;</div>
-     
-     <div class="center-box">
-         <ul class="q-menubox">
-           <li class="q-menuitem">
-              <a href="http://lzqwebsoft.herokuapp.com">首页</a>
-           </li>
-           <li class="q-menuitem">
-              <a href="javascript:void(0)" onclick="show_about_dialog()">关于</a>
-           </li>
-         </ul>
-     </div>
-     
-     <div class="right-box">
-        <ul class="q-navbox">
-           <li class="q-navitem">
-              <a href="javascript:void(0)"><img alt="管理" src="resource/images/set_icon.png"/></a>
-              <!--子菜单-->
-              <ul>
-                <li>
-                   <a href="javascript:void(0)" onclick="show_login_dialog();" >登&nbsp;&nbsp;&nbsp;录</a>
-                </li>
-                <li>
-                   <a href="new.jsp">发表博客</a>
-                </li>
-                <li>
-                   <a href="change_password.jsp">修改密码</a>
-                </li>
-                <li>
-                   <a href="javascript:void(0)">设&nbsp;&nbsp;&nbsp;置</a>
-                </li>
-             </ul>
-           </li>
-        </ul>
-     </div>
-     
-  </div>
-  
-</div>
-
-<div class="goBackToTop">
-   <a id="gototop" title="回到顶端" href="#container">TOP</a>
-</div>
+<%@ include file="/WEB-INF/pages/common/header.jsp" %>
 
 <div id="container">
 	<div id="back_intro">
@@ -257,22 +211,22 @@
         <div id="blog_images_list" style="display:none;">
           <dl>
              <dd>
-                <a rel="lightbox[roadtrip]" title="测试图片" href="resource/images/header.jpg">
-                    <img src="resource/images/header.jpg" width="140" height="104" alt="测试图片" title="测试图片" />
+                <a rel="lightbox[roadtrip]" title="测试图片" href="<%= request.getContextPath() %>/resources/images/header.jpg">
+                    <img src="<%= request.getContextPath() %>/resources/images/header.jpg" width="140" height="104" alt="测试图片" title="测试图片" />
                 </a>
              </dd>
              <dt>
-                <a href="resource/images/header.jpg" rel="lightbox">测试图片</a>&nbsp;&nbsp;<a href="javascript:void(0)" >删除</a>
+                <a href="<%= request.getContextPath() %>/resources/images/header.jpg" rel="lightbox">测试图片</a>&nbsp;&nbsp;<a href="javascript:void(0)" >删除</a>
              </dt>
           </dl>
           <dl>
              <dd>
-                <a rel="lightbox[roadtrip]" title="测试图片" href="resource/images/header.jpg">
-                    <img src="resource/images/header.jpg" width="140" height="104" alt="测试图片" title="测试图片" />
+                <a rel="lightbox[roadtrip]" title="测试图片" href="<%= request.getContextPath() %>/resources/images/header.jpg">
+                    <img src="<%= request.getContextPath() %>/resources/images/header.jpg" width="140" height="104" alt="测试图片" title="测试图片" />
                 </a>
              </dd>
              <dt>
-                <a href="resource/images/header.jpg" rel="lightbox">测试图片</a>&nbsp;&nbsp;<a href="javascript:void(0)" >删除</a>
+                <a href="<%= request.getContextPath() %>/resources/images/header.jpg" rel="lightbox">测试图片</a>&nbsp;&nbsp;<a href="javascript:void(0)" >删除</a>
              </dt>
           </dl>
         </div>
@@ -308,8 +262,6 @@
 	</div>
 </div>
 
-<!-- These extra divs/spans may be used as catch-alls to add extra imagery. -->
-<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div><div id="extraDiv3"><span></span></div>
-<div id="extraDiv4"><span></span></div><div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
+<%@ include file="/WEB-INF/pages/common/footer.jsp" %>
 </body>
 </html>
