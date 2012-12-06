@@ -24,11 +24,11 @@
 		<h2>博客管理</h2>
         <div class="tabs" id="tabs">
            <ul>
-              <li><a id="article_list_tag" class="selected" href="javascript:void(0)" onclick="showTab('article_list'); this.blur(); return false;">文章列表</a></li>
-              <li><a id="type_list_tag" href="javascript:void(0)" onclick="showTab('type_list'); this.blur(); return false;">类别管理</a></li>
-              <li><a id="draft_list_tag" href="javascript:void(0)" onclick="showTab('draft_list'); this.blur(); return false;">草稿箱</a></li>
-              <li><a id="blog_images_list_tag" href="javascript:void(0)" onclick="showTab('blog_images_list'); this.blur(); return false;">博客用图</a></li>
-              <li><a id="configure_info_tag" href="javascript:void(0)" onclick="showTab('configure_info'); this.blur(); return false;">信息设置</a></li>
+              <li><a id="article_list_tag" class="selected" href="javascript:void(0)">文章列表</a></li>
+              <li><a id="type_list_tag" href="javascript:void(0)">类别管理</a></li>
+              <li><a id="draft_list_tag" href="javascript:void(0)">草稿箱</a></li>
+              <li><a id="blog_images_list_tag" href="javascript:void(0)">博客用图</a></li>
+              <li><a id="configure_info_tag" href="javascript:void(0)">信息设置</a></li>
            </ul>
         </div>
         <div id="article_list">

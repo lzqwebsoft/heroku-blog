@@ -127,7 +127,9 @@ function Button(arg) {
 	btn.type = arg.type;
 	btn.value = arg.text || '';
 	if (arg.clickFn) {
-		btn.onclick = arg.clickFn;
+		btn.onclick = function() {
+			arg.clickFn(arg.parent);
+		};
 	}
 	span.appendChild(btn);
 	return {span : span, btn : btn};
@@ -208,6 +210,7 @@ function createFrame(arg) {
 			className : 'dialog_frame_yes',
 			text : arg.yesButton||'Yes',
 			type : "button",
+			parent : frame,
 			clickFn : arg.buttonClick
 		});
 		yesButton = btn.btn;

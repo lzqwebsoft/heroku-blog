@@ -1,19 +1,25 @@
-function showTab(name) {
-	var tags_content = ['article_list', 'type_list', 'draft_list', 'blog_images_list', 'configure_info'];
-	for(var i=0; i<tags_content.length; i++){
-		var tag_context = document.getElementById(tags_content[i]);
-		tag_context.style.display="none";
-	}
-	
-	for(var i=0; i<tags_content.length; i++){
-		var f = document.getElementById(tags_content[i]+"_tag");
-		f.className="";
-	}
-	
-	document.getElementById(name).style.display="block";
-	document.getElementById(name+"_tag").className="selected";
-	return false;
-}
+$(function() {
+	var tagBoxs = [];
+	$("#tabs li a").each(function(idx){
+		var styleId = $(this).attr("id");
+		var index = styleId.lastIndexOf("_");
+		tagBoxs[idx]= styleId.substring(0, index);
+	});
+	$("#tabs li a").click(function() {
+		$("#tabs li a").removeClass("selected");
+		var obj = $(this);
+		var styleId = obj.attr("id");
+		obj.addClass("selected");
+		var index = styleId.lastIndexOf("_");
+		var selectBox = styleId.substring(0, index)
+		$.each(tagBoxs, function(idx, item) {
+			if(item==selectBox)
+				$("#"+item).show();
+			else
+				$("#"+item).hide();
+		});
+	});
+});
 
 function edit_article_type(id){
 	var span = document.getElementById(id);

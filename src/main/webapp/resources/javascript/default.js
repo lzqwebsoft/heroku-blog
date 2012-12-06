@@ -37,10 +37,25 @@ $(function() {
 			  zIndex: 1023,
 			  yesButton: '登录',
 			  noButton: '取消',
-			  buttonClick: function(){alert("login");}
+			  buttonClick: function(obj){
+			     var form_data = $(obj).find("form").serialize();
+			     $.ajax({
+			    	 url: "http://localhost:9000/heroku-blog/login.html",
+			    	 type: "post",
+			    	 data: form_data,
+			    	 success: function(data, status) {
+			    	    alert(data);
+			         },
+			         error: function(xhr, strError, errorObj) {
+			        	 alert(strError);
+			         }
+			     });
+			  }
 		   });
 		var dialog_body = $(dialog_body);
 		dialog_body.css("text-align", "center");
+		
+		var form_tag = $('<form action="/login.html" method="post"></form>');
 		
 		var name_p = $("<p>帐号：</p>").css({
 			"margin-top": "20px",
@@ -59,8 +74,11 @@ $(function() {
 		});
 		password_p.append(password_field);
 		
-		dialog_body.append(name_p);
-		dialog_body.append(password_p);
+		form_tag.append(name_p);
+		form_tag.append(password_p);
+		form_tag.append('<input type="hidden" name="currentPath" value="index.html">');
+		
+		dialog_body.append(form_tag);
 		return false;
 	});
 });
