@@ -2,9 +2,9 @@
 $(function() {
 	$(window).scroll(function(){
 		if(getScrollPos().y > 300)
-			  $("gototop").show();
+			  $("#gototop").show();
 			else
-			  $("gototop").hide(); 
+			  $("#gototop").hide(); 
 	});
 	
 	$("#about-link").click(function() {

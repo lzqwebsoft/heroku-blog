@@ -6,6 +6,7 @@
 <title>修改密码-lzqwebsoft's blog</title>
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/change_password.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 </head>
