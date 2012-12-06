@@ -39,9 +39,5 @@
             </props>
         </property>
     </bean>
-
-    <bean id="userDAO" class="com.herokuapp.lzqwebsoft.dao.UserDAO">
-    	<property name="sessionFactory" ref="sessionFactory" />
-    </bean>
 </beans>
 
