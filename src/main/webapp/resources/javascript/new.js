@@ -19,8 +19,7 @@ function change_type(obj) {
 function encodeHtml(s){
 	var REGX_HTML_ENCODE = /"|&|'|<|>|[\x00-\x20]|[\x7F-\xFF]|[\u0100-\u2700]/g;
 	return (typeof s != "string") ? s :
-	  s.replace(REGX_HTML_ENCODE,
-				function($0){
+	  s.replace(REGX_HTML_ENCODE, function($0){
 					var c = $0.charCodeAt(0), r = ["&#"];
 					// 这里用于处理空格
 					//c = (c == 0x20) ? 0xA0 : c;
