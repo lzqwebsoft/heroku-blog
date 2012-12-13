@@ -35,16 +35,17 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response,
 			Object handler, ModelAndView model) throws Exception {
-		
+	    HttpSession session = request.getSession();
+        boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER)==null) ? false: true;
+        List<Menu> menus = menuService.getAllMenus(isLogined);
+        request.setAttribute(CommonConstant.MENUS, menus);
 	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object handler) throws Exception {
-		HttpSession session = request.getSession();
-		boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER)==null) ? false: true;
-		List<Menu> menus = menuService.getAllMenus(isLogined);
-		request.setAttribute(CommonConstant.MENUS, menus);
+	    // 用于过滤掉普通用户不能访问的页面，如果用户没权限访问则重定向到index.html画面
+//		String requestURL = request.getRequestURI();
 		return true;
 	}
 
