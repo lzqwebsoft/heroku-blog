@@ -16,11 +16,12 @@
    
    <!-- 拦截器配置 -->
    <mvc:interceptors>
-      <!-- 验证用户是否登录的拦截器 -->
-	  <mvc:interceptor>
-		  <mvc:mapping path="/*" />
-		  <bean class="com.herokuapp.lzqwebsoft.interceptor.AuthenticateInterceptor" />
-	  </mvc:interceptor>
+      <!-- 验证用户是否登录的拦截器，拦截所有请求 -->
+      <bean class="com.herokuapp.lzqwebsoft.interceptor.AuthenticateInterceptor" />
+<!--	  <mvc:interceptor>-->
+<!--		  <mvc:mapping path="*" />-->
+<!--		  -->
+<!--	  </mvc:interceptor>-->
    </mvc:interceptors>
    
    <!-- 配置的静态资源 -->
