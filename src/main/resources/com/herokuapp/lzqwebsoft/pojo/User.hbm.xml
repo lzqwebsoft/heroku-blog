@@ -7,8 +7,12 @@
 		<id name="id">
 			<generator class="native"/>
         </id>
-        <property name="userName" length="225" not-null="true" column="name"/>
-        <property name="password"/>
-        <property name="lastLogin"/>
+        <property name="userName" length="225" not-null="true" column="login"/>
+        <property name="password" length="40" not-null="true"/>
+        <property name="email" length="60" not-null="true"/>
+        <property name="salt" length="64" not-null="true" />
+        <property name="lastLogin" column="last_login_on" />
+        <property name="createAt" column="create_at" />
+        <property name="updateAt" column="update_at" />
     </class>
 </hibernate-mapping>

@@ -1,4 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+
+<div id="context-path" style="display:none"><%= request.getContextPath() %></div>
 <div id="modTopbar" class="mod-topbar">
   <div class="wrapper-box clearfix">
   
@@ -21,19 +25,22 @@
               <a href="javascript:void(0)"><img alt="管理" src="<%= request.getContextPath() %>/resources/images/set_icon.png"/></a>
               <!--子菜单-->
               <ul>
-                <li>
-                   <a id="login-link" href="javascript:void(0)">登&nbsp;&nbsp;&nbsp;录</a>
-                </li>
-                <li>
-                   <a href="<%= request.getContextPath() %>/new.html">发表博客</a>
-                </li>
-                <li>
-                   <a href="<%= request.getContextPath() %>/change_password.html">修改密码</a>
-                </li>
-                <li>
-                   <a href="<%= request.getContextPath() %>/set.html">设&nbsp;&nbsp;&nbsp;置</a>
-                </li>
-             </ul>
+                 <c:if test="${sessionScope.user==null}">
+                 <li>
+                    <a id="login-link" href="javascript:void(0)">登&nbsp;&nbsp;&nbsp;录</a>
+                 </li>
+                 </c:if>
+                 <c:if test="${sessionScope.user!=null}">
+                 <li>
+                    <a href="<%= request.getContextPath() %>/logout.html">注&nbsp;&nbsp;&nbsp;销</a>
+                 </li>
+                 </c:if>
+                 <c:forEach items="${requestScope.menus}" var="menu">
+                 <li>
+                    <a href="<%= request.getContextPath() %>/${menu.path}">${menu.label}</a>
+                 </li>
+                 </c:forEach>
+               </ul>
            </li>
         </ul>
      </div>

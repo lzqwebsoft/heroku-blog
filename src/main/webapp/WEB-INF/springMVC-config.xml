@@ -14,10 +14,29 @@
    
    <mvc:annotation-driven />
    
+   <!-- 拦截器配置 -->
+   <mvc:interceptors>
+      <!-- 验证用户是否登录的拦截器 -->
+	  <mvc:interceptor>
+		  <mvc:mapping path="/*" />
+		  <bean class="com.herokuapp.lzqwebsoft.interceptor.AuthenticateInterceptor" />
+	  </mvc:interceptor>
+   </mvc:interceptors>
+   
+   <!-- 配置的静态资源 -->
    <mvc:resources mapping="/resources/**" location="/resources/**"/>
    
    <bean id="viewResover" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-         <property name="prefix" value="/WEB-INF/pages/" />  
-         <property name="suffix" value=".jsp" />  
+       <property name="prefix" value="/WEB-INF/pages/" />  
+       <property name="suffix" value=".jsp" />  
+   </bean>
+   
+   <!-- properties 资源文件 -->
+   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+       <property name="basenames">
+           <list>
+              <value>ApplicationResources</value>
+           </list>
+       </property>
    </bean>
 </beans>
