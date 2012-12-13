@@ -1,4 +1,5 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
@@ -7,7 +8,7 @@
   <meta name="keywords" content="design, css," />
   <meta name="description" content="" />
   <meta name="robots" content="all" />
-  <title>lzqwebsoft's blog</title>
+  <title><spring:message code="page.title" /></title>
   <style type="text/css" title="currentStyle" media="screen">
     @import "<%= request.getContextPath() %>/resources/style/comment.css";
   </style>
@@ -27,23 +28,23 @@
       <h2><span>心诚则灵</span></h2>
     </div>
 
-    <!--<div id="quickSummary">
-        <h2>In building...</h2>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>祝大家中秋，国庆双节快乐！</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-    </div>
+<!--    <div id="quickSummary">-->
+<!--        <h2>In building...</h2>-->
+<!--          <p>&nbsp;</p>-->
+<!--          <p>&nbsp;</p>-->
+<!--          <p>${sessionScope.user.userName }</p>-->
+<!--          <p>&nbsp;</p>-->
+<!--          <p>&nbsp;</p>-->
+<!--    </div>-->
 
-    <div id="preamble">
-      <h2>文章标题</h2>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-    </div>-->
+<!--    <div id="preamble">-->
+<!--      <h2>文章标题</h2>-->
+<!--          <p>&nbsp;</p>-->
+<!--          <p>&nbsp;</p>-->
+<!--          <p>&nbsp;</p>-->
+<!--          <p>&nbsp;</p>-->
+<!--          <p>&nbsp;</p>-->
+<!--    </div>-->
   </div>
 
   <div id="supportingText">

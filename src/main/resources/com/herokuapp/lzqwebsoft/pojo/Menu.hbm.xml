@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
+   <class name="Menu" table="Menus">
+       <id name="id">
+		   <generator class="native"/>
+       </id>
+       <property name="label" length="225" not-null="true" column="menu_label"/>
+       <property name="path" length="225" not-null="true" column="url_path"/>
+       <property name="isLogin" not-null="true" column="is_login"/>
+       <property name="createAt" column="create_at"/>
+       <property name="updateAt" column="update_at"/>
+   </class>
+</hibernate-mapping>
