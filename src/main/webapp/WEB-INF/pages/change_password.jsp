@@ -20,8 +20,8 @@
       <h2>修改密码</h2>
       
       <div id="login_content">
-         <form:form action="changepwd_handle.html" method="post" commandName="userBean">
-         <p id="error_info" ><form:errors path="password" /></p>
+         <form:form action="changepwd_handle.html" method="post" modelAttribute="userBean">
+         <p id="error_info" ><form:errors path="*" /></p>
          <table width="100%" cellspacing="10" border="0">
          <tr>
             <td width="30%" align="right">

@@ -45,7 +45,7 @@
       <h2>登录</h2>
       
       <div id="login_content">
-         <form:form action="signIn.html" method="post" commandName="user">
+         <form:form action="signIn.html" method="post" modelAttribute="user">
          <p id="error_info"><form:errors path="*" /></p>
          <table cellspacing="10" border="0">
             <tr>
