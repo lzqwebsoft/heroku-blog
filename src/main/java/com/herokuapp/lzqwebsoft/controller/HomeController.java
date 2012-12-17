@@ -1,8 +1,11 @@
 package com.herokuapp.lzqwebsoft.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.herokuapp.lzqwebsoft.pojo.ChangePasswordUserBean;
 
 @Controller
 public class HomeController{
@@ -28,7 +31,8 @@ public class HomeController{
 	}
 	
 	@RequestMapping(value="/change_password")
-    public String changePassword(){
+    public String changePassword(ModelMap model){
+		model.addAttribute("userBean", new ChangePasswordUserBean());
         return "change_password";
     }
 }

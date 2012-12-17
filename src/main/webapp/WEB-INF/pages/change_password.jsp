@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,32 +20,34 @@
       <h2>修改密码</h2>
       
       <div id="login_content">
-         <p id="error_info" style="display::none;">&nbsp;</p>
-         <table cellspacing="10" border="0">
+         <form:form action="changepwd_handle.html" method="post" commandName="userBean">
+         <p id="error_info" ><form:errors path="password" /></p>
+         <table width="100%" cellspacing="10" border="0">
          <tr>
-            <td width="40%" align="right">
+            <td width="30%" align="right">
                <label for="password">旧密码：</label>
             </td>
-            <td align="left"><input type="text" name="password" /></td>
+            <td align="left"><form:password path="password" /></td>
          </tr>
          <tr>
            <td align="right">
                <label for="newPassword">新密码：</label>
            </td>
-           <td align="left"><input type="password" name="newPassword" /></td>
+           <td align="left"><form:password path="newPassword" /></td>
          </tr>
          <tr>
            <td align="right">
               <label for="confirmPassword">确&nbsp;&nbsp;认：</label>
            </td>
-           <td align="left"><input type="password" name="confirmPassword" /></td>
+           <td align="left"><form:password path="confirmPassword" /></td>
          </tr>
          <tr>
             <td align="center" colspan="2">
-               <input type="submit" value="确定" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="取消" />
+               <input type="submit" value="确定" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="重置" />
             </td>
          </tr>
          </table>
+         </form:form>
       </div>
       
       <div class="copyright_declare">

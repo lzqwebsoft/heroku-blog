@@ -1,13 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>博主登录-lzqwebsoft's blog</title>
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/comment.css" />
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>resources/style/login.css" />
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/comment.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>resources/javascript/default.js"></script>
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/login.css" />
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 </head>
 
 <body>
@@ -19,32 +21,15 @@
      <div class="center-box">
          <ul class="q-menubox">
            <li class="q-menuitem">
-              <a href="http://lzqwebsoft.herokuapp.com">首页</a>
+              <a href="<%= request.getContextPath() %>">首页</a>
            </li>
            <li class="q-menuitem">
-              <a href="javascript:void(0)" onclick="show_about_dialog()">关于</a>
+              <a id="about-link" href="javascript:void(0)">关于</a>
            </li>
          </ul>
      </div>
      
      <div class="right-box">
-        <!--<ul class="q-navbox">
-           <li class="q-navitem">
-              <a href="javascript:void(0)"><img alt="管理" src="resource/images/set_icon.png"/></a>
-              <!--子菜单
-              <ul>
-                <li>
-                   <a href="javascript:void(0)" onclick="show_login_dialog();" >登&nbsp;&nbsp;&nbsp;录</a>
-                </li>
-                <li>
-                   <a href="javascript:void(0)">发表博客</a>
-                </li>
-                <li>
-                   <a href="javascript:void(0)">设&nbsp;&nbsp;&nbsp;置</a>
-                </li>
-             </ul>
-           </li>
-        </ul>-->
      </div>
      
   </div>
@@ -60,14 +45,33 @@
       <h2>登录</h2>
       
       <div id="login_content">
-         <p id="error_info" style="display::none;">&nbsp;</p>
-         <p><label for="username">帐&nbsp;&nbsp;&nbsp;&nbsp;号：</label><input type="text" name="username" /></p>
-         <p><label for="password">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label><input type="password" name="password" /></p>
-         <p>
-            <label for="validateCode">验证码：</label><input type="text" name="validateCode" style="width:100px;" />
-         </p>
-         <p><a href="javascript:void(0)">忘记密码</a></p>
-         <p align="center"><input type="submit" value="登录" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="取消" /></p>
+         <form:form action="signIn.html" method="post" commandName="user">
+         <p id="error_info"><form:errors path="*" /></p>
+         <table cellspacing="10" border="0">
+            <tr>
+               <td width="30%" align="right"><label for="username">帐&nbsp;&nbsp;&nbsp;&nbsp;号：</label></td>
+               <td align="left"><form:input path="userName" /></td>
+            </tr>
+            <tr>
+               <td align="right"><label for="password">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label></td>
+               <td align="left"><form:password path="password" /></td>
+            </tr>
+            <tr>
+               <td align="right"><label for="validateCode">验证码：</label></td>
+               <td align="left"><input type="text" name="validateCode" style="width:100px;" /></td>
+             </tr>
+             <tr>
+               <td align="right"><a href="javascript:void(0)">忘记密码&nbsp;&nbsp;&nbsp;</a></td>
+               <td align="left">&nbsp;</td>
+             </tr>
+             <tr>
+               <td align="center" colspan="2">
+                 <input type="submit" value="登录" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <input type="reset" value="重置" />
+               </td>
+             </tr>
+         </table>
+         </form:form>
       </div>
       
       <div class="copyright_declare">

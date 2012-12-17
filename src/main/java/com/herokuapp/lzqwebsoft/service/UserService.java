@@ -17,4 +17,12 @@ public interface UserService {
 	 * @return 数据库中对应的User对象，不存在则返回null
 	 */
 	public User loginService(String username, String password);
+	
+	/**
+	 * 更新用户密码
+	 * @param user 需要更改密码的用户对象
+	 * @param newPassword 新密码
+	 * @return 更新密码后的User对象
+	 */
+	public User changePassword(User user, String newPassword);
 }

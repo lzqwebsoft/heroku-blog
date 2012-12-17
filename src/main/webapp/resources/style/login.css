@@ -5,7 +5,7 @@
 }
 #login_content {
 	margin: 0 auto;
-	width: 300px;
+	width: 400px;
 }
 #login_content p {
 	margin-bottom: 10px;
@@ -13,11 +13,14 @@
 #login_content #error_info {
 	font: #F00;
 }
+#login_content table {
+	width: 100%;
+}
 #login_content input[type="text"], #login_content input[type="password"] {
 	border: 1px solid #CCCCCC;
 	background-color: #FFF;
     padding: 2px;
-	width: 70%;
+	width: 90%;
 }
 #login_content input[type="submit"], #login_content input[type="button"] {
 	padding: 2px;
