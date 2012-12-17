@@ -44,9 +44,8 @@ public class UserDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-    public User getUser(String username, String password) {
-		System.out.println("query user by name and password.");
-		List<User> list = (List<User>)getHibernateTemple().find("from User u where u.userName=? and u.password=?", new Object[]{username, password});
+    public User getUserByName(String username) {
+		List<User> list = (List<User>)getHibernateTemple().find("from User u where u.userName=?", new Object[]{username});
 		if(list!=null&&list.size()>0) {
 		    User user = list.get(0);
 		    return user;

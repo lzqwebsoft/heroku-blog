@@ -1,6 +1,7 @@
 package com.herokuapp.lzqwebsoft.interceptor;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,8 +46,26 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object handler) throws Exception {
 	    // 用于过滤掉普通用户不能访问的页面，如果用户没权限访问则重定向到index.html画面
-//		String requestURL = request.getRequestURI();
-		return true;
+		HttpSession session = request.getSession();
+        boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER)==null) ? false: true;
+        if(!isLogined){
+        	String requestURL = request.getRequestURI();
+    		ResourceBundle rb = ResourceBundle.getBundle("ApplicationResources");
+    		// 得到需要检查的URL的个数
+    		int count = Integer.parseInt(rb.getString("authentication.checkpath.count"));
+    		String url = null;
+    		while(count>0) {
+    			url = rb.getString("authentication.checkpath."+count);
+    			if(url!=null&&requestURL.endsWith(url)) {
+    				response.sendRedirect(request.getContextPath()+"/signIn.html");
+    				return false;
+    			}
+    			count--;
+    		}
+    		return true;
+        } else {
+        	return true;
+        }
 	}
 
 }
