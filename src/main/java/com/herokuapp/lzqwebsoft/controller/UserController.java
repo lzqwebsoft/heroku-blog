@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -81,21 +82,26 @@ public class UserController {
 	
     // POST处理登录
 	@RequestMapping(value="/signIn", method=RequestMethod.POST) 
-	public String signInPOST(User user, String validateCode, HttpServletRequest request,
-			HttpSession session, ModelMap model){
-		User dbuser = userService.loginService(user.getUserName(), user.getPassword());
-		if(dbuser!=null) {
-			session.setAttribute(CommonConstant.LOGIN_USER, dbuser);
-			String lastReqUrl = request.getHeader("Referer");
-	    	if(lastReqUrl!=null&&lastReqUrl.trim().length()>0&&!lastReqUrl.endsWith("signIn.html")) {
-	    	    return "redirect:"+lastReqUrl;
-	    	} else {
-	    	    // 如果没有则重定向到index画面
-	    	    return "redirect:index.html";
-	    	}
+	public String signInPOST(@ModelAttribute("user")User user, String validateCode, HttpServletRequest request,
+			HttpSession session, Errors errors){
+	    // 验证用户信息
+	    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userName", "info.login.nameOrPasswordEmpty");
+		if(errors.hasErrors()) {
+		    return "login";
 		} else {
-			model.addAttribute("user", user);
-			return "login";
+		    User dbuser = userService.loginService(user.getUserName(), user.getPassword());
+	        if(dbuser!=null) {
+	            session.setAttribute(CommonConstant.LOGIN_USER, dbuser);
+	            String lastReqUrl = request.getHeader("Referer");
+	            if(lastReqUrl!=null&&lastReqUrl.trim().length()>0&&!lastReqUrl.endsWith("signIn.html")) {
+	                return "redirect:"+lastReqUrl;
+	            } else {
+	                // 如果没有则重定向到index画面
+	                return "redirect:index.html";
+	            }
+	        } else {
+	            return "login";
+	        }
 		}
 	}
     
@@ -115,7 +121,7 @@ public class UserController {
     }
     
     @RequestMapping(value="/changepwd_handle", method=RequestMethod.POST)
-    public String changePWD(ChangePasswordUserBean userBean, ModelMap model,
+    public String changePWD(@ModelAttribute("userBean")ChangePasswordUserBean userBean, ModelMap model,
     		HttpSession session, Errors errors) {
     	// 使用ValidationUtils工具包验证数据的合法性
     	ValidationUtils.rejectIfEmpty(errors, "password", "info.changepwd.password.required");
@@ -138,6 +144,6 @@ public class UserController {
         		errors.rejectValue("password", "info.changepwd.password.invalid");
         	}
     	}
-    	return "forward:change_password.html";
+    	return "change_password";
     }
 }
