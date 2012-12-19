@@ -24,8 +24,10 @@
 <div id="container">
 	<div id="intro">
 		<div id="pageHeader">
-			<h1><span>飘痕</span></h1>
-			<h2><span>心诚则灵</span></h2>
+			<c:if test="${requestScope.blogInfo!=null}">
+            <h1><span>${requestScope.blogInfo.head}</span></h1>
+            <h2><span>${requestScope.blogInfo.descriptions}</span></h2>
+            </c:if>
 		</div>
 	</div>
     

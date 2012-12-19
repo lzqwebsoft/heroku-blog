@@ -19,6 +19,34 @@ $(function() {
 				$("#"+item).hide();
 		});
 	});
+	
+	// 保存博客的配置信息
+	$("#saveBlogInfoButton").click(function(){
+		// 将kindeditor的内容同步到textarea中
+		KE.sync("blog_description");
+		var form_data = $("#blogInfoForm").serialize();
+		$.ajax({
+			url: "handleInfo.html",
+			type: "post",
+			data: form_data,
+			success: function(data, status) {
+			    if(data.status=="FAILURE") {
+			    	var error_ul = $("<ul></ul>");
+			    	$.each(data.messages, function(idx, message) {
+			    		error_ul.append("<li>"+message+"</li>")
+			    	});
+			    	$("#configure-messages").hide().text("");
+			    	$("#configure-errors").append(error_ul).show();
+			    } else {
+			    	$("#configure-errors").hide().html("");
+			    	$("#configure-messages").text(data.messages).show();
+			    }
+		    },
+		    error: function(xhr, strError, errorObj) {
+		    	alert(errorObj);
+		    }
+		});
+	});
 });
 
 function edit_article_type(id){
