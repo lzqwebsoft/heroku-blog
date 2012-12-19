@@ -18,4 +18,8 @@ public class CommonConstant {
 	 * 记录在Requset对象中的博客信息属性名
 	 */
 	public static final String BLOG_INFO="blogInfo";
+	/**
+	 * 记录在Session对象中的Message属性名，方便跨action之间的消息转递
+	 */
+	public static final String MESSAGES="messages";
 }

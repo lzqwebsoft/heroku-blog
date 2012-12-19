@@ -39,6 +39,7 @@
        <property name="basenames">
            <list>
               <value>home-messages</value>
+              <value>user-messages</value>
               <value>set-messages</value>
            </list>
        </property>

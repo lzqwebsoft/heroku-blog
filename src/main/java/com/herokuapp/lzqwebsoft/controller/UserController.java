@@ -123,27 +123,33 @@ public class UserController {
     
     @RequestMapping(value="/changepwd_handle", method=RequestMethod.POST)
     public String changePWD(@ModelAttribute("userBean")ChangePasswordUserBean userBean, ModelMap model,
-    		HttpSession session, Errors errors) {
+    		HttpSession session, Errors errors, Locale locale) {
     	// 使用ValidationUtils工具包验证数据的合法性
-    	ValidationUtils.rejectIfEmpty(errors, "password", "info.changepwd.password.required");
-    	ValidationUtils.rejectIfEmpty(errors, "newPassword", "info.changepwd.newpassword.required");
-    	ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "info.changepwd.confirmPassword.invalid");
-    	if(userBean.getPassword().length()<6||userBean.getPassword().length()>20) {
-    		errors.rejectValue("newPassword", "info.changepwd.newpassword.invalid");
-    	} else if (!userBean.getConfirmPassword().equals(userBean.getNewPassword())){
-    		errors.rejectValue("confirmPassword", "info.changepwd.confirmPassword.invalid");
-    	} else {
-    		// 判断用户输入的旧密码是否正确
-    		User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
-    		String hashPassword = SHA1Util.saltPassword(user.getSalt(), userBean.getPassword());
-        	if(user.getPassword().equals(hashPassword)) {
-        		// 这里UserService更新后，user对象也接着更新，因为传入的为引用
-        		userService.changePassword(user, userBean.getNewPassword());
-        		session.setAttribute(CommonConstant.LOGIN_USER, user);
-        		return "redirect:change_password.html";
-        	} else {
-        		errors.rejectValue("password", "info.changepwd.password.invalid");
-        	}
+        String passwordLabel = messageSource.getMessage("page.label.changepwd.password", null, locale);
+        String newPasswordLabel = messageSource.getMessage("page.label.changepwd.newpassword", null, locale);
+        String confirmPasswordLabel = messageSource.getMessage("page.label.changepwd.confirmPassword", null, locale);
+    	ValidationUtils.rejectIfEmpty(errors, "password", "info.changepwd.required", new Object[]{passwordLabel});
+    	ValidationUtils.rejectIfEmpty(errors, "newPassword", "info.changepwd.required", new Object[]{newPasswordLabel});
+    	ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "info.changepwd.required", new Object[]{confirmPasswordLabel});
+    	if(!errors.hasErrors()) {
+    	    if(userBean.getNewPassword().length()<6||userBean.getNewPassword().length()>20) {
+                errors.rejectValue("newPassword", "info.changepwd.newpassword.invalid");
+            } else if (!userBean.getConfirmPassword().equals(userBean.getNewPassword())){
+                errors.rejectValue("confirmPassword", "info.changepwd.confirmPassword.invalid");
+            } else {
+                // 判断用户输入的旧密码是否正确
+                User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
+                String hashPassword = SHA1Util.saltPassword(user.getSalt(), userBean.getPassword());
+                if(user.getPassword().equals(hashPassword)) {
+                    // 这里UserService更新后，user对象也接着更新，因为传入的为引用
+                    userService.changePassword(user, userBean.getNewPassword());
+                    session.setAttribute(CommonConstant.LOGIN_USER, user);
+                    session.setAttribute(CommonConstant.MESSAGES, messageSource.getMessage("info.changepwd.success", null, locale));
+                    return "redirect:change_password.html";
+                } else {
+                    errors.rejectValue("password", "info.changepwd.password.invalid");
+                }
+            }
     	}
     	return "change_password";
     }
