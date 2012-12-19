@@ -65,6 +65,7 @@ public class UserController {
 				    .append(messageSource.getMessage("info.login.nameOrPasswordEmpty", null, locale)).append("\"}");
 			}
 			out.print(json);
+			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			if(out!=null) {

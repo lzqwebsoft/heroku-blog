@@ -18,10 +18,12 @@
    <mvc:interceptors>
       <!-- 验证用户是否登录的拦截器，拦截所有请求 -->
       <bean class="com.herokuapp.lzqwebsoft.interceptor.AuthenticateInterceptor" />
-<!--	  <mvc:interceptor>-->
-<!--		  <mvc:mapping path="*" />-->
-<!--		  -->
-<!--	  </mvc:interceptor>-->
+      <!-- 配置显示博客信息的拦截器 -->
+	  <mvc:interceptor>
+		  <mvc:mapping path="/show/*.html" />
+		  <mvc:mapping path="/index.html" />
+		  <bean class="com.herokuapp.lzqwebsoft.interceptor.BlogInfoInterceptor" />
+	  </mvc:interceptor>
    </mvc:interceptors>
    
    <!-- 配置的静态资源 -->
@@ -37,6 +39,7 @@
        <property name="basenames">
            <list>
               <value>home-messages</value>
+              <value>set-messages</value>
            </list>
        </property>
    </bean>

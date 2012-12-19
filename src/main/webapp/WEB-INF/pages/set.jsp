@@ -1,4 +1,6 @@
 ﻿﻿<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -232,24 +234,26 @@
         </div>
         
         <div id="configure_info" style="display:none;">
-           <p>博客名称<br /><input type="text" name="blog_name" maxlength="30" style="width:430px"/></p>
-           <p>个性签名<br /><input type="text" name="signature" maxlength="30" style="width:430px" /></p>
-           <p>关联邮箱<br /><input type="text" name="blog_email" maxlength="30" style="width:430px" /></p>
+           <form:form action="handleInfo.html" id="blogInfoForm" method="post" modelAttribute="blogInfo">
+           <form:hidden path="id" />
+           <p id="configure-messages" style="display:none; color:blue"></p>
+           <p id="configure-errors" style="display:none; color:red"></p>
+           <p><spring:message code="page.label.head" /><br /><form:input path="head" maxlength="30" cssStyle="width:430px"/></p>
+           <p><spring:message code="page.label.descriptions" /><br /><form:input path="descriptions" maxlength="30" cssStyle="width:430px" /></p>
+           <p><spring:message code="page.label.email" /><br /><form:input path="email" maxlength="30" cssStyle="width:430px" /></p>
+           <p><spring:message code="page.label.about" /><br /><form:textarea id="blog_description" path="about"></form:textarea></p>
            <p>
-              博客描述<br />
-              <textarea id="blog_description" name="blog_description"></textarea>
+             <input id="saveBlogInfoButton" type="button" value="保存" />
            </p>
-           <p>
-             <input type="button" value="保存" />
-           </p>
+           </form:form>
            <script type="text/javascript">
 			   KE.show({
 					id : "blog_description",
-					skinType: "custom01",
-					width : "460px", //编辑器的宽度为70%
-					height : "200px", //编辑器的高度为100px
+					//skinType: "custom01",
+					width : "500px", 
+					height : "250px", 
 					filterMode : false, //不会过滤HTML代码
-					resizeMode : 0, //编辑器只能调整高度
+					resizeMode : 1, //编辑器只能调整高度
 					items: ['source', '|','fontname', 'fontsize', '|', 'textcolor','bgcolor', 'bold', 'italic',
 							'underline', 'strikethrough', 'removeformat', '|', 'hr', 'link', 'unlink']
 			   });

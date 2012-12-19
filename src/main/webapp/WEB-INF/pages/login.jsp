@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<div id="context-path" style="display:none"><%= request.getContextPath() %></div>
 <div id="modTopbar" class="mod-topbar">
   <div class="wrapper-box clearfix">
   
