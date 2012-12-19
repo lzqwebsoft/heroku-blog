@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -21,23 +23,27 @@
       
       <div id="login_content">
          <form:form action="changepwd_handle.html" method="post" modelAttribute="userBean">
-         <p id="error_info" ><form:errors path="*" /></p>
+         <p id="error_info" ><form:errors path="*" htmlEscape="false"/></p>
+         <c:if test="${sessionScope.messages!=null}">
+         <p id="message_info" ><c:out  value="${sessionScope.messages}"/></p>
+         <c:remove  var="messages" scope="session"/>
+         </c:if>
          <table width="100%" cellspacing="10" border="0">
          <tr>
             <td width="30%" align="right">
-               <label for="password">旧密码：</label>
+               <label for="password"><spring:message code="page.label.changepwd.password" />：</label>
             </td>
             <td align="left"><form:password path="password" /></td>
          </tr>
          <tr>
            <td align="right">
-               <label for="newPassword">新密码：</label>
+               <label for="newPassword"><spring:message code="page.label.changepwd.newpassword" />：</label>
            </td>
            <td align="left"><form:password path="newPassword" /></td>
          </tr>
          <tr>
            <td align="right">
-              <label for="confirmPassword">确&nbsp;&nbsp;认：</label>
+              <label for="confirmPassword"><spring:message code="page.label.changepwd.confirmPassword" />：</label>
            </td>
            <td align="left"><form:password path="confirmPassword" /></td>
          </tr>
