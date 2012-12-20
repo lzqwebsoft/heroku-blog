@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
+import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
 
 /**
@@ -25,15 +28,21 @@ import com.herokuapp.lzqwebsoft.service.BlogInfoService;
 public class SetController {
 	@Autowired
 	private BlogInfoService blogInfoService;
+	
+	@Autowired
+	private ArticleTypeService articleTypeService;
+	
 	@Autowired
 	private MessageSource messageSource;
 	
 	@RequestMapping(value="/set")
-	public String set(ModelMap model) {
+	public String set(HttpServletRequest request, ModelMap model) {
 		BlogInfo blogInfo = blogInfoService.getSystemBlogInfo();
 		if(blogInfo==null)
 			blogInfo = new BlogInfo();
 		model.addAttribute(blogInfo);
+		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
+		request.setAttribute("articleTypes", articleTypes);
 		return "set";
 	}
 	

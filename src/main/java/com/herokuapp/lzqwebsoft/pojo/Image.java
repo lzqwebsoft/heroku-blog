@@ -9,7 +9,6 @@ import java.util.Date;
  */
 public class Image {
 	private int id;
-	private Article article;    // 关联一篇文章
 	private String fileName;
 	private String filePath;
 	private String descriptions;
@@ -19,12 +18,6 @@ public class Image {
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public Article getArticle() {
-		return article;
-	}
-	public void setArticle(Article article) {
-		this.article = article;
 	}
 	public String getFileName() {
 		return fileName;

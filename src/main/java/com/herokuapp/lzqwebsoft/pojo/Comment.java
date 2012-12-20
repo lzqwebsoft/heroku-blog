@@ -9,7 +9,7 @@ import java.util.Set;
  *
  */
 public class Comment {
-	private int id;
+	private long id;
 	private Article article;              // 关联的一篇文章
 	private String reviewer;
 	private String website;
@@ -17,10 +17,10 @@ public class Comment {
 	private Comment parentComment;        // 对应的父评论
 	private Set<Comment> childComments;   // 对应的子评论
 	private Date createAt;
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public Article getArticle() {

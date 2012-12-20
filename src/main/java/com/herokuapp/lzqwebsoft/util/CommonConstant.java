@@ -22,4 +22,8 @@ public class CommonConstant {
 	 * 记录在Session对象中的Message属性名，方便跨action之间的消息转递
 	 */
 	public static final String MESSAGES="messages";
+	/**
+	 * 记录用户没有权限，被拦截的URL
+	 */
+	public static final String LAST_REQUEST_URL="lastRequestURL";
 }

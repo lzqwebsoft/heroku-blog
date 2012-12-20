@@ -93,8 +93,9 @@ public class UserController {
 		    User dbuser = userService.loginService(user.getUserName(), user.getPassword());
 	        if(dbuser!=null) {
 	            session.setAttribute(CommonConstant.LOGIN_USER, dbuser);
-	            String lastReqUrl = request.getHeader("Referer");
+	            String lastReqUrl = (String)session.getAttribute(CommonConstant.LAST_REQUEST_URL);
 	            if(lastReqUrl!=null&&lastReqUrl.trim().length()>0&&!lastReqUrl.endsWith("signIn.html")) {
+	            	session.removeAttribute(CommonConstant.LAST_REQUEST_URL);
 	                return "redirect:"+lastReqUrl;
 	            } else {
 	                // 如果没有则重定向到index画面
