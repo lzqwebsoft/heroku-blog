@@ -26,6 +26,10 @@
     		<list>
     			<value>com/herokuapp/lzqwebsoft/pojo/User.hbm.xml</value>
     			<value>com/herokuapp/lzqwebsoft/pojo/Menu.hbm.xml</value>
+    			<value>com/herokuapp/lzqwebsoft/pojo/Article.hbm.xml</value>
+    			<value>com/herokuapp/lzqwebsoft/pojo/ArticleType.hbm.xml</value>
+    			<value>com/herokuapp/lzqwebsoft/pojo/Image.hbm.xml</value>
+    			<value>com/herokuapp/lzqwebsoft/pojo/Comment.hbm.xml</value>
     			<value>com/herokuapp/lzqwebsoft/pojo/BlogInfo.hbm.xml</value>
     		</list>
     	</property>

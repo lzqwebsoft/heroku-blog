@@ -9,7 +9,7 @@ import java.util.Set;
  *
  */
 public class Article {
-	private int id;
+	private String id;
 	private User author;
 	private ArticleType type;    // 关联一个文章类型
 	private int patternTypeId;
@@ -21,11 +21,11 @@ public class Article {
 	private long readedNum;
 	private Date createAt;
 	private Date updateAt;
-	private Set<Image> images;   // 关联多个图片
-	public int getId() {
+	private Set<Comment> comments;
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public User getAuthor() {
@@ -61,7 +61,7 @@ public class Article {
 	public boolean getIsTop() {
 		return isTop;
 	}
-	public void setTop(boolean isTop) {
+	public void setIsTop(boolean isTop) {
 		this.isTop = isTop;
 	}
 	public String getContentPath() {
@@ -94,10 +94,10 @@ public class Article {
 	public void setUpdateAt(Date updateAt) {
 		this.updateAt = updateAt;
 	}
-	public Set<Image> getImages() {
-		return images;
+	public Set<Comment> getComments() {
+		return comments;
 	}
-	public void setImages(Set<Image> images) {
-		this.images = images;
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 }

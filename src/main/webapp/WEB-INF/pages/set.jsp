@@ -105,54 +105,9 @@
            </div>
         </div>
         
+        <%-- 文章类型 --%>
         <div id="type_list" style="display:none">
-           <table id="lstBox" cellspacing="0">
-           <tr>
-             <th class="tdleft">类别</th>
-             <th style="width:120px;">文章</th>
-             <th style="width:100px;">操作</th>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                  <span id="article_type_1"><a href='javascript:void(0)'>JavaSE</a></span>
-              </td>
-              <td>0</td>
-              <td>
-                  <a href='javascript:void(0)' onclick="edit_article_type('article_type_1'); return false">编辑</a> | 
-                  <a href='javascript:void(0)'>删除</a><br /> 
-                  <a href='javascript:void(0)' name=del>显示</a> | 
-                  <a href='javascript:void(0)' name=del>隐藏</a>
-              </td>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                 <span id="article_type_2"><a href='javascript:void(0)'>J2EE</a></span>
-              </td>
-              <td>0</td>
-              <td>
-                  <a href='javascript:void(0)' onclick="edit_article_type('article_type_2'); return false">编辑</a> | 
-                  <a href='javascript:void(0)'>删除</a><br /> 
-                  <a href='javascript:void(0)' name=del>显示</a> | 
-                  <a href='javascript:void(0)' name=del>隐藏</a>
-              </td>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                 <span id="article_type_3"><a href='javascript:void(0)'>Ruby</a></span>
-              </td>
-              <td>0</td>
-              <td>
-                  <a href='javascript:void(0)' onclick="edit_article_type('article_type_3'); return false">编辑</a> | 
-                  <a href='javascript:void(0)'>删除</a><br /> 
-                  <a href='javascript:void(0)' name=del>显示</a> | 
-                  <a href='javascript:void(0)' name=del>隐藏</a>
-              </td>
-           </tr>
-           </table>
-           <div id="add_type_div">
-              <input id="txtCat" class="t_input" type="text" maxlength="30" size="40" />
-              <input id="btnAdd" class="t_btn" type="button" value="添加分类" />
-           </div>
+           <jsp:include flush="true" page="/WEB-INF/pages/_article_type_tab.jsp" />
         </div>
         
         <div id="draft_list" style="display:none">

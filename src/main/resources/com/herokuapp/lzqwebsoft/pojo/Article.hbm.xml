@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
+   <class name="Article" table="articles">
+       <id name="id">
+		   <generator class="uuid"></generator>
+       </id>
+       <many-to-one name="author" class="User" 
+               column="author_id" cascade="save-update">
+       </many-to-one>
+       <many-to-one name="type" class="Article" 
+               column="type_id" cascade="save-update">
+       </many-to-one>
+       <property name="patternTypeId" not-null="true" column="pattern_type"/>
+       <property name="title" length="255" column="title" />
+       <property name="allowComment" column="allow_comment" />
+       <property name="isTop" column="is_top" />
+       <property name="contentPath" length="255" not-null="true" column="content"/>
+       <property name="status" column="status" />
+       <property name="readedNum" type="long" column="readed_num" />
+       <property name="createAt" column="create_at" />
+       <property name="updateAt" column="update_at"/>
+       <set name="comments" inverse="true" cascade="all">
+           <key column="article_id" />
+           <one-to-many class="Comment"/>
+       </set>
+   </class>
+</hibernate-mapping>

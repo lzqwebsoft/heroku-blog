@@ -11,6 +11,7 @@ import java.util.Set;
 public class ArticleType {
 	private int id;
 	private String name;
+	private boolean disable;
 	private Date createAt;
 	private Date updateAt;
 	private Set<Article> articles;  // 关联多篇文章
@@ -25,6 +26,12 @@ public class ArticleType {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public boolean getDisable() {
+		return disable;
+	}
+	public void setDisable(boolean disable) {
+		this.disable = disable;
 	}
 	public Date getCreateAt() {
 		return createAt;

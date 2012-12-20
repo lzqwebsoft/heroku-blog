@@ -57,6 +57,7 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
     		while(count>0) {
     			url = rb.getString("authentication.checkpath."+count);
     			if(url!=null&&requestURL.endsWith(url)) {
+    				session.setAttribute(CommonConstant.LAST_REQUEST_URL, url);
     				response.sendRedirect(request.getContextPath()+"/signIn.html");
     				return false;
     			}
@@ -67,5 +68,4 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
         	return true;
         }
 	}
-
 }

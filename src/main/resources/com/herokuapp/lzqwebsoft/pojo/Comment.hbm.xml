@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
+    <class name="Comment" table="comments">
+       <id name="id" type="long">
+		   <generator class="increment"/>
+       </id>
+       <many-to-one name="article" class="Article"
+           column="article_id" cascade="save-update" />
+       <property name="reviewer" length="255" not-null="true" column="reviewer" />
+       <property name="website" length="255" not-null="true" column="website" />
+       <property name="content" type="text" column="content" />
+       <property name="createAt" column="create_at" />
+       <!-- 自关联一对多关系 -->
+       <many-to-one name="parentComment" class="Comment"
+           column="parent_id" cascade="save-update" />
+       <set name="childComments" inverse="true" cascade="all">
+          <key column="parent_id" />
+          <one-to-many class="Comment" />
+       </set>
+    </class>
+</hibernate-mapping>
