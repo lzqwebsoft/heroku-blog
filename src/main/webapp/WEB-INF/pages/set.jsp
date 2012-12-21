@@ -12,6 +12,7 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/set.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_type_tab.js" ></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/lightbox.css" type="text/css" media="screen" />
 <script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/lightbox/lightbox.js"></script>
@@ -193,10 +194,10 @@
            <form:hidden path="id" />
            <p id="configure-messages" style="display:none; color:blue"></p>
            <p id="configure-errors" style="display:none; color:red"></p>
-           <p><spring:message code="page.label.head" /><br /><form:input path="head" maxlength="30" cssStyle="width:430px"/></p>
+           <p><spring:message code="page.label.head"/><br /><form:input path="head" maxlength="30" cssStyle="width:430px"/></p>
            <p><spring:message code="page.label.descriptions" /><br /><form:input path="descriptions" maxlength="30" cssStyle="width:430px" /></p>
            <p><spring:message code="page.label.email" /><br /><form:input path="email" maxlength="30" cssStyle="width:430px" /></p>
-           <p><spring:message code="page.label.about" /><br /><form:textarea id="blog_description" path="about"></form:textarea></p>
+           <p><spring:message code="page.label.about"/><br /><form:textarea id="blog_description" path="about"></form:textarea></p>
            <p>
              <input id="saveBlogInfoButton" type="button" value="保存" />
            </p>

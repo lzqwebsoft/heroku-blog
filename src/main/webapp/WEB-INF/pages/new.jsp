@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -18,42 +19,38 @@
 
 <div id="container">
    <div id="content-div">
+      <form:form action="publish.html" method="post" modelAttribute="article">
       <h2>撰写博客</h2>
       <p><label for="article_title">标题</label></p>
       <p>
-         <select name="selType">
+         <form:select path="patternTypeId">
          	<option value="0">请选择</option>
-            <option value="1">原创</option>
-            <option value="2">转载</option>
-            <option value="3">翻译</option>
-         </select>
-         <input type="text" name="title" maxlength="200" style="width:460px" />
+            <form:options items="${patterns.patterns}" />
+         </form:select>
+         <form:input path="title" maxlength="200" cssStyle="width:460px" />
       </p>
       <p><label for="article_content">博客内容</label></p>
-      <p><textarea name="content"></textarea></p>
+      <p><form:textarea path="content" id="content" /></p>
       <p><label for="article_type">文章类别</label></p>
       <p>
-         <select id="type" name="type">
+         <form:select id="type" path="type.id">
             <option value="0">请选择</option>
-            <option value="1">JavaSE</option>
-            <option value="2">J2EE</option>
-            <option value="3">Ruby</option>
-            <option value="4">Ruby On Rails</option>
-         </select>
+            <form:options items="${articleTypes}" itemLabel="name" itemValue="id"/>
+         </form:select>
          <input id="new_type" name="new_type" type="text" style="display:none" />
          <input id="type_model" name="type_model" type="hidden" value="0" />
          <a href="javascript:void(0)" onclick="change_type(this); return false;">新建分类</a>
       </p>
       <p style="margin-bottom: 10px;">
          <label for="allow_discuss">允许评论？</label>
-         <input type="radio" name="no_discuss" value="0" checked="checked"  />是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="radio" name="no_discuss" value="1"/>否
+         <form:radiobutton path="allowComment" value="true"/>是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <form:radiobutton path="allowComment" value="false"/>否
       </p>
       <p>
          <input type="submit" name="publish" value="发表文章" />
          <input type="submit" name="save" value="保存为草稿" />
       </p>
-      
+      </form:form>
       
    	  <script type="text/javascript">
 		//添加插入源代码插件  
