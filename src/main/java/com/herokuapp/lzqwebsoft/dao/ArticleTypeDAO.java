@@ -34,7 +34,7 @@ public class ArticleTypeDAO extends BaseDAO {
 	
 	@SuppressWarnings("unchecked")
 	public ArticleType getArticleTypeByName(String name) {
-		String queryString = "from ArticleType where ArticleType.name=?";
+		String queryString = "from ArticleType art where art.name=?";
 		List<ArticleType> list = (List<ArticleType>)getHibernateTemple().find(queryString, new Object[]{name});
 		if(list!=null&&list.size()>0) {
 			return list.get(0);

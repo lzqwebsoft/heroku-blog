@@ -34,7 +34,7 @@ public class ArticleServiceImpl implements ArticleService {
 		// 判断文章的类型是否通过文本框输入来得到
 		if(modelNew) {
 			ArticleType type = articleTypeDAO.getArticleTypeByName(typeName);
-			if(type!=null) {
+			if(type==null) {
 				type = new ArticleType();
 				type.setName(typeName);
 				type.setDisable(false);
@@ -42,6 +42,8 @@ public class ArticleServiceImpl implements ArticleService {
 				type.setUpdateAt(new Date());
 				articleTypeDAO.save(type);
 				article.setType(type);
+			} else {
+			    article.setType(type);
 			}
 		} else {
 			ArticleType type = articleTypeDAO.getArticleTypeById(article.getType().getId());
@@ -49,8 +51,9 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 		// 生成文章内容的路径，关保存为文本文件
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
+		String id = format.format(new Date());
 		StringBuffer filename = new StringBuffer().append("/")
-		    .append(format.format(new Date())).append(".txt");
+		    .append(id).append(".txt");
 		URL url = Article.class.getResource(CommonConstant.ARTICLES_DIR);
 		OutputStreamWriter out = null;
 		File file = new File(url.getPath()+filename.toString());
@@ -64,6 +67,9 @@ public class ArticleServiceImpl implements ArticleService {
 			
 			// 文件对象入库
 			Date now = new Date();
+			article.setId(id);
+			article.setStatus(0);
+			article.setReadedNum(0);
 			article.setCreateAt(now);
 			article.setUpdateAt(now);
 			articleDAO.save(article);

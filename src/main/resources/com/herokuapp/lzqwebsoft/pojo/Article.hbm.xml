@@ -4,13 +4,13 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
    <class name="Article" table="articles">
-       <id name="id" type="java.lang.String">
-		   <generator class="uuid"></generator>
+       <id name="id" type="string">
+		   <generator class="assigned" />
        </id>
-       <many-to-one name="author" class="User" 
-               column="author_id" cascade="save-update">
+       <many-to-one name="author" class="User" foreign-key="fk_author"
+               column="author_id" cascade="save-update" >
        </many-to-one>
-       <many-to-one name="type" class="Article" 
+       <many-to-one name="type" class="ArticleType" foreign-key="fk_article_type"
                column="type_id" cascade="save-update">
        </many-to-one>
        <property name="patternTypeId" not-null="true" column="pattern_type"/>
