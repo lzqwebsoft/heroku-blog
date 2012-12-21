@@ -26,4 +26,8 @@ public class CommonConstant {
 	 * 记录用户没有权限，被拦截的URL
 	 */
 	public static final String LAST_REQUEST_URL="lastRequestURL";
+	/**
+	 * 保存文章文本文件的目录
+	 */
+	public static final String ARTICLES_DIR="/articles";
 }

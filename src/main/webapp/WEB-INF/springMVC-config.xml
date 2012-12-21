@@ -44,4 +44,15 @@
            </list>
        </property>
    </bean>
+   
+   <!-- 配置的文章种类 -->
+   <bean id="patterns" class="com.herokuapp.lzqwebsoft.pojo.ArticlePattern">
+      <property name="patterns">
+          <map>
+             <entry key="1" value="原创" />
+             <entry key="2" value="转载" />
+             <entry key="3" value="翻译" />
+          </map>
+      </property>
+   </bean>
 </beans>

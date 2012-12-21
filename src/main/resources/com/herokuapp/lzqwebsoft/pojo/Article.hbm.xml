@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
    <class name="Article" table="articles">
-       <id name="id">
+       <id name="id" type="java.lang.String">
 		   <generator class="uuid"></generator>
        </id>
        <many-to-one name="author" class="User" 

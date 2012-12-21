@@ -16,7 +16,8 @@ public class Article {
 	private String title;
 	private boolean allowComment;
 	private boolean isTop;
-	private String contentPath;
+	private String contentPath;   // 文章内容文件的路径
+	private String content;
 	private int status;
 	private long readedNum;
 	private Date createAt;
@@ -69,6 +70,12 @@ public class Article {
 	}
 	public void setContentPath(String contentPath) {
 		this.contentPath = contentPath;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
 	}
 	public int getStatus() {
 		return status;
