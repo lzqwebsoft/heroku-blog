@@ -11,7 +11,7 @@
                column="author_id" cascade="save-update" >
        </many-to-one>
        <many-to-one name="type" class="ArticleType" foreign-key="fk_article_type"
-               column="type_id" cascade="save-update">
+               column="type_id" cascade="save-update" lazy="false">
        </many-to-one>
        <property name="patternTypeId" not-null="true" column="pattern_type"/>
        <property name="title" length="255" column="title" />
@@ -20,7 +20,7 @@
        <property name="contentPath" length="255" not-null="true" column="content"/>
        <property name="status" column="status" />
        <property name="readedNum" type="long" column="readed_num" />
-       <property name="createAt" column="create_at" />
+       <property name="createAt" column="create_at" update="false"/>
        <property name="updateAt" column="update_at"/>
        <set name="comments" inverse="true" cascade="all">
            <key column="article_id" />

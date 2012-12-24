@@ -2,32 +2,35 @@ package com.herokuapp.lzqwebsoft.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
 import com.herokuapp.lzqwebsoft.pojo.ChangePasswordUserBean;
+import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
 
 @Controller
 public class HomeController{
 	@Autowired
 	private BlogInfoService blogInfoService;
+	@Autowired
+	private ArticleService articleService;
 	
 	@RequestMapping(value="/index")
-	public String home() {
+	public String home(ModelMap model) {
+		
+		List<Article> articles = articleService.getAllAricle();
+		model.addAttribute("articles", articles);
 		return "index";
 	}
-	
-	@RequestMapping(value="/show/{articleId}")
-	public String show(@PathVariable("articleId")String articleId) {
-	    return "show";
-	}
-	
 	
 	@RequestMapping(value="/change_password")
     public String changePassword(ModelMap model){

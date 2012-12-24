@@ -16,7 +16,7 @@ function add_article_type() {
 
 // 删除功能
 function confirm_article_type_delete(message, id) {
-	var option = confirm(message)
+	var option = confirm(message);
 	if(option) {
 		$.ajax({
 			url: "article_type/delete/"+id+".html",

@@ -6,7 +6,7 @@ function confirm_article_delete(message, id) {
 			url: $("#context-path").text()+"/delete/"+id+".html",
 			type: "post",
 			success: function(data, status) {
-				window.location=$("#context-path").text();
+			    window.location.reload();
 			},
 			error: function(xhr, strError, errorObj) {
 		    	alert(errorObj);

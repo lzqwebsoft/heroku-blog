@@ -19,7 +19,7 @@
 
 <div id="container">
    <div id="content-div">
-      <form:form action="publish.html" method="post" modelAttribute="article">
+      <form:form action="${pageContext.request.contextPath}/article/publish.html" method="post" modelAttribute="article">
       <h2>撰写博客</h2>
       <p><label for="article_title">标题</label></p>
       <p>
@@ -28,9 +28,10 @@
             <form:options items="${patterns.patterns}" />
          </form:select>
          <form:input path="title" maxlength="200" cssStyle="width:460px" />
+         <form:hidden path="id" />
       </p>
       <p><label for="article_content">博客内容</label></p>
-      <p><form:textarea path="content" id="content" /></p>
+      <p><form:textarea path="content" id="content" /><form:hidden path="contentPath" /></p>
       <p><label for="article_type">文章类别</label></p>
       <p>
          <form:select id="type" path="type.id">
@@ -47,6 +48,7 @@
          <form:radiobutton path="allowComment" value="false"/>否
       </p>
       <p>
+         <input type="hidden" name="editOrCreate" value="${editOrCreate}" />
          <input type="submit" name="publish" value="发表文章" />
          <input type="submit" name="save" value="保存为草稿" />
       </p>
