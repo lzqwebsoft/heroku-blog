@@ -60,8 +60,10 @@
           <p>
              <a href="show/${article.id}.html">阅读(100)</a>&nbsp;&nbsp;&nbsp;&nbsp;
              <a href="show/${article.id}.html#reply_article">评论(0)</a>&nbsp;&nbsp;&nbsp;&nbsp;
+             <c:if test="${sessionScope.user!=null}">
              <a href="edit/${article.id}.html">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
              <a href="javascript:void(0)" onclick="confirm_article_delete('<spring:message code="page.confirm.delete.article" arguments="${article.title}"  />', '${article.id}')">删除</a>
+             </c:if>
           </p>
     </div>
     </c:forEach>

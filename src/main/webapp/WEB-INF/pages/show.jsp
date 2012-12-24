@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSNLite表情包制作生成器（Java实现）-lzqwebsoft's blog</title>
+<title>${article.title}-lzqwebsoft's blog</title>
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/show.css" />
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
@@ -43,8 +43,10 @@
           <span>发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>  ，已有100次阅读</span>
           <span class="article_operate">
              <a href="#reply_article">评论</a>(0)&nbsp;
+             <c:if test="${sessionScope.user!=null}">
              <a href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>&nbsp;
              <a href="javascript:void(0)" onclick="confirm_article_delete('<spring:message code="page.confirm.delete.article" arguments="${article.title}"  />', '${article.id}')">删除</a>&nbsp;
+             </c:if>
           </span> 
        </p>
        <div class="article_context">
