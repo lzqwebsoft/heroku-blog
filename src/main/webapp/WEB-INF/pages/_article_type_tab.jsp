@@ -17,7 +17,9 @@
           <a href='javascript:void(0)'><c:out value="${articleType.name}" /></a>
        </span>
    </td>
-   <td>0</td>
+   <td>
+      <c:out value="${fn:length(articleType.articles)}" />
+   </td>
    <td>
        <a href='javascript:void(0)' onclick="edit_article_type('article_type_${articleType.id}', '${articleType.id}'); return false">编辑</a> | 
        <a href='javascript:void(0)' onclick="confirm_article_type_delete('<spring:message code="page.confirm.delete.articletype" arguments="${articleType.name}" />', '${articleType.id}');">删除</a><br /> 

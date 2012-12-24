@@ -15,6 +15,7 @@
     <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/index.js"></script>
   <!--<link rel="Shortcut Icon" type="image/x-icon" href="http://www.csszengarden.com/favicon.ico" />-->
 </head>
 
@@ -50,17 +51,21 @@
   </div>
 
   <div id="supportingText">
+    <c:if test="${articles!=null&&fn:length(articles)>0}">
+    <c:forEach items="${articles}" var="article">
     <div class="explanation">
-      <h3><a href="show/2012125.html">MSNLite表情包制作生成器（Java实现）</a></h3>
-          <p class="article_date">发表于：2012-9-25&nbsp;10:28</p>
-          <p class="article_description">最近看到一则新闻说小米收购了MSNLite（hada.me）团队，打算开发PC端的米聊客户端，于是对MSNLite产生了兴趣，同时也在自己的机器上安装了MSNLite，乖乖，使用了几天确实感觉她比以前的MSN快多了，并且功能强大，无广告；但唯一让我感觉不足的是表情包太难找了(不知是不是我的搜索技术不过关)。找来找去发现在她的官方论坛上有一篇关于表情包的解释（http://bbs.hada.me/t... </p>
+      <h3><a href="show/${article.id}.html"><c:out value="${article.title}" /></a></h3>
+          <p class="article_date">发表于：<c:out value="${article.createAt}" /></p>
+          <p class="article_description"><c:out value="${article.content}"  escapeXml="false"/></p>
           <p>
-             <a href="show.jsp">阅读(100)</a>&nbsp;&nbsp;&nbsp;&nbsp;
-             <a href="show.jsp#reply_article">评论(0)</a>&nbsp;&nbsp;&nbsp;&nbsp;
-             <a href="javascript:void(0)">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
-             <a href="javascript:void(0)">删除</a>
+             <a href="show/${article.id}.html">阅读(100)</a>&nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="show/${article.id}.html#reply_article">评论(0)</a>&nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="edit/${article.id}.html">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="javascript:void(0)" onclick="confirm_article_delete('<spring:message code="page.confirm.delete.article" arguments="${article.title}"  />', '${article.id}')">删除</a>
           </p>
     </div>
+    </c:forEach>
+    </c:if>
 
     <div class="explanation">
       <h3>文章标题</h3>
