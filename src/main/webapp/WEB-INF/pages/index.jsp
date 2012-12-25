@@ -1,4 +1,5 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
@@ -55,7 +56,7 @@
     <c:forEach items="${articles}" var="article">
     <div class="explanation">
       <h3><a href="show/${article.id}.html"><c:out value="${article.title}" /></a></h3>
-          <p class="article_date">发表于：<c:out value="${article.createAt}" /></p>
+          <p class="article_date">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
           <p class="article_description"><c:out value="${article.content}"  escapeXml="false"/></p>
           <p>
              <a href="show/${article.id}.html">阅读(100)</a>&nbsp;&nbsp;&nbsp;&nbsp;

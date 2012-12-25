@@ -10,7 +10,8 @@ import java.util.Date;
 public class Image {
 	private int id;
 	private String fileName;
-	private String filePath;
+	private String diskFilename;
+	private long size;
 	private String descriptions;
 	private Date createAt;
 	public int getId() {
@@ -25,13 +26,19 @@ public class Image {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	public String getFilePath() {
-		return filePath;
-	}
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-	public String getDescriptions() {
+	public String getDiskFilename() {
+        return diskFilename;
+    }
+    public void setDiskFilename(String diskFilename) {
+        this.diskFilename = diskFilename;
+    }
+    public long getSize() {
+        return size;
+    }
+    public void setSize(long size) {
+        this.size = size;
+    }
+    public String getDescriptions() {
 		return descriptions;
 	}
 	public void setDescriptions(String descriptions) {
