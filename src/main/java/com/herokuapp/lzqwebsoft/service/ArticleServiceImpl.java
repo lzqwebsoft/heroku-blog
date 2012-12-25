@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,9 +55,8 @@ public class ArticleServiceImpl implements ArticleService {
 		String id = format.format(new Date());
 		StringBuffer filename = new StringBuffer().append("/")
 		    .append(id).append(".txt");
-		URL url = Article.class.getResource(CommonConstant.ARTICLES_DIR);
 		OutputStreamWriter out = null;
-		File file = new File(url.getPath()+filename.toString());
+		File file = new File(CommonConstant.ARTICLES_DIR+"/"+filename.toString());
 		try {
 			if(!file.exists())
 				file.createNewFile();
@@ -112,9 +110,8 @@ public class ArticleServiceImpl implements ArticleService {
 			article.setType(type);
 		}
 		
-		URL url = Article.class.getResource(CommonConstant.ARTICLES_DIR);
 		OutputStreamWriter out = null;
-		File file = new File(url.getPath()+article.getContentPath());
+		File file = new File(CommonConstant.ARTICLES_DIR+"/"+article.getContentPath());
 		try {
 			if(!file.exists())
 				file.createNewFile();
@@ -147,8 +144,7 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public Article get(String id) {
 		Article article = articleDAO.getArticleById(id);
-		URL url = Article.class.getResource(CommonConstant.ARTICLES_DIR);
-		File file = new File(url.getPath()+article.getContentPath());
+		File file = new File(CommonConstant.ARTICLES_DIR+"/"+article.getContentPath());
 		if(file.exists()&&file.isFile()) {
 			InputStreamReader in = null;
 			BufferedReader reader = null; 
@@ -179,8 +175,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public void delete(String id) {
 		Article article = articleDAO.getArticleById(id);
 		if(article!=null) {
-			URL url = Article.class.getResource(CommonConstant.ARTICLES_DIR);
-			File file = new File(url.getPath()+article.getContentPath());
+			File file = new File(CommonConstant.ARTICLES_DIR+"/"+article.getContentPath());
 			if(file.exists()&&file.isFile()) {
 				file.delete();
 			}
@@ -192,9 +187,9 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<Article> getAllAricle() {
 		List<Article> list = articleDAO.getAllArticle();
 		List<Article> articles = new ArrayList<Article>();
+		String dir = CommonConstant.ARTICLES_DIR+"/";
 		for(Article article : list) {
-			URL url = Article.class.getResource(CommonConstant.ARTICLES_DIR);
-			File file = new File(url.getPath()+article.getContentPath());
+			File file = new File(dir+article.getContentPath());
 			if(file.exists()&&file.isFile()) {
 				InputStreamReader in = null;
 				BufferedReader reader = null; 

@@ -39,5 +39,14 @@
   <context-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>classpath:spring-database-context.xml</param-value>
-  </context-param> 
+  </context-param>
+  
+  <!-- 用于在普通的Java类中获取WEB的根目录 -->
+  <context-param>
+      <param-name>webAppRootKey</param-name>   
+      <param-value>web.contextPath</param-value>  
+  </context-param>  
+  <listener>   
+      <listener-class>org.springframework.web.util.WebAppRootListener</listener-class>   
+  </listener>
 </web-app>

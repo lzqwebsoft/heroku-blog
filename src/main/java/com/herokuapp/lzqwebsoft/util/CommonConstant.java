@@ -29,5 +29,5 @@ public class CommonConstant {
 	/**
 	 * 保存文章文本文件的目录
 	 */
-	public static final String ARTICLES_DIR="/articles";
+	public static final String ARTICLES_DIR=System.getProperty("web.contextPath")+"/WEB-INF/articles";
 }
