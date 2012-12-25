@@ -28,6 +28,7 @@
    
    <!-- 配置的静态资源 -->
    <mvc:resources mapping="/resources/**" location="/resources/**"/>
+   <mvc:resources mapping="/upload-images/**" location="/images/**"/>
    
    <bean id="viewResover" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
        <property name="prefix" value="/WEB-INF/pages/" />  
@@ -44,6 +45,13 @@
            </list>
        </property>
    </bean>
+   
+   <!-- 配置CommonsMulipartResolver，支持文件上传 -->
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+       <property name="maxUploadSize" value="5242880" />
+       <property name="uploadTempDir" value="upload-temp" />
+       <property name="defaultEncoding" value="UTF-8" />
+   </bean> 
    
    <!-- 配置的文章种类 -->
    <bean id="patterns" class="com.herokuapp.lzqwebsoft.pojo.ArticlePattern">

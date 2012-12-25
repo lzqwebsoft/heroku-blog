@@ -26,7 +26,6 @@ public class HomeController{
 	
 	@RequestMapping(value="/index")
 	public String home(ModelMap model) {
-		
 		List<Article> articles = articleService.getAllAricle();
 		model.addAttribute("articles", articles);
 		return "index";

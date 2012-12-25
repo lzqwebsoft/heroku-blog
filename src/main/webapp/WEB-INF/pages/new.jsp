@@ -103,7 +103,10 @@
 			width : "700px", //编辑器的宽度为70%
 			height : "450px", //编辑器的高度为100px
 			filterMode : false, //不会过滤HTML代码
-			resizeMode : 1, //编辑器只能调整高度
+			resizeMode : 1, //编辑器只能调整高度,
+			imageUploadJson : $("#context-path").text()+"/images/upload.html",  // 指定图片上传的URL
+			fileManagerJson : $("#context-path").text()+"/images/list.html",     // 指定浏览远程图片的URL
+			allowFileManager : true,
 			items : [ 'source', '|', 'fullscreen', 'undo', 'redo', 'print', 'cut', 'copy', 'paste',  
 			'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',  
 			'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',  
