@@ -28,7 +28,6 @@
    
    <!-- 配置的静态资源 -->
    <mvc:resources mapping="/resources/**" location="/resources/**"/>
-   <mvc:resources mapping="/upload-images/**" location="/images/**"/>
    
    <bean id="viewResover" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
        <property name="prefix" value="/WEB-INF/pages/" />  

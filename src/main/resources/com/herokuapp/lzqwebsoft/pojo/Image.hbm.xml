@@ -8,7 +8,8 @@
 		   <generator class="native" />
        </id>
        <property name="fileName" length="255" not-null="true" column="filename" />
-       <property name="filePath" length="255" not-null="true" column="filepath" />
+       <property name="diskFilename" length="255" not-null="true" column="disk_filename" />
+       <property name="size" not-null="true" />
        <property name="descriptions" length="255" not-null="false" column="descriptions" />
        <property name="createAt" column="create_at" />
    </class>
