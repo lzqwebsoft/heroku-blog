@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
+import com.herokuapp.lzqwebsoft.pojo.Image;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
+import com.herokuapp.lzqwebsoft.service.ImageService;
 
 /**
  * 主要控制用户对博客的设置操作
@@ -33,6 +35,9 @@ public class SetController {
 	private ArticleTypeService articleTypeService;
 	
 	@Autowired
+	private ImageService imageSerivce;
+	
+	@Autowired
 	private MessageSource messageSource;
 	
 	@RequestMapping(value="/set")
@@ -41,8 +46,13 @@ public class SetController {
 		if(blogInfo==null)
 			blogInfo = new BlogInfo();
 		model.addAttribute(blogInfo);
+		// 所有的文章类型
 		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
 		request.setAttribute("articleTypes", articleTypes);
+		// 所有的图片
+		List<Image> images = imageSerivce.getAllImages();
+		request.setAttribute("images", images);
+		
 		return "set";
 	}
 	

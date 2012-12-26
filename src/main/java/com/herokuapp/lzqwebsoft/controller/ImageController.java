@@ -2,6 +2,7 @@ package com.herokuapp.lzqwebsoft.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,14 +62,21 @@ public class ImageController {
             StringBuffer json = new StringBuffer("{\"file_list\":[");
             
             List<Image> images = imageService.getAllImages();
-            for(Image image : images) {
-                json.append("{\"filename\": \"").append(image.getDiskFilename())
-                .append("\", \"filesize\": \"").append(image.getSize())
-                .append("\", \"current_url\": \"").append(request.getContextPath()).append("/upload-images/")
-                .append("\", \"datetime\": \"").append(image.getCreateAt()).append("\"}, ");
+            if(images!=null&&images.size()>0) {
+            	for(Image image : images) {
+                    json.append("{\"filename\": \"").append(image.getDiskFilename())
+                        .append("\", \"is_photo\": true")
+                        .append(", \"is_dir\": false") 
+                        .append(", \"filesize\": \"").append(image.getSize())
+                        .append("\", \"datetime\": \"").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(image.getCreateAt())).append("\"}, ");
+                }
+                json.deleteCharAt(json.length()-1);
+                json.append("], ");
+                json.append("\"current_url\": \"").append(request.getContextPath()).append("/upload-images/")
+                    .append("\", \"total_count\": ").append(images.size()).append("}");
+            } else {
+            	json.append("], \"total_count\": 0}");
             }
-            json.deleteCharAt(json.length()-1);
-            json.append("]}");
             out.print(json);
             out.close();
         } catch (IOException e) {
