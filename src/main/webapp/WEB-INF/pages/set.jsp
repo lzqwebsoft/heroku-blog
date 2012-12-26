@@ -14,8 +14,6 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/set.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_type_tab.js" ></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
-<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/lightbox.css" type="text/css" media="screen" />
-<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/lightbox/lightbox.js"></script>
 
 </head>
 
@@ -167,26 +165,7 @@
         </div>
         
         <div id="blog_images_list" style="display:none;">
-          <dl>
-             <dd>
-                <a rel="lightbox[roadtrip]" title="测试图片" href="<%= request.getContextPath() %>/resources/images/header.jpg">
-                    <img src="<%= request.getContextPath() %>/resources/images/header.jpg" width="140" height="104" alt="测试图片" title="测试图片" />
-                </a>
-             </dd>
-             <dt>
-                <a href="<%= request.getContextPath() %>/resources/images/header.jpg" rel="lightbox">测试图片</a>&nbsp;&nbsp;<a href="javascript:void(0)" >删除</a>
-             </dt>
-          </dl>
-          <dl>
-             <dd>
-                <a rel="lightbox[roadtrip]" title="测试图片" href="<%= request.getContextPath() %>/resources/images/header.jpg">
-                    <img src="<%= request.getContextPath() %>/resources/images/header.jpg" width="140" height="104" alt="测试图片" title="测试图片" />
-                </a>
-             </dd>
-             <dt>
-                <a href="<%= request.getContextPath() %>/resources/images/header.jpg" rel="lightbox">测试图片</a>&nbsp;&nbsp;<a href="javascript:void(0)" >删除</a>
-             </dt>
-          </dl>
+          <jsp:include page="/WEB-INF/pages/_images_tab.jsp" />
         </div>
         
         <div id="configure_info" style="display:none;">

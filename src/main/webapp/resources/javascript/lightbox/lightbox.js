@@ -206,9 +206,27 @@ lightbox = new Lightbox options
       preloader = new Image;
       preloader.onload = function() {
         $image.attr('src', _this.album[imageNumber].link);
-        $image.width = preloader.width;
-        $image.height = preloader.height;
-        return _this.sizeContainer(preloader.width, preloader.height);
+        var imageWidth = preloader.width;
+        var imageHeight = preloader.height;
+        //如果图片实际大小大于最大的宽度按最大宽度显示，高度等比缩小
+        if(imageWidth>800) {
+            var ratio=800/imageWidth;
+            imageHeight=imageHeight*ratio;
+            imageWidth=800;
+        }
+        //如果图片实际高度大于最大高度按最大高度显示，高度等比缩小
+        if(imageHeight>768) {
+            var ratio=768/imageHeight;
+            imageWidth=imageWidth*ratio;
+            imageHeight=768;
+        }
+        preloader.width = imageWidth;
+        preloader.height = imageHeight;
+        $image.css({
+        	width: imageWidth+"px",
+        	heigth: imageHeight+"px"
+        });
+        return _this.sizeContainer(imageWidth, imageHeight);
       };
       preloader.src = this.album[imageNumber].link;
       this.currentImageIndex = imageNumber;
