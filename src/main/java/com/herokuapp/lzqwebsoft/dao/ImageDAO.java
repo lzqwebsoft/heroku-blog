@@ -17,4 +17,12 @@ public class ImageDAO extends BaseDAO {
     public List<Image> getAllImages() {
         return (List<Image>)getHibernateTemple().find("from Image");
     }
+    
+    public Image getImageById(int id) {
+        return getHibernateTemple().get(Image.class, id);
+    }
+    
+    public void delete(Image image) {
+        getHibernateTemple().delete(image);
+    }
 }
