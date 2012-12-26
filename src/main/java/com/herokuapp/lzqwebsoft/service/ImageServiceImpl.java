@@ -53,4 +53,19 @@ public class ImageServiceImpl implements ImageService {
     public List<Image> getAllImages() {
         return imageDAO.getAllImages();
     }
+
+    @Override
+    public void delete(int id) {
+        Image image = imageDAO.getImageById(id);
+        if(image!=null) {
+            String filePath = image.getDiskFilename();
+            String dirPath = CommonConstant.IMAGE_DIR;
+            File file = new File(dirPath+"/"+filePath);
+            if(file.exists()) {
+               if(file.delete()) {
+                   imageDAO.delete(image);
+               }
+            }
+        }
+    }
 }

@@ -8,13 +8,15 @@
 <title>博客设置-lzqwebsoft's blog</title>
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/set.css" />
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/lightbox.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/set.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_type_tab.js" ></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
-
+<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/lightbox/lightbox.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/images_tab.js"></script>
 </head>
 
 <body>

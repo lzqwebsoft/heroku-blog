@@ -21,4 +21,10 @@ public interface ImageService {
      * @return 图片Image List集合
      */
     public List<Image> getAllImages();
+    
+    /**
+     * 根据图片对象的ID来删除指定的记录
+     * @param id 图片ID
+     */
+    public void delete(int id);
 }
