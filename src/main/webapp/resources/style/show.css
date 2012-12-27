@@ -90,3 +90,23 @@
 #article_content .copyright_declare {
 	text-align: center;
 }
+.no_comments {
+	padding: 5px;
+	text-align: center;
+}
+#prompt_replay_info {
+	background-color: #EEEEEE;
+	overflow: hidden;
+	border-radius: 4px 4px 4px 4px;
+	padding:2px;
+	display: none;
+}
+#prompt_replay_info p{
+	display: block;
+}
+#info_prompt_message {
+	float: left;
+}
+#cancel_replay_button {
+	float: right;
+}
