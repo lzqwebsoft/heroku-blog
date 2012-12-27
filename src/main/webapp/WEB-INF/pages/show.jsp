@@ -1,6 +1,8 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,12 +14,13 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/show.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_comments.js"></script>
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shCoreDefault.css" />  
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shThemeDefault.css" />  
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shCore.css" />
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/shl/scripts/shCore.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/shl/scripts/shAutoloader.js"></script>
-<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor-min.js"></script>
 </head>
 
 <body>
@@ -42,7 +45,7 @@
        <p class="article_date">
           <span>发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>  ，已有100次阅读</span>
           <span class="article_operate">
-             <a href="#reply_article">评论</a>(0)&nbsp;
+             <a href="#reply_article">评论</a>(${fn:length(comments)})&nbsp;
              <c:if test="${sessionScope.user!=null}">
              <a href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>&nbsp;
              <a href="javascript:void(0)" onclick="confirm_article_delete('<spring:message code="page.confirm.delete.article" arguments="${article.title}"  />', '${article.id}')">删除</a>&nbsp;
@@ -66,59 +69,79 @@
               <li><a href="javascript:void(0)">文章标题</a><span>2012/9/7</span></li>
        	  </ul>
       </div>
-      <div class="article_comment">
-          <h3>评论：</h3>
-          <div class="root_comment">
-             <p>
-                <a href="javascript:void(0)">lzqwebsoft</a>
-                发表于：2012-9-12&nbsp;13:55:20
-                <span>
-                   <a href="javascript:void(0)" title="回复">回复</a>&nbsp;
-                   <a href="javascript:void(0)" title="删除">删除</a>
-                </span>
-             </p>
-             <div class="comment_content">页面原形评论测试</div>
-             <div class="child_comment">
-                <p>
-                    Re：<a href="javascript:void(0)">lzqwebsoft</a>
-                    发表于：2012-9-12&nbsp;13:55:20
-                    <span>
-                       <a href="javascript:void(0)" title="回复">回复</a>&nbsp;
-                       <a href="javascript:void(0)" title="删除">删除</a>
-                    </span>
-                </p>
-                <div class="comment_content">页面原形回复测试</div>
-             </div>
-          </div>
-          <div class="root_comment">
-             <p>
-                <a href="javascript:void(0)">lzqwebsoft</a>
-                发表于：2012-9-12&nbsp;13:55:20
-                <span>
-                   <a href="javascript:void(0)" title="回复">回复</a>&nbsp;
-                   <a href="javascript:void(0)" title="删除">删除</a>
-                </span>
-             </p>
-             <div class="comment_content">页面原形评论测试2</div>
-          </div>
+      
+      <div id="article_comment" class="article_comment">
+         <jsp:include page="/WEB-INF/pages/_article_comments.jsp" />
       </div>
       
+      <c:if test="${article.allowComment}">
       <div class="reply_article" id="reply_article">
-         <h3>发表评论：</h3>
-         <div class="input_reply_div">
-            <p><input type="text" name="author" /> 昵称</p>
-            <p><input type="text" name="web_site" /> 个人网站</p>
-            <p>
-               <textarea id="comment_content" name="content" onkeyup="string_number(this)" onblur="string_number(this)"></textarea>
-            </p>
-            <p>
-              <input type="submit" value="发表评论" />
-            </p>
-            <p id="wordcount" style="float: right;">
-                您还可输入<span id="str">120</span>个字
-            </p>
-         </div>
-      </div>
+		<h3>发表评论：</h3>
+		<div id="prompt_replay_info">
+		   <p id="info_prompt_message">回复：&nbsp;&nbsp;</p>
+		   <p id="cancel_replay_button">
+		      <a href="javascript:void(0)" onclick="cancel_replay_comment();">取消</a>
+		   </p>
+		</div>
+		<div class="input_reply_div">
+		   <form:form action="${pageContext.request.contextPath}/comment/add.html"
+		              method="post" modelAttribute="comment" id="commentAddForm"
+		              onsubmit="add_article_comment(); return false;">
+		   <form:hidden path="article.id"/>
+		   <input type="hidden" name="parent_comment_id" id="parent_comment_id"/>
+		   <c:if test="${sessionScope.user==null}">
+		   <p><form:input path="reviewer" /> 昵称</p>
+		   <p><form:input path="website" /> 个人网站</p>
+		   </c:if>
+		   <p>
+		      <form:textarea id="comment_content" path="content" onkeyup="string_number(this)" onblur="string_number(this)" />
+		   </p>
+		   <p>
+		     <input type="submit" value="发表评论" />
+		   </p>
+		   <p id="wordcount" style="float: right;">您还可输入<span id="str">120</span>个字</p>
+		   </form:form>
+		</div>
+	  </div>
+	
+	  <script type="text/javascript">
+	  KE.show({
+		id : "comment_content",
+		skinType: "custom01",
+		width : "460px", //编辑器的宽度为70%
+		height : "120px", //编辑器的高度为100px
+		filterMode : false, //不会过滤HTML代码
+		resizeMode : 0, //编辑器只能调整高度
+		items: ['emoticons','fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold',
+				'italic', 'underline', 'strikethrough', 'removeformat', '|', 'about'],
+		/*afterCreate : function(id) {
+			//可视化模式下输入内容时触发
+			KE.event.input(KE.g[id].iframeDoc, function(){
+				var len;
+			    //如果字数（只统计纯文本）超出120就截取
+			    var count = KE.count(id, 'text');
+				if(count > 120) {
+					var textValue = KE.text(id);
+					var strValue = KE.html(id);
+					KE.html(id,strValue);
+				} 
+	       });
+		},*/
+		afterChange : function(id) {
+			var count = KE.count(id, 'text');
+			if(count>=120){
+				KE.$('wordcount').innerHTML="您输入的超过了<span id='str'>120</span>个字";
+			} 
+			else {
+				len = 120 - count;
+				KE.$('wordcount').innerHTML="您还可以输入<span id='str'>120</span>个字";
+				KE.$('str').innerHTML=len;
+			}
+			KE.util.setData(id);
+		}
+      });
+      </script>
+      </c:if>
       
       <div class="copyright_declare">
       Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
@@ -129,9 +152,7 @@
 <script type="text/javascript">
 function path()
 {
-  var args = arguments,
-      result = []
-      ;
+  var args = arguments,result = [];
        
   for(var i = 0; i < args.length; i++)
       result.push(args[i].replace('@', '../resources/javascript/shl/scripts/'));
@@ -166,42 +187,6 @@ SyntaxHighlighter.autoloader.apply(null, path(
   'xml xhtml xslt html    @shBrushXml.js'
 ));
 SyntaxHighlighter.all();
-
-KE.show({
-	id : "comment_content",
-	skinType: "custom01",
-	width : "460px", //编辑器的宽度为70%
-	height : "120px", //编辑器的高度为100px
-	filterMode : false, //不会过滤HTML代码
-	resizeMode : 0, //编辑器只能调整高度
-	items: ['emoticons','fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold',
-			'italic', 'underline', 'strikethrough', 'removeformat', '|', 'about'],
-	/*afterCreate : function(id) {
-		//可视化模式下输入内容时触发
-		KE.event.input(KE.g[id].iframeDoc, function(){
-			var len;
-		    //如果字数（只统计纯文本）超出120就截取
-		    var count = KE.count(id, 'text');
-			if(count > 120) {
-				var textValue = KE.text(id);
-				var strValue = KE.html(id);
-				KE.html(id,strValue);
-			} 
-       });
-	},*/
-	afterChange : function(id) {
-		var count = KE.count(id, 'text');
-		if(count>=120){
-			KE.$('wordcount').innerHTML="您输入的超过了<span id='str'>120</span>个字";
-		} 
-		else {
-			len = 120 - count;
-			KE.$('wordcount').innerHTML="您还可以输入<span id='str'>120</span>个字";
-			KE.$('str').innerHTML=len;
-		}
-		KE.util.setData(id);
-	}
-});
 </script>
 
 <%@ include file="/WEB-INF/pages/common/footer.jsp" %>

@@ -16,15 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticlePattern;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
+import com.herokuapp.lzqwebsoft.pojo.Comment;
 import com.herokuapp.lzqwebsoft.pojo.User;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
+import com.herokuapp.lzqwebsoft.service.CommentService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
 
 @Controller
 public class ArticleController {
 	@Autowired
 	private ArticleTypeService articleTypeService;
+	@Autowired
+	private CommentService commentService;
 	
 	@Autowired
 	private ArticleService articleService;
@@ -33,9 +37,17 @@ public class ArticleController {
 	private ArticlePattern patterns;
 	
 	@RequestMapping(value="/show/{articleId}")
-	public String show(@PathVariable("articleId")String articleId, ModelMap model) {
+	public String show(@PathVariable("articleId")String articleId,
+			ModelMap model) {
 		Article article = articleService.get(articleId);
 		model.addAttribute("article", article);
+		
+		List<Comment> comments = commentService.getAllParentComment(articleId);
+		model.addAttribute("comments", comments);
+		
+		Comment comment = new Comment();
+		comment.setArticle(article);
+		model.addAttribute("comment", comment);
 	    return "show";
 	}
 	
