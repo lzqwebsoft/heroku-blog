@@ -1,5 +1,6 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
@@ -52,7 +53,8 @@
   </div>
 
   <div id="supportingText">
-    <c:if test="${articles!=null&&fn:length(articles)>0}">
+    <c:choose>
+    <c:when test="${articles!=null&&fn:length(articles)>0}">
     <c:forEach items="${articles}" var="article">
     <div class="explanation">
       <h3><a href="show/${article.id}.html"><c:out value="${article.title}" /></a></h3>
@@ -68,60 +70,25 @@
           </p>
     </div>
     </c:forEach>
-    </c:if>
-
+    </c:when>
+    <c:otherwise>
     <div class="explanation">
-      <h3>文章标题</h3>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
+       <p>暂无</p>  
     </div>
+    </c:otherwise>
+    </c:choose>
 
-    <div class="explanation">
-      <h3>文章标题</h3>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
+    <div id="page_number">
+       <div id="page_description">共1页,4篇文章</div>
+       <div id="page_count">
+          <ul>
+            <li><a href="javascript:void(0)">1</a></li>
+            <li><a href="javascript:void(0)">2</a></li>
+            <li><a href="javascript:void(0)">...</a></li>
+            <li><a href="javascript:void(0)">下一页</a></li>
+          </ul>
+       </div>
     </div>
-
-    <div class="explanation">
-      <h3>文章标题</h3>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-    </div>
-        
-        <div class="explanation">
-      <h3>文章标题</h3>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-    </div>
-        
-        <div id="page_number">
-           <div id="page_description">共1页,4篇文章</div>
-           <div id="page_count">
-              <ul>
-                <li><a href="javascript:void(0)">1</a></li>
-                <li><a href="javascript:void(0)">2</a></li>
-                <li><a href="javascript:void(0)">...</a></li>
-                <li><a href="javascript:void(0)">下一页</a></li>
-              </ul>
-           </div>
-        </div>
-
-    <div id="footer">
-       Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
-    </div>
-
   </div>
 
   
@@ -129,28 +96,34 @@
     <div id="linkList2">
       <div id="lselect">
         <h3 class="select"><span>文章分类:</span></h3>
+        <c:choose>
+        <c:when test="${articleTypes!=null&&fn:length(articleTypes)>0}">
         <ul>
-          <li><a href="javascript:void(0)">JSE(0)</a></li>
-          <li><a href="javascript:void(0)">J2EE(0)</a></li>
-          <li><a href="javascript:void(0)">Ruby(0)</a></li>
-          <li><a href="javascript:void(0)">Ruby On Rails(0)</a></li>
-          <li><a href="javascript:void(0)">Javascript/Ajax(0)</a></li>
-          <li><a href="javascript:void(0)">网络转载</a></li>
+          <c:forEach items="${articleTypes}" var="articleType" >
+          <li><a href="<%= request.getContextPath() %>/select/${articleType.id}.html">${articleType.name}(${fn:length(articleType.articles)})</a></li>
+          </c:forEach>
         </ul>
+        </c:when>
+        <c:otherwise>
+          <p>暂无</p>
+        </c:otherwise>
+        </c:choose>
       </div>
 
       <div id="larchives">
         <h3 class="archives"><span>阅读排行:</span></h3>
+        <c:choose>
+        <c:when test="${top10Articles!=null&&fn:length(top10Articles)>0}">
         <ul>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
-          <li><a href="javascript:void(0)">XXXXXXXXXXXXX(0)</a></li>
+          <c:forEach items="${top10Articles}" var="top10">
+             <li><a href="<%=request.getContextPath()%>/show/${top10.id}.html">${top10.title}(${top10.readedNum})</a></li>
+          </c:forEach>
         </ul>
+        </c:when>
+        <c:otherwise>
+          <p>暂无</p>
+        </c:otherwise>
+        </c:choose>
       </div>
       
       <div id="lresources">
@@ -171,6 +144,10 @@
           </ul>
       </div>
     </div>
+  </div>
+  
+  <div id="footer">
+       Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
   </div>
 
 </div>

@@ -48,3 +48,23 @@ $(function() {
 		});
 	});
 });
+
+//当检索条件改变时，更新博客列表
+function select_condition_changed() {
+	var type_id=$("#article_type :selected").val();
+	var key_word=$("#key_words").val();
+	$.ajax({
+		url: $("#context-path").text()+"/article/select.html",
+		type: "post",
+		data: {
+		    "articleTypeId": type_id,
+		    "title": key_word
+		},
+		success: function(data, status) {
+			$("#article_list_table").html(data);
+		},
+		error: function(xhr, strError, errorObj) {
+	    	alert(errorObj);
+	    }
+	});
+}

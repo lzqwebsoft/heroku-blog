@@ -119,5 +119,54 @@ public class ArticleController {
 		articleService.delete(articleId);
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
-
+	
+	//================== 主要用于set页面的AJAX处理=============
+	@RequestMapping("/delete/article/{articleId}")
+	public String deleteArticle(@PathVariable("articleId")String articleId,
+			HttpServletRequest request) {
+		articleService.delete(articleId);
+		List<Article> articles = articleService.getAllAricleWithoutContent();
+		request.setAttribute("articles", articles);
+		// 所有的文章类型
+		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
+		request.setAttribute("articleTypes", articleTypes);
+		
+		return "_article_tab";
+	}
+	
+	@RequestMapping("/delete/draft/{articleId}")
+	public String deleteDraft(@PathVariable("articleId")String articleId,
+			HttpServletRequest request) {
+		articleService.delete(articleId);
+		// 所有的草稿
+		List<Article> drafts =  articleService.getAllDrafts();
+		request.setAttribute("drafts", drafts);
+		
+		return "_draft_tab";
+	}
+	
+	@RequestMapping("/article/select")
+	public String select(int articleTypeId, String title, HttpServletRequest request){
+		List<Article> articles = articleService.getArticleByTypeAndTitle(articleTypeId, title);
+		request.setAttribute("articles", articles);
+		
+		// 所有的文章类型
+		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
+		request.setAttribute("articleTypes", articleTypes);
+		return "_article_tab";
+	}
+	
+	@RequestMapping("/update/allow_comment/{articleId}")
+	public void updateAllowComment(@PathVariable("articleId")String articleId,
+			boolean allowComment, HttpServletResponse response) {
+		articleService.updateAllowComment(articleId, allowComment);
+		response.setStatus(HttpServletResponse.SC_OK);
+	}
+	
+	@RequestMapping("/update/is_top/{articleId}")
+	public void updateIsTop(@PathVariable("articleId")String articleId,
+			boolean isTop, HttpServletResponse response) {
+		articleService.updateIsTop(articleId, isTop);
+		response.setStatus(HttpServletResponse.SC_OK);
+	}
 }

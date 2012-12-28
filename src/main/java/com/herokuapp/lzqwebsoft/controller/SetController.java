@@ -15,9 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
 import com.herokuapp.lzqwebsoft.pojo.Image;
+import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
 import com.herokuapp.lzqwebsoft.service.ImageService;
@@ -35,6 +37,9 @@ public class SetController {
 	private ArticleTypeService articleTypeService;
 	
 	@Autowired
+	private ArticleService articleService;
+	
+	@Autowired
 	private ImageService imageSerivce;
 	
 	@Autowired
@@ -46,12 +51,18 @@ public class SetController {
 		if(blogInfo==null)
 			blogInfo = new BlogInfo();
 		model.addAttribute(blogInfo);
+		// 所有的文章
+		List<Article> articles =  articleService.getAllAricleWithoutContent();
+		request.setAttribute("articles", articles);
 		// 所有的文章类型
 		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
 		request.setAttribute("articleTypes", articleTypes);
 		// 所有的图片
 		List<Image> images = imageSerivce.getAllImages();
 		request.setAttribute("images", images);
+		// 所有的草稿
+		List<Article> drafts =  articleService.getAllDrafts();
+		request.setAttribute("drafts", drafts);
 		
 		return "set";
 	}

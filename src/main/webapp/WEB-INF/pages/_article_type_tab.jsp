@@ -13,9 +13,7 @@
 <c:forEach items="${requestScope.articleTypes}" var="articleType">
 <tr>
    <td class='tdleft'>
-       <span id="article_type_${articleType.id}">
-          <a href='javascript:void(0)'><c:out value="${articleType.name}" /></a>
-       </span>
+       <span id="article_type_${articleType.id}"><c:out value="${articleType.name}" /></span>
    </td>
    <td>
       <c:out value="${fn:length(articleType.articles)}" />

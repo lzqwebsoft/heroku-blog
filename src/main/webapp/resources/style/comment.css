@@ -239,6 +239,7 @@ abbr, acronym {
     margin: 0px 0 0 40px;
     padding-bottom: 26px !important;
     text-align: justify;
+    min-height: 700px;
     width: 470px;
 }
 .explanation h3 {
@@ -294,10 +295,10 @@ abbr, acronym {
 }
 #footer {
     /*background: url("check.gif") no-repeat scroll left center transparent;*/
-    display: inline;
-    float: right;
-    margin-bottom: -26px;
-    padding-left: 18px;
+    display: block;
+    text-align: center;
+    font: 14px/20px 'Microsoft YaHei',微软雅黑,Arial,Lucida Grande,Tahoma,sans-serif;
+    margin-bottom: 20px;
 }
 #extraDiv1 {
     background: url("../images/bottom.png") repeat scroll 0 0 transparent;
