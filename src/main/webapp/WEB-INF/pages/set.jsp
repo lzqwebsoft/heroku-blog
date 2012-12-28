@@ -13,10 +13,11 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/set.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_tab.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_type_tab.js" ></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/images_tab.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
 <script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/lightbox/lightbox.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/images_tab.js"></script>
 </head>
 
 <body>
@@ -35,139 +36,38 @@
            </ul>
         </div>
         <div id="article_list">
-           <div id="select_article">
-              <p>
-                 <label for="article_type">类别：</label>
-                 <select name="article_type">
-                    <option value="0">全部</option>
-                    <option value="1">JavaSE&nbsp;&nbsp;(0)</option>
-                    <option value="2">J2EE&nbsp;&nbsp;(0)</option>
-                    <option value="3">Ruby&nbsp;&nbsp;(0)</option>
-                    <option value="4">Ruby On Rails&nbsp;&nbsp;(0)</option>
-                    <option value="5">JavaScript/AJAX&nbsp;&nbsp;(0)</option>
-                    <option value="6">网络转载&nbsp;&nbsp;(0)</option>
-                 </select>
-                 &nbsp;
-                 <label for="title">标题：</label>
-                 <input type="text" name="title" maxlength="30" style="width:400px" />
-              </p>
-           </div>
-           <table id="lstBox" cellspacing="0">
-           <tr>
-             <th class="tdleft">标题</th>
-             <th style="width:50px;">阅读</th>
-             <th style="width:50px;">评论</th>
-             <th style="width:70px;">评论权限</th>
-             <th style="width:140px;">操作</th>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                  <a href='javascript:void(0)'>Rails自动校验</a><span class='gray'>（2012-02-13 13:38）</span>
-              </td>
-              <td>154</td>
-              <td>0</td>
-              <td><a href='javascript:void(0)' class='lock'>禁止评论</a></td>
-              <td>
-                  <a href='javascript:void(0)'>编辑</a> | 
-                  <a href='javascript:void(0)'>置顶</a> | 
-                  <a href='javascript:void(0)' name=del>删除</a>
-              </td>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                 <a href='javascript:void(0)'>Git简单的安装与使用</a><span class='gray'>（2011-11-07 17:16）</span>
-              </td>
-              <td>648</td>
-              <td>0</td>
-              <td><a href='javascript:void(0)' class='lock'>禁止评论</a></td>
-              <td>
-                  <a href='javascript:void(0)'>编辑</a> | 
-                  <a href='javascript:void(0)'>置顶</a> | 
-                  <a href='javascript:void(0)' name=del>删除</a>
-              </td>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                 <a href='javascript:void(0)'>结合SyntaxHighlighter给KindEditor3.5.5添加[插入源代码]自定义组件</a><span class='gray'>（2011-11-07 17:16）</span>
-              </td>
-              <td>648</td>
-              <td>0</td>
-              <td><a href='javascript:void(0)' class='lock'>禁止评论</a></td>
-              <td>
-                  <a href='javascript:void(0)'>编辑</a> | 
-                  <a href='javascript:void(0)'>置顶</a> | 
-                  <a href='javascript:void(0)' name=del>删除</a>
-              </td>
-           </tr>
-           </table>
-           <div class="page_nav">
-           <span> 5条数据 共1页</span>
-           <strong>1</strong>
+          <div id="select_article">
+			  <p>
+			     <label for="article_type">类别：</label>
+			     <select name="article_type" id="article_type"
+			        style="min-width: 100px;" onchange="select_condition_changed()">
+			        <option value="0">全部</option>
+			        <c:forEach items="${requestScope.articleTypes}" var="articleType">
+			           <option value="${articleType.id}">${articleType.name}</option>
+			        </c:forEach>
+			     </select>
+			     &nbsp;
+			     <label for="title">标题：</label>
+			     <input type="text" name="title" id="key_words"
+			        maxlength="30" style="width:400px" onchange="select_condition_changed()" />
+			  </p>
+		   </div>
+		   <div id="article_list_table">
+              <jsp:include page="/WEB-INF/pages/_article_tab.jsp" flush="true" />
            </div>
         </div>
         
         <%-- 文章类型 --%>
         <div id="type_list" style="display:none">
-           <jsp:include flush="true" page="/WEB-INF/pages/_article_type_tab.jsp" />
+           <jsp:include page="/WEB-INF/pages/_article_type_tab.jsp" flush="true" />
         </div>
         
         <div id="draft_list" style="display:none">
-        <table id="lstBox" cellspacing="0">
-           <tr>
-             <th class="tdleft">标题</th>
-             <th style="width:50px;">阅读</th>
-             <th style="width:50px;">评论</th>
-             <th style="width:70px;">评论权限</th>
-             <th style="width:140px;">操作</th>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                  <a href='javascript:void(0)'>Rails自动校验</a><span class='gray'>（2012-02-13 13:38）</span>
-              </td>
-              <td>154</td>
-              <td>0</td>
-              <td><a href='javascript:void(0)' class='lock'>&nbsp;</a></td>
-              <td>
-                  <a href='javascript:void(0)'>编辑</a> | 
-                  <a href='javascript:void(0)'>置顶</a> | 
-                  <a href='javascript:void(0)' name=del>删除</a>
-              </td>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                 <a href='javascript:void(0)'>Git简单的安装与使用</a><span class='gray'>（2011-11-07 17:16）</span>
-              </td>
-              <td>648</td>
-              <td>0</td>
-              <td><a href='javascript:void(0)' class='lock'>&nbsp;</a></td>
-              <td>
-                  <a href='javascript:void(0)'>编辑</a> | 
-                  <a href='javascript:void(0)'>置顶</a> | 
-                  <a href='javascript:void(0)' name=del>删除</a>
-              </td>
-           </tr>
-           <tr>
-              <td class='tdleft'>
-                 <a href='javascript:void(0)'>结合SyntaxHighlighter给KindEditor3.5.5添加[插入源代码]自定义组件</a><span class='gray'>（2011-11-07 17:16）</span>
-              </td>
-              <td>648</td>
-              <td>0</td>
-              <td>&nbsp;</td>
-              <td>
-                  <a href='javascript:void(0)'>编辑</a> | 
-                  <a href='javascript:void(0)'>置顶</a> | 
-                  <a href='javascript:void(0)' name=del>删除</a>
-              </td>
-           </tr>
-           </table>
-           <div class="page_nav">
-           <span> 1条数据 共1页</span>
-           <strong>1</strong>
-           </div>
+           <jsp:include page="/WEB-INF/pages/_draft_tab.jsp" flush="true" />
         </div>
         
         <div id="blog_images_list" style="display:none;">
-          <jsp:include page="/WEB-INF/pages/_images_tab.jsp" />
+          <jsp:include page="/WEB-INF/pages/_images_tab.jsp" flush="true" />
         </div>
         
         <div id="configure_info" style="display:none;">

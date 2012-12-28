@@ -50,8 +50,8 @@ function disable_article_type(id, disable) {
 function edit_article_type(dom_id, type_id){
 	var span = $("#"+dom_id);
 	span.hide();
-	var a_links = span.find("a:first");
-	var type_text = a_links.text();
+
+	var type_text = span.text();
 	var parent_tag = span.parent();
 	
 	var brother_span = $("<span></span>");
@@ -75,7 +75,7 @@ function edit_article_type(dom_id, type_id){
 				type: "post",
 				data: {"article_type_name": newTypeName},
 				success: function(data, status) {
-					a_links.text(newTypeName);
+					span.text(newTypeName);
 				},
 				error: function(xhr, strError, errorObj) {
 					alert(errorObj);

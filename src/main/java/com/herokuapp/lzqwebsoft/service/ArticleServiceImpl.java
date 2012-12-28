@@ -128,7 +128,7 @@ public class ArticleServiceImpl implements ArticleService {
 				article.setStatus(1);
 			article.setReadedNum(0);
 			article.setUpdateAt(now);
-			articleDAO.update(article);
+			articleDAO.edit(article);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -217,5 +217,81 @@ public class ArticleServiceImpl implements ArticleService {
 			articles.add(article);
 		}
 		return articles;
+	}
+
+	@Override
+	public List<Article> getAllAricleWithoutContent() {
+		List<Article> list = articleDAO.getAllArticle();
+		return list;
+	}
+
+	@Override
+	public List<Article> getAllDrafts() {
+		return articleDAO.getAllDraft();
+	}
+
+	@Override
+	public List<Article> getArticleByTypeAndTitle(int articleTypeId,
+			String title) {
+		return articleDAO.selectArticleByTypeAndTitle(articleTypeId, title);
+	}
+
+	@Override
+	public void updateAllowComment(String articleId, boolean allowComment) {
+		Article article = articleDAO.getArticleById(articleId);
+		if(article!=null) {
+			article.setAllowComment(allowComment);
+			articleDAO.update(article);
+		}
+	}
+
+	@Override
+	public void updateIsTop(String articleId, boolean isTop) {
+		Article article = articleDAO.getArticleById(articleId);
+		if(article!=null) {
+			article.setIsTop(isTop);
+			articleDAO.update(article);
+		}
+	}
+
+	@Override
+	public List<Article> getArticleByTypeId(int typeId) {
+		List<Article> list = articleDAO.selectArticleByTypeId(typeId);
+		List<Article> articles = new ArrayList<Article>();
+		String dir = CommonConstant.ARTICLES_DIR+"/";
+		for(Article article : list) {
+			File file = new File(dir+article.getContentPath());
+			if(file.exists()&&file.isFile()) {
+				InputStreamReader in = null;
+				BufferedReader reader = null; 
+				try {
+					in = new InputStreamReader(new FileInputStream(file), "UTF-8");
+					String line = "";
+					String content = "";
+					reader = new BufferedReader(in);
+					while((line=reader.readLine())!=null&&content.length()<300) {
+						line = line.replaceAll("<.*?>", "");
+						content += line+"\r\n";
+					}
+					content += "...";
+					in.close();
+					article.setContent(content);
+				} catch(IOException e) {
+					e.printStackTrace();
+					if(in!=null) {
+						try {
+							in.close();
+						} catch (IOException e1) {}
+					}
+				}
+			}
+			articles.add(article);
+		}
+		return articles;
+	}
+
+	@Override
+	public List<Article> getReadedTop10() {
+		return articleDAO.seletArticleTop10();
 	}
 }
