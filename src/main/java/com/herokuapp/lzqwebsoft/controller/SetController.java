@@ -19,6 +19,7 @@ import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
 import com.herokuapp.lzqwebsoft.pojo.Image;
+import com.herokuapp.lzqwebsoft.pojo.Page;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
@@ -52,8 +53,11 @@ public class SetController {
 			blogInfo = new BlogInfo();
 		model.addAttribute(blogInfo);
 		// 所有的文章
-		List<Article> articles =  articleService.getAllAricleWithoutContent();
-		request.setAttribute("articles", articles);
+		Page<Article> page =  articleService.getAllAricleWithoutContent(1, 15);
+		request.setAttribute("page", page);
+		
+		request.setAttribute("articleTypeId", 0);
+		request.setAttribute("title", "");
 		// 所有的文章类型
 		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
 		request.setAttribute("articleTypes", articleTypes);

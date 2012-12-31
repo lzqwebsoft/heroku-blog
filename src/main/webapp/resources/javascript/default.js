@@ -48,27 +48,16 @@ $(function() {
 			  yesButton: '登录',
 			  noButton: '取消',
 			  buttonClick: function(obj){
-			     var loginDailog = $(obj);
-			     var form_data = loginDailog.find("form").serialize();
-			     $.ajax({
-			    	 url: $("#context-path").text()+"/login.html",
-			    	 type: "post",
-			    	 data: form_data,
-			    	 success: function(data, status) {
-			    	    if(data.status=='SUCCESS') {
-			    	    	// 登录成功后刷新页面
-			    	    	window.location.reload();
-			    	    } else {
-			    	    	loginDailog.find("form p:first-child").text(data.messages).show();
-			    	    }
-			         },
-			         error: function(xhr, strError, errorObj) {
-			        	 alert(errorObj);
-			         }
-			     });
+			     click_login(obj);
 			  }
 		   });
 		var dialog_body = $(dialog_body);
+		// 设置当按下Enter键后触发提交表单登录事件
+		dialog_body.keydown(function(event) {
+			if(event.keyCode ==13) {
+				click_login(dialog_body);
+			}
+		});
 		dialog_body.css("text-align", "center");
 		
 		var form_tag = $('<form action="/login.html" method="post"></form>');
@@ -100,3 +89,24 @@ $(function() {
 		return false;
 	});
 });
+
+function click_login(obj){
+	var loginDailog = $(obj);
+    var form_data = loginDailog.find("form").serialize();
+    $.ajax({
+   	 url: $("#context-path").text()+"/login.html",
+   	 type: "post",
+   	 data: form_data,
+   	 success: function(data, status) {
+   	    if(data.status=='SUCCESS') {
+   	    	// 登录成功后刷新页面
+   	    	window.location.reload();
+   	    } else {
+   	    	loginDailog.find("form p:first-child").text(data.messages).show();
+   	    }
+        },
+        error: function(xhr, strError, errorObj) {
+       	 alert(errorObj);
+        }
+    });
+}

@@ -7,7 +7,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <c:choose>
-<c:when test="${requestScope.articles!=null&&fn:length(requestScope.articles)>0}">
+<c:when test="${requestScope.page.data!=null&&fn:length(requestScope.page.data)>0}">
 <table id="lstBox" cellspacing="0">
 	<tr>
 	  <th class="tdleft">标题</th>
@@ -16,7 +16,7 @@
 	  <th style="width:70px;">评论权限</th>
 	  <th style="width:140px;">操作</th>
 	</tr>
-	<c:forEach items="${requestScope.articles}" var="article">
+	<c:forEach items="${requestScope.page.data}" var="article">
 	<tr>
 	   <td class='tdleft'>
 	       <a href='<%= request.getContextPath() %>/show/${article.id}.html'><c:out value="${article.title}" /></a>
@@ -49,9 +49,33 @@
 	</tr>
 	</c:forEach>
 </table>
-<div class="page_nav">
-  <span> 5条数据 共1页</span>
-  <strong>1</strong>
+<div id="page_number" style="margin-top: 10px; font: 14px/20px 'Microsoft YaHei',微软雅黑,Arial,Lucida Grande,Tahoma,sans-serif;">
+  <c:url value="/article/select.html" var="page_url" />
+  <c:if test="${requestScope.page!=null&&requestScope.page.data!=null&&fn:length(requestScope.page.data)>0}">
+       <div id="page_description">${requestScope.page.totalCount}篇文章, 共${requestScope.page.totalPageCount}页</div>
+       <div id="page_count">
+          <ul>
+            <c:if test="${requestScope.page.hasPreviousPage}">
+               <li><a href="javascript:void(0)" onclick="article_page_update('${page_url}', '${requestScope.articleTypeId}', '${requestScope.title}', '${requestScope.page.currentPageNo-1}')">上一页</a></li>
+            </c:if>
+            
+            <c:forEach var="index" begin="${requestScope.page.pageRangeStart}" end="${requestScope.page.pageRangeEnd}" step="1">
+            <c:choose>
+            <c:when test="${index!=requestScope.page.currentPageNo}">
+               <li><a href="javascript:void(0)" onclick="article_page_update('${page_url}', '${requestScope.articleTypeId}', '${requestScope.title}', '${index}')">${index}</a></li>
+            </c:when>
+            <c:otherwise>
+               <li><a href="javascript:void(0)" class="selected">${index}</a></li>
+            </c:otherwise>
+            </c:choose>
+            </c:forEach>
+            
+            <c:if test="${requestScope.page.hasNextPage}">
+               <li><a href="javascript:void(0)" onclick="article_page_update('${page_url}', '${requestScope.articleTypeId}', '${requestScope.title}', '${requestScope.page.currentPageNo+1}')">下一页</a></li>
+            </c:if>
+          </ul>
+       </div>
+ </c:if>
 </div>
 </c:when>
 

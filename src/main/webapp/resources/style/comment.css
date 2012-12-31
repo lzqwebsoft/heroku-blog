@@ -278,20 +278,25 @@ abbr, acronym {
 	display: block;
 }
 #page_count ul li{
-	border: #000 solid 1px;
+	border: #CCCCCC solid 1px;
 	margin-left: 5px;
 	display: block;
 	float:left;
 	border-radius: 2px 2px 2px 2px;
 }
 #page_count ul li a{
-	background-color: #990;
+	background-color: #8FB34F;
 	display: block;
 	padding: 0 3px;
+	color: #FFFFFF;
 	min-width: 20px;
 }
 #page_count ul li a:hover {
-	background-color: #9C0;
+	background-color: #48DD22;
+}
+#page_count .selected {
+	background-color: #FFFFFF;
+	color: #8FB34F;
 }
 #footer {
     /*background: url("check.gif") no-repeat scroll left center transparent;*/

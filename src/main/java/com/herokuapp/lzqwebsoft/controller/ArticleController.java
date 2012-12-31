@@ -17,6 +17,7 @@ import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticlePattern;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.Comment;
+import com.herokuapp.lzqwebsoft.pojo.Page;
 import com.herokuapp.lzqwebsoft.pojo.User;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
@@ -44,6 +45,16 @@ public class ArticleController {
 		
 		List<Comment> comments = commentService.getAllParentComment(articleId);
 		model.addAttribute("comments", comments);
+		
+		// 上篇文章
+		Article previousArticle = articleService.getPreviousArticle(article);
+		model.addAttribute("previousArticle", previousArticle);
+		// 下篇文章
+		Article nextArticle = articleService.getNextArticle(article);
+		model.addAttribute("nextArticle", nextArticle);
+		// 5篇关联的文章
+		List<Article> ass_articles = articleService.getAssociate5Articles(article);
+		model.addAttribute("associate5Articles", ass_articles);
 		
 		Comment comment = new Comment();
 		comment.setArticle(article);
@@ -125,7 +136,7 @@ public class ArticleController {
 	public String deleteArticle(@PathVariable("articleId")String articleId,
 			HttpServletRequest request) {
 		articleService.delete(articleId);
-		List<Article> articles = articleService.getAllAricleWithoutContent();
+		List<Article> articles = articleService.getAllAricleWithoutContent(0, 15).getData();
 		request.setAttribute("articles", articles);
 		// 所有的文章类型
 		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
@@ -146,9 +157,17 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("/article/select")
-	public String select(int articleTypeId, String title, HttpServletRequest request){
-		List<Article> articles = articleService.getArticleByTypeAndTitle(articleTypeId, title);
-		request.setAttribute("articles", articles);
+	public String select(int articleTypeId, String title,
+			String pageNo, HttpServletRequest request){
+		if(pageNo==null||pageNo.trim().length()<=0)
+			pageNo = "1";
+		int pageNoIndex = Integer.parseInt(pageNo);
+		
+		Page<Article> page = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNoIndex, 15);
+		request.setAttribute("page", page);
+		
+		request.setAttribute("articleTypeId", articleTypeId);
+		request.setAttribute("title", title);
 		
 		// 所有的文章类型
 		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();

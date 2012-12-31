@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page import="org.springframework.web.util.UrlPathHelper" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
@@ -54,10 +55,10 @@
 
   <div id="supportingText">
     <c:choose>
-    <c:when test="${articles!=null&&fn:length(articles)>0}">
-    <c:forEach items="${articles}" var="article">
+    <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
+    <c:forEach items="${page.data}" var="article">
     <div class="explanation">
-      <h3><a href="show/${article.id}.html"><c:out value="${article.title}" /></a></h3>
+      <h3><a href="${pageContext.request.contextPath}/show/${article.id}.html"><c:out value="${article.title}" /></a></h3>
           <p class="article_date">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
           <p class="article_description"><c:out value="${article.content}"  escapeXml="false"/></p>
           <p>
@@ -77,17 +78,33 @@
     </div>
     </c:otherwise>
     </c:choose>
-
+    
     <div id="page_number">
-       <div id="page_description">共1页,4篇文章</div>
+       <c:if test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
+       <div id="page_description">${page.totalCount}篇文章, 共${page.totalPageCount}页</div>
        <div id="page_count">
           <ul>
-            <li><a href="javascript:void(0)">1</a></li>
-            <li><a href="javascript:void(0)">2</a></li>
-            <li><a href="javascript:void(0)">...</a></li>
-            <li><a href="javascript:void(0)">下一页</a></li>
+            <c:if test="${page.hasPreviousPage}">
+               <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo-1}">上一页</a></li>
+            </c:if>
+            
+            <c:forEach var="index" begin="${page.pageRangeStart}" end="${page.pageRangeEnd}" step="1">
+            <c:choose>
+            <c:when test="${index!=page.currentPageNo}">
+               <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${index}">${index}</a></li>
+            </c:when>
+            <c:otherwise>
+               <li><a href="javascript:void(0)" class="selected">${index}</a></li>
+            </c:otherwise>
+            </c:choose>
+            </c:forEach>
+            
+            <c:if test="${page.hasNextPage}">
+               <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo+1}">下一页</a></li>
+            </c:if>
           </ul>
        </div>
+       </c:if>
     </div>
   </div>
 
