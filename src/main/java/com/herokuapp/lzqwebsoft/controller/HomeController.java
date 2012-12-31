@@ -16,6 +16,7 @@ import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
 import com.herokuapp.lzqwebsoft.pojo.ChangePasswordUserBean;
+import com.herokuapp.lzqwebsoft.pojo.Page;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
@@ -30,9 +31,12 @@ public class HomeController{
 	private ArticleTypeService articleTypeService;
 	
 	@RequestMapping(value="/index")
-	public String home(ModelMap model) {
-		List<Article> articles = articleService.getAllAricle();
-		model.addAttribute("articles", articles);
+	public String home(ModelMap model, String pageNo) {
+		if(pageNo==null||pageNo.trim().length()<=0)
+			pageNo = "1";
+		int pageNoIndex = Integer.parseInt(pageNo);
+		Page<Article> page = articleService.getAllAricle(pageNoIndex, 15);
+		model.addAttribute("page", page);
 		
 		// 阅读排行榜的前10篇博文
 		List<Article> top10Articles = articleService.getReadedTop10();
@@ -45,9 +49,13 @@ public class HomeController{
 	
 	@RequestMapping(value="/select/{articleTypeId}")
 	public String select(@PathVariable("articleTypeId")int articleTypeId,
-			ModelMap model) {
-		List<Article> articles = articleService.getArticleByTypeId(articleTypeId);
-		model.addAttribute("articles", articles);
+			String pageNo, ModelMap model) {
+		if(pageNo==null||pageNo.trim().length()<=0)
+			pageNo = "1";
+		int pageNoIndex = Integer.parseInt(pageNo);
+		
+		Page<Article> articles = articleService.getArticleByTypeId(articleTypeId, pageNoIndex, 15);
+		model.addAttribute("page", articles);
 		
 		List<Article> top10Articles = articleService.getReadedTop10();
 		model.addAttribute("top10Articles", top10Articles);

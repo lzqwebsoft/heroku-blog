@@ -20,6 +20,7 @@ import com.herokuapp.lzqwebsoft.dao.ArticleDAO;
 import com.herokuapp.lzqwebsoft.dao.ArticleTypeDAO;
 import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
+import com.herokuapp.lzqwebsoft.pojo.Page;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
 
 @Service("articleService")
@@ -184,8 +185,9 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Article> getAllAricle() {
-		List<Article> list = articleDAO.getAllArticle();
+	public Page<Article> getAllAricle(int pageNo, int pageSize) {
+		Page<Article> page = articleDAO.getAllArticle(pageNo, pageSize);
+		List<Article> list = page.getData();
 		List<Article> articles = new ArrayList<Article>();
 		String dir = CommonConstant.ARTICLES_DIR+"/";
 		for(Article article : list) {
@@ -216,13 +218,14 @@ public class ArticleServiceImpl implements ArticleService {
 			}
 			articles.add(article);
 		}
-		return articles;
+		page.setData(articles);
+		return page;
 	}
 
 	@Override
-	public List<Article> getAllAricleWithoutContent() {
-		List<Article> list = articleDAO.getAllArticle();
-		return list;
+	public Page<Article> getAllAricleWithoutContent(int pageNo, int pageSize) {
+		Page<Article> page = articleDAO.getAllArticle(pageNo, pageSize);
+		return page;
 	}
 
 	@Override
@@ -231,9 +234,9 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Article> getArticleByTypeAndTitle(int articleTypeId,
-			String title) {
-		return articleDAO.selectArticleByTypeAndTitle(articleTypeId, title);
+	public Page<Article> getArticleByTypeAndTitle(int articleTypeId,
+			String title, int pageNo, int pageSize) {
+		return articleDAO.selectArticleByTypeAndTitle(articleTypeId, title, pageNo, pageSize);
 	}
 
 	@Override
@@ -255,8 +258,9 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Article> getArticleByTypeId(int typeId) {
-		List<Article> list = articleDAO.selectArticleByTypeId(typeId);
+	public Page<Article> getArticleByTypeId(int typeId, int pageNo, int pageSize) {
+		Page<Article> page = articleDAO.selectArticleByTypeId(typeId, pageNo, pageSize);
+		List<Article> list = page.getData();
 		List<Article> articles = new ArrayList<Article>();
 		String dir = CommonConstant.ARTICLES_DIR+"/";
 		for(Article article : list) {
@@ -287,11 +291,27 @@ public class ArticleServiceImpl implements ArticleService {
 			}
 			articles.add(article);
 		}
-		return articles;
+		page.setData(articles);
+		return page;
 	}
 
 	@Override
 	public List<Article> getReadedTop10() {
 		return articleDAO.seletArticleTop10();
+	}
+
+	@Override
+	public List<Article> getAssociate5Articles(Article article) {
+		return articleDAO.getAssociate5Articles(article);
+	}
+
+	@Override
+	public Article getNextArticle(Article article) {
+		return articleDAO.getNextArticle(article);
+	}
+
+	@Override
+	public Article getPreviousArticle(Article article) {
+		return articleDAO.getPreviousArticle(article);
 	}
 }

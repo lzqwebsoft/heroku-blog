@@ -37,7 +37,8 @@
 	</div>
     
     <div id="article_type_link">
-       <p><a href="<%= request.getContextPath() %>">首页</a>&nbsp;»&nbsp;<a href="javascript:void(0)"><c:out value="${article.type.name}" /></a>&nbsp;»&nbsp;博客正文</p>
+       <p><a href="<%= request.getContextPath() %>">首页</a>&nbsp;»&nbsp;
+       <a href="<%= request.getContextPath() %>/select/${article.type.id}.html"><c:out value="${article.type.name}" /></a>&nbsp;»&nbsp;博客正文</p>
     </div>
     
     <div id="article_content">
@@ -56,18 +57,30 @@
           <c:out value="${article.content}" escapeXml="false"/>
        </div>
        <div class="article_link">
-          <span class="previous_article_link">上篇：<a href="javascript:void(0)">文章标题</a></span>
-          <span class="next_article_link">下篇：<a href="javascript:void(0)">文章标题</a></span>
+          <c:if test="${previousArticle!=null}">
+          <span class="previous_article_link">上篇：<a href="${pageContext.request.contextPath}/show/${previousArticle.id}.html">${previousArticle.title}</a></span>
+          </c:if>
+          <c:if test="${nextArticle!=null}">
+          <span class="next_article_link">下篇：<a href="${pageContext.request.contextPath}/show/${nextArticle.id}.html">${nextArticle.title}</a></span>
+          </c:if>
        </div>
        <div class="assume_you_like">
           <h3>相关文章：</h3>
+          <c:choose>
+          <c:when test="${associate5Articles!=null&&fn:length(associate5Articles)>0}">
           <ul>
-              <li><a href="javascript:void(0)">文章标题</a><span>2012/9/7</span></li>
-              <li><a href="javascript:void(0)">文章标题</a><span>2012/9/7</span></li>
-              <li><a href="javascript:void(0)">文章标题</a><span>2012/9/7</span></li>
-              <li><a href="javascript:void(0)">文章标题</a><span>2012/9/7</span></li>
-              <li><a href="javascript:void(0)">文章标题</a><span>2012/9/7</span></li>
+              <c:forEach items="${associate5Articles}" var="assArticles">
+                  <li>
+                     <a href="${pageContext.request.contextPath}/show/${assArticles.id}.html">${assArticles.title}</a>
+                     <span><fmt:formatDate value="${assArticles.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                  </li>
+              </c:forEach>
        	  </ul>
+       	  </c:when>
+       	  <c:otherwise>
+       	     <p>暂无</p>
+       	  </c:otherwise>
+       	  </c:choose>
       </div>
       
       <div id="article_comment" class="article_comment">

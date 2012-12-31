@@ -3,6 +3,7 @@ package com.herokuapp.lzqwebsoft.service;
 import java.util.List;
 
 import com.herokuapp.lzqwebsoft.pojo.Article;
+import com.herokuapp.lzqwebsoft.pojo.Page;
 
 public interface ArticleService {
 	
@@ -39,15 +40,15 @@ public interface ArticleService {
 	
 	/**
 	 * 得到系统中所有的文章，带内容
-	 * @return 文章List集合
+	 * @return 文章Page对象
 	 */
-	public List<Article> getAllAricle();
+	public Page<Article> getAllAricle(int pageNo, int pageSize);
 	
 	/**
 	 * 得到系统中的所有文章，不带内容
 	 * @return 文章List集合
 	 */
-	public List<Article> getAllAricleWithoutContent();
+	public Page<Article> getAllAricleWithoutContent(int pageNo, int pageSize);
 	
 	/**
 	 * 得到系统中的所有文章草稿
@@ -61,7 +62,8 @@ public interface ArticleService {
 	 * @param title 标题title
 	 * @return 文章Article对象List集合
 	 */
-	public List<Article> getArticleByTypeAndTitle(int articleTypeId, String title);
+	public Page<Article> getArticleByTypeAndTitle(int articleTypeId, String title,
+			int pageNo, int pageSize);
 	
 	/**
 	 * 更新文章的是否允许评论属性
@@ -81,11 +83,30 @@ public interface ArticleService {
 	 * 查询得到指定类型的文章
 	 * @param typeId 文章类型ID
 	 */
-	public List<Article> getArticleByTypeId(int typeId);
+	public Page<Article> getArticleByTypeId(int typeId, int pageNo, int pageSize);
 	
 	/**
 	 * 得到阅读人次前10的文章排行榜
 	 * @return 文章Article对象List集合
 	 */
 	public List<Article> getReadedTop10();
+	
+	/**
+	 * 得到与指定博客关联的5篇博务
+	 * @param article 指定关联的Article对象
+	 * @return 最多5篇博文
+	 */
+	public List<Article> getAssociate5Articles(Article article);
+	
+	/**
+	 * 得到指定文章的下一篇文 章
+	 * @return 文章对象
+	 */
+	public Article getNextArticle(Article article);
+	
+	/**
+	 * 得到指定文章的上一篇文 章
+	 * @return 文章对象
+	 */
+	public Article getPreviousArticle(Article article);
 }

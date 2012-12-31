@@ -58,6 +58,10 @@
 #article_content .child_comment {
 	margin-left: 20px;
 }
+#article_content .comment_content,#article_content .comment_content p{
+	background-color: #FFF;
+	padding-left: 4px;
+}
 #article_content .input_reply_div p{
 	margin: 5px 0;
 }
