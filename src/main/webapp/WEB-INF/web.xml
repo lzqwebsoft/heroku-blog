@@ -31,6 +31,17 @@
       <url-pattern>*.html</url-pattern>
   </servlet-mapping>
   
+  <!-- 验证码Servlet -->
+  <servlet>
+     <servlet-name>captchaServlet</servlet-name>
+     <servlet-class>com.herokuapp.lzqwebsoft.servlet.CaptchaServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>captchaServlet</servlet-name>
+     <url-pattern>captcha.jpg</url-pattern>
+  </servlet-mapping>
+  
   <!--这里使用listener的监听方式来初始化spring-database-context.xml中的bean-->
   <!-- 主要用来初始化数据库的连接 -->
   <listener>

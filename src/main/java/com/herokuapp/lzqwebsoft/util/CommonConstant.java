@@ -35,4 +35,9 @@ public class CommonConstant {
 	 * 上传的图片的保存目录名
 	 */
 	public static final String IMAGE_DIR=System.getProperty("web.contextPath")+"/upload-images";
+	
+	/**
+	 * 验证码
+	 */
+	public static final String CAPTCHA = "captcha";
 }
