@@ -59,7 +59,10 @@
             </tr>
             <tr>
                <td align="right"><label for="validateCode">验证码：</label></td>
-               <td align="left"><input type="text" name="validateCode" style="width:100px;" /></td>
+               <td align="left" style="vertical-align: middle;">
+                 <input type="text" name="validateCode" style="width:100px;" />
+                 <img src="captcha.jpg" title="看不清" alt="看不清" /> 
+               </td>
              </tr>
              <tr>
                <td align="right"><a href="javascript:void(0)">忘记密码&nbsp;&nbsp;&nbsp;</a></td>
