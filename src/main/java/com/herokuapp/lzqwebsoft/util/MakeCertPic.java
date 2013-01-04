@@ -1,6 +1,5 @@
 package com.herokuapp.lzqwebsoft.util;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -49,28 +48,12 @@ public class MakeCertPic {
         // 设置背景颜色
         g.setColor(getRandColor(200, 250));
         g.fillRect(0, 0, width, height);
-//        g.setFont(f); // 设置字体
-//        g.setColor(getRandColor(180, 200)); // 设置前景颜色
 
         Graphics2D g2d = (Graphics2D) g;
         // 渲染字体的平滑
         g2d.setRenderingHint (  
                 RenderingHints.KEY_TEXT_ANTIALIASING,  
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON); 
-        // 画一条折线
-        // 创建一个供画笔选择线条粗细的对象
-        BasicStroke bs = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
-        // 改变线条的粗细
-        g2d.setStroke(bs);
-        // 设置当前颜色为预定义颜色中的深灰色
-        g2d.setColor(Color.DARK_GRAY);
-        int[] xPoints = new int[8];
-        int[] yPoints = new int[8];
-        for (int j = 0; j < 8; j++) {
-            xPoints[j] = r.nextInt(width - 1);
-            yPoints[j] = r.nextInt(height - 1);
-        }
-        g2d.drawPolyline(xPoints, yPoints, 8);
         
         // 随机产生的验证码
         String sRand = "";
@@ -81,7 +64,7 @@ public class MakeCertPic {
             // 设置每个字符的随机颜色
             Color color = new Color(20 + r.nextInt(210), 20 + r.nextInt(210), 20 + r.nextInt(210));
             g2d.setColor(color);
-            g2d.setFont(new Font("", Font.BOLD, 24));
+            g2d.setFont(new Font("", Font.BOLD, 30));
             // 设置每个字符的随机旋转
             AffineTransform at = new AffineTransform();
             int number = r.nextInt(3) - 1;
@@ -98,13 +81,16 @@ public class MakeCertPic {
             g2d.drawString(ctmp, 16 * i + 10, y);
         }
         
-        // 随机产生10个干扰点
-//        Random rand = new Random();
-//        for(int i=0; i<10; i++) {
-//            int x = rand.nextInt(width);
-//            int y = rand.nextInt(height);
-//            g.drawOval(x, y, 1, 1);
-//        }
+        // 随机产生20个干扰点
+        Random rand = new Random();
+        for(int i=0; i<10; i++) {
+            int x = rand.nextInt(width);
+            int y = rand.nextInt(height);
+            // 设置每个字符的随机颜色
+            Color color = new Color(20 + r.nextInt(210), 20 + r.nextInt(210), 20 + r.nextInt(210));
+            g2d.setColor(color);
+            g.drawOval(x, y, 2, 2);
+        }
 
         g2d.dispose();
         

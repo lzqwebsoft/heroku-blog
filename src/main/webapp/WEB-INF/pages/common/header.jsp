@@ -28,6 +28,7 @@
                  <c:if test="${sessionScope.user==null}">
                  <li>
                     <a id="login-link" href="javascript:void(0)">登&nbsp;&nbsp;&nbsp;录</a>
+                    <p id="error_login_count_p" style="display:none">${sessionScope.error_login_count}</p>
                  </li>
                  </c:if>
                  <c:if test="${sessionScope.user!=null}">

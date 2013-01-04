@@ -74,18 +74,45 @@ $(function() {
 		});
 		name_p.append(name_field);
 		
-		var password_p = $("<p>密码：</p>").css("margin-bottom","25px");
+		var password_p = $("<p id='password_p'>密码：</p>").css("margin-bottom","25px");
 		var password_field = $("<input type='password' name='password' />").css({
 			"width": "150px",
 			"height": "22px"
 		});
 		password_p.append(password_field);
 		
+		var captcha_p = $("<p id='captcha_p' style='display: none;'>验证码：</p>").css({
+			"margin-bottom": "25px",
+		});
+		var captcha_field = $("<input type='text' name='captcha' />").css({
+			"width": "63px",
+			"height": "22px",
+			"margin-right": "5px"
+		});
+		var captcha_img = $("<img src='captcha.jpg' alt='换一张' title='换一张'/>").css({
+			"vertical-align": "middle",
+			"cursor": "pointer"
+		});
+		captcha_img.click(function() {
+			$(this).attr("src", "captcha.jpg?"+ Math.floor(Math.random()*100));
+		});
+		captcha_p.append(captcha_field);
+		captcha_p.append(captcha_img);
+		
 		form_tag.append(info_p);
 		form_tag.append(name_p);
 		form_tag.append(password_p);
+		form_tag.append(captcha_p);
 		
 		dialog_body.append(form_tag);
+		
+		// 初始化对话框时，进行登录错误次数的判断
+		var error_num = $("#error_login_count_p").text();
+		if(error_num!=null&&$.trim(error_num).length>0&&Number(error_num)>=3) {
+			password_p.css("margin-bottom","10px");
+			captcha_p.show("normal");
+		}
+			
 		return false;
 	});
 });
@@ -104,9 +131,14 @@ function click_login(obj){
    	    } else {
    	    	loginDailog.find("form p:first-child").text(data.messages).show();
    	    }
-        },
-        error: function(xhr, strError, errorObj) {
-       	 alert(errorObj);
-        }
+   	    if(data.error_num!=null&&data.error_num>=3) {
+   	    	loginDailog.find("#password_p").css("margin-bottom","10px");
+   	    	loginDailog.find("#captcha_p").show("normal");
+   	    }
+   	    $("#error_login_count_p").text(data.error_num);
+     },
+     error: function(xhr, strError, errorObj) {
+       	alert(errorObj);
+     }
     });
 }
