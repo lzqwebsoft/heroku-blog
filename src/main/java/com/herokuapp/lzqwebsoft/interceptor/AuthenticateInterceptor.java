@@ -2,6 +2,8 @@ package com.herokuapp.lzqwebsoft.interceptor;
 
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.herokuapp.lzqwebsoft.pojo.Menu;
 import com.herokuapp.lzqwebsoft.service.MenuService;
@@ -49,14 +52,16 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession();
         boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER)==null) ? false: true;
         if(!isLogined){
-        	String requestURL = request.getRequestURI();
+        	String requestURL = new UrlPathHelper().getOriginatingRequestUri(request);
     		ResourceBundle rb = ResourceBundle.getBundle("ApplicationResources");
     		// 得到需要检查的URL的个数
     		int count = Integer.parseInt(rb.getString("authentication.checkpath.count"));
     		String url = null;
     		while(count>0) {
     			url = rb.getString("authentication.checkpath."+count);
-    			if(url!=null&&requestURL.endsWith(url)) {
+    			Pattern pattern = Pattern.compile(".*"+url+"$", Pattern.CASE_INSENSITIVE);
+    			Matcher matcher = pattern.matcher(requestURL);
+    			if(url!=null&&matcher.matches()) {
     				session.setAttribute(CommonConstant.LAST_REQUEST_URL, url);
     				response.sendRedirect(request.getContextPath()+"/signIn.html");
     				return false;
