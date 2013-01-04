@@ -40,4 +40,9 @@ public class CommonConstant {
 	 * 验证码
 	 */
 	public static final String CAPTCHA = "captcha";
+	
+	/**
+	 * 用户登录错误的次数
+	 */
+	public static final String ERROR_LOGIN_COUNT = "error_login_count";
 }

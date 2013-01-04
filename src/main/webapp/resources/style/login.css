@@ -11,7 +11,8 @@
 	margin-bottom: 10px;
 }
 #login_content #error_info {
-	font: #F00;
+	color: red;
+	padding-left: 10px;
 }
 #login_content table {
 	width: 100%;

@@ -41,8 +41,8 @@ public class UserController {
     
 	// JSON登录
     @RequestMapping(value="/login")
-    public void login(String username, String password, HttpServletResponse response,
-    		HttpSession session, Locale locale) {
+    public void login(String username, String password, String captcha, 
+    		HttpServletResponse response, HttpSession session, Locale locale) {
         // 用户验证
         PrintWriter out = null;
         try {
@@ -50,19 +50,37 @@ public class UserController {
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.setContentType("application/json;charset=UTF-8");
 			StringBuffer json = new StringBuffer();
-			if(username!=null&&username.trim().length()>0
-					&&password!=null&&password.trim().length()>0) {
+			String validateCode = (String)session.getAttribute(CommonConstant.CAPTCHA);
+			// 计算登录失败次数
+			if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)==null) {
+		    	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
+		    }
+			int errorNum = (Integer)session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+			if(username==null||username.trim().length()<=0
+					||password==null||password.length()<=0) {
+				errorNum++;
+				json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
+			    .append(messageSource.getMessage("info.login.nameOrPasswordEmpty", null, locale)).append("\"}");
+				session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+			} else if(errorNum>=3&&!validateCode.equalsIgnoreCase(captcha)) {
+				errorNum++;
+				json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
+			    .append(messageSource.getMessage("info.login.invalid.captcha", null, locale)).append("\"}");
+				session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+			} else {
 				User user = userService.loginService(username, password);
 				if(user!=null) {
-					json.append("{\"status\": \"SUCCESS\", \"messages\": \"\"}");
+					json.append("{\"status\": \"SUCCESS\", \"messages\": \"\", \"error_num\": 0}");
 					session.setAttribute(CommonConstant.LOGIN_USER, user);
+					// 移除错误登录计数
+					if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)!=null)
+		        		session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
 		        } else {
-		        	json.append("{\"status\": \"FAILURE\", \"messages\": \"")
+		        	errorNum++;
+		        	json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
 		        	    .append(messageSource.getMessage("info.login.error", null, locale)).append("\"}");
+		        	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
 		        }
-			} else {
-				json.append("{\"status\": \"FAILURE\", \"messages\": \"")
-				    .append(messageSource.getMessage("info.login.nameOrPasswordEmpty", null, locale)).append("\"}");
 			}
 			out.print(json);
 			out.close();
@@ -86,12 +104,30 @@ public class UserController {
 	public String signInPOST(@ModelAttribute("user")User user, String validateCode, HttpServletRequest request,
 			HttpSession session, Errors errors){
 	    // 验证用户信息
-	    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userName", "info.login.nameOrPasswordEmpty");
+	    String userName  = user.getUserName();
+	    String password = user.getPassword();
+	    // 验证码
+	    String captcha = (String)session.getAttribute(CommonConstant.CAPTCHA);
+	    // 计算登录错误的次数
+	    if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)==null) {
+	    	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
+	    }
+	    int errorNum = (Integer)session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+	    if(userName==null||userName.trim().length()<=0
+	    		||password==null||password.length()<=0) {
+	    	errors.reject("info.login.nameOrPasswordEmpty");
+	    } else if (errorNum>=3&&!validateCode.equalsIgnoreCase(captcha)) {
+	    	errors.reject("info.login.invalid.captcha");
+	    }
 		if(errors.hasErrors()) {
+			errorNum++;
+			session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
 		    return "login";
 		} else {
 		    User dbuser = userService.loginService(user.getUserName(), user.getPassword());
 	        if(dbuser!=null) {
+	        	if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)!=null)
+	        		session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
 	            session.setAttribute(CommonConstant.LOGIN_USER, dbuser);
 	            String lastReqUrl = (String)session.getAttribute(CommonConstant.LAST_REQUEST_URL);
 	            if(lastReqUrl!=null&&lastReqUrl.trim().length()>0&&!lastReqUrl.endsWith("signIn.html")) {
@@ -102,6 +138,9 @@ public class UserController {
 	                return "redirect:index.html";
 	            }
 	        } else {
+	        	errors.reject("info.login.error");
+	        	errorNum++;
+	        	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
 	            return "login";
 	        }
 		}
