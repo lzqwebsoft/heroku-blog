@@ -54,6 +54,18 @@
 		   <version>2.4</version>
 		</dependency>
 		
+		<!--Java邮件支持-->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.activation</groupId>
+		    <artifactId>activation</artifactId>
+		    <version>1.1.1</version>
+		</dependency>
+		
 		<!-- Spring3 框架 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
