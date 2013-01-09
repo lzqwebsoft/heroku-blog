@@ -47,25 +47,11 @@ public class CommentController {
 			comment.setParentComment(parnetComment);
 		}
 		
-		String articleId = comment.getArticle().getId();
 		// 判断用户是否登录,则博主不用输入昵称与网址
 		User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
 		if(user!=null) {
 			comment.setReviewer(user.getUserName());
 			comment.setWebsite(request.getRemoteHost()+":"+request.getLocalPort()+request.getContextPath());
-		} else {
-			// 发送邮件给博言主，通知有新评论
-			user = userService.getBlogOwner();
-			if(user.getEmail()!=null){
-				Locale locale = request.getLocale();
-				Article article = articleService.get(comment.getArticle().getId());
-				String link = new StringBuffer("http://").append(request.getRemoteHost()).append(request.getContextPath())
-				      .append("/show/").append(articleId).append(".html").toString();
-				String content = messageSource.getMessage("email.addComment.content", new Object[]{user.getUserName(), 
-						article.getTitle(), link}, locale);
-				String title = messageSource.getMessage("email.addComment.title", null, locale);
-				MailUtil.sendEMail(user.getEmail(), title, content);
-			}
 		}
 		
 		// 为网址加上http
@@ -74,8 +60,35 @@ public class CommentController {
 			comment.setWebsite("http://"+webSite);
 		commentService.save(comment);
 		
+		String articleId = comment.getArticle().getId();
 		List<Comment> comments = commentService.getAllParentComment(articleId);
 		model.addAttribute("comments", comments);
+		
+		if(user==null) {
+		    // 发送邮件给博言主，通知有新评论
+		    user = userService.getBlogOwner();
+            if(user.getEmail()!=null){
+                Locale locale = request.getLocale();
+                Article article = articleService.get(comment.getArticle().getId());
+                StringBuffer link = new StringBuffer("http://").append(request.getRemoteAddr());
+                int port = request.getLocalPort();
+                if(port!=80)
+                    link.append(":").append(port);
+                link.append("").append(request.getContextPath())
+                    .append("/show/").append(articleId).append(".html").toString();
+                final String content = messageSource.getMessage("email.addComment.content", new Object[]{user.getUserName(), 
+                        article.getTitle(), link.toString()}, locale);
+                final String title = messageSource.getMessage("email.addComment.title", null, locale);
+                final String to = user.getEmail();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        MailUtil.sendEMail(to, title, content);
+                    }
+                    
+                }.start();
+            }
+		}
 		
 		return "_article_comments";
 	}
