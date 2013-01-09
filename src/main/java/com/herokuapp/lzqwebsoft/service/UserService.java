@@ -25,4 +25,10 @@ public interface UserService {
 	 * @return 更新密码后的User对象
 	 */
 	public User changePassword(User user, String newPassword);
+	
+	/**
+	 * 得到博主
+	 * @return User对象
+	 */
+	public User getBlogOwner();
 }

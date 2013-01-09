@@ -1,5 +1,7 @@
 package com.herokuapp.lzqwebsoft.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
@@ -23,25 +25,39 @@ import javax.mail.internet.MimeUtility;
  *
  */
 public class MailUtil {
+	
+	private static Properties mail_config= new Properties();
+	
+	static {
+		// 加载Email配置文件
+		InputStream in = MailUtil.class.getResourceAsStream("/mail-config.properties"); 
+		try {
+			mail_config.load(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 发送邮件给指定的用户
+	 * @param to 收件人邮件地址
+	 * @param subject 邮件主题
+	 * @param content 邮件内容，支持HTML
+	 */
     public static void sendEMail(String to, String subject, String content) {
-        Properties props = new Properties();
-        
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-        props.put("mail.smtp.port", "465");
-        props.put("mail.smtp.socketFactory.port", "465");
-        
-        Session session = Session.getInstance(props);
-        session.setDebug(true);
-        
+        // 创建邮件会话
+        Session session = Session.getInstance(mail_config);
+        // 是否开始调试状态
+        session.setDebug(Boolean.valueOf(mail_config.getProperty("mail.isDebug", "false")));
+        // 创建消息
         MimeMessage message = new MimeMessage(session);
         
         try {
             //设置自定义发件人昵称  
             String nick = MimeUtility.encodeText("Heroku-Blog");
-            InternetAddress from = new InternetAddress(nick+"<lzqwebsoft@gmail.com>");
+            StringBuffer form_str = new StringBuffer(nick)
+               .append("<").append(mail_config.getProperty("mail.address.from")).append(">");
+            InternetAddress from = new InternetAddress(form_str.toString());
             message.setFrom(from);
             
             InternetAddress to_mail = new InternetAddress(to);
@@ -59,7 +75,10 @@ public class MailUtil {
             
             message.saveChanges();
             Transport transport = session.getTransport("smtp");
-            transport.connect("smtp.gmail.com", "lzqwebsoft@gmail.com", "*********");
+            transport.connect(mail_config.getProperty("mail.smtp.host"),
+            		mail_config.getProperty("mail.address.username"),
+            		mail_config.getProperty("mail.address.password"));
+            // 发送邮件
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (UnsupportedEncodingException e) {
@@ -69,9 +88,5 @@ public class MailUtil {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-    }
-    
-    public static void main(String[] args) {
-        MailUtil.sendEMail("751939573@qq.com", "google邮件测试", "<p style='color:red;'>测试</p>");
     }
 }

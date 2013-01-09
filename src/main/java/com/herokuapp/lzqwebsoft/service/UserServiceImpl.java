@@ -1,6 +1,7 @@
 package com.herokuapp.lzqwebsoft.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,13 @@ public class UserServiceImpl implements UserService {
 		user.setUpdateAt(new Date());
 		userDAO.update(user);
 		return user;
+	}
+	
+	@Override
+	public User getBlogOwner(){
+		List<User> users = userDAO.getUsers();
+		if(users!=null&&users.size()>0)
+			return users.get(0);
+		return null;
 	}
 }

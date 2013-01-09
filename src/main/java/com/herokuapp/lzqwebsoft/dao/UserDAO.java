@@ -56,7 +56,7 @@ public class UserDAO{
 	@SuppressWarnings("unchecked")
 	public List<User> getUsers() {
 		List<User> users = new ArrayList<User>();
-		users = (List<User>)sessionFactory.getCurrentSession().createCriteria("from user");
+		users = (List<User>)getHibernateTemple().find("from User");
 
         System.out.println("Get all users!");
 
