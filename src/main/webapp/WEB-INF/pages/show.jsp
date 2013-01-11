@@ -101,6 +101,7 @@
 		              method="post" modelAttribute="comment" id="commentAddForm"
 		              onsubmit="add_article_comment(); return false;">
 		   <form:hidden path="article.id"/>
+		   <form:hidden path="article.title"/>
 		   <input type="hidden" name="parent_comment_id" id="parent_comment_id"/>
 		   <c:if test="${sessionScope.user==null}">
 		   <p><form:input path="reviewer" /> 昵称</p>
