@@ -13,10 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.Comment;
 import com.herokuapp.lzqwebsoft.pojo.User;
-import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.CommentService;
 import com.herokuapp.lzqwebsoft.service.UserService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
@@ -26,9 +24,6 @@ import com.herokuapp.lzqwebsoft.util.MailUtil;
 public class CommentController {
 	@Autowired
 	private CommentService commentService;
-	
-	@Autowired
-	private ArticleService articleService;
 	
 	@Autowired
 	private UserService userService;
@@ -69,7 +64,6 @@ public class CommentController {
 		    user = userService.getBlogOwner();
             if(user.getEmail()!=null){
                 Locale locale = request.getLocale();
-                Article article = articleService.get(comment.getArticle().getId());
                 StringBuffer link = new StringBuffer("http://").append(request.getRemoteAddr());
                 int port = request.getLocalPort();
                 if(port!=80)
@@ -77,7 +71,7 @@ public class CommentController {
                 link.append("").append(request.getContextPath())
                     .append("/show/").append(articleId).append(".html").toString();
                 final String content = messageSource.getMessage("email.addComment.content", new Object[]{user.getUserName(), 
-                        article.getTitle(), link.toString()}, locale);
+                		comment.getArticle().getTitle(), link.toString()}, locale);
                 final String title = messageSource.getMessage("email.addComment.title", null, locale);
                 final String to = user.getEmail();
                 new Thread() {
