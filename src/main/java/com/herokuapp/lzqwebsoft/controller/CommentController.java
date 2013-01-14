@@ -1,9 +1,13 @@
 package com.herokuapp.lzqwebsoft.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +37,46 @@ public class CommentController {
 	
 	@RequestMapping("/comment/add")
 	public String add(Comment comment, String parent_comment_id,
-			ModelMap model, HttpServletRequest request, HttpSession session) {
+			ModelMap model, HttpServletRequest request,
+			HttpSession session, HttpServletResponse response) {
+		// 验证数据的合法性
+		Locale locale = request.getLocale();
+		List<String> errors = new ArrayList<String>();
+		String reviewer = comment.getReviewer();
+		String contentStr = comment.getContent();
+		if(reviewer==null||reviewer.trim().length()<=0) {
+			String reviewerLabel = messageSource.getMessage("page.label.reviewer", null, locale);
+			errors.add(messageSource.getMessage("info.required", new Object[]{reviewerLabel}, locale));
+		}
+		if(contentStr==null||contentStr.trim().length()<=0) {
+			String contentLabel = messageSource.getMessage("page.label.content", null, locale);
+			errors.add(messageSource.getMessage("info.required", new Object[]{contentLabel}, locale));
+		}
+		if(errors.size()>0) {
+			PrintWriter out = null;
+			try {
+				out = response.getWriter();
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.setContentType("application/json; charset=UTF-8");
+				
+				//生成错误的JSON信息，用于提于用户
+				StringBuffer json = new StringBuffer("{\"status\": \"FAILURE\", \"messages\": [");
+				for(String error : errors)
+					json.append("\"").append(error).append("\",");
+				json.deleteCharAt(json.length()-1);
+				json.append("]}");
+				
+				out.print(json);
+				out.close();
+				return null;
+			} catch(IOException e) {
+				e.printStackTrace();
+				if(out!=null) {
+					out.close();
+				}
+			}
+		}
+		
 		// 判断是否是子评论
 		if(parent_comment_id!=null&&parent_comment_id.trim().length()>0) {
 			long parentId = Long.parseLong(parent_comment_id);
@@ -63,7 +106,6 @@ public class CommentController {
 		    // 发送邮件给博言主，通知有新评论
 		    user = userService.getBlogOwner();
             if(user.getEmail()!=null){
-                Locale locale = request.getLocale();
                 StringBuffer link = new StringBuffer("http://").append(request.getRemoteAddr());
                 int port = request.getLocalPort();
                 if(port!=80)

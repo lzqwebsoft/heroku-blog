@@ -114,3 +114,10 @@
 #cancel_replay_button {
 	float: right;
 }
+#add-comment-info-div {
+	color: #FF0000;
+	padding: 5px 10px;
+}
+#add-comment-info-div ul{
+	margin-left: 10px;
+}

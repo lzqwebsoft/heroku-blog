@@ -53,7 +53,7 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
         boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER)==null) ? false: true;
         if(!isLogined){
         	String requestURL = new UrlPathHelper().getOriginatingRequestUri(request);
-    		ResourceBundle rb = ResourceBundle.getBundle("ApplicationResources");
+    		ResourceBundle rb = ResourceBundle.getBundle("checkpath");
     		// 得到需要检查的URL的个数
     		int count = Integer.parseInt(rb.getString("authentication.checkpath.count"));
     		String url = null;
