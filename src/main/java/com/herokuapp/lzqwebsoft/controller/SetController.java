@@ -86,13 +86,13 @@ public class SetController {
 		String aboutLabel = messageSource.getMessage("page.label.about", null, locale);
 		List<String> errors = new ArrayList<String>();
 		if(head==null||head.trim().length()<=0) {
-			errors.add(messageSource.getMessage("info.blogInfo.required", new Object[]{headLabel}, locale));
+			errors.add(messageSource.getMessage("info.required", new Object[]{headLabel}, locale));
 		}
 		if(email==null||email.trim().length()<=0) {
-			errors.add(messageSource.getMessage("info.blogInfo.required", new Object[]{emailLabel}, locale));
+			errors.add(messageSource.getMessage("info.required", new Object[]{emailLabel}, locale));
 		}
 		if(about==null||about.trim().length()<=0) {
-			errors.add(messageSource.getMessage("info.blogInfo.required", new Object[]{aboutLabel}, locale));
+			errors.add(messageSource.getMessage("info.required", new Object[]{aboutLabel}, locale));
 		}
 		PrintWriter out = null;
 		try {

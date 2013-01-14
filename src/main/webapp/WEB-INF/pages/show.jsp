@@ -90,6 +90,7 @@
       <c:if test="${article.allowComment}">
       <div class="reply_article" id="reply_article">
 		<h3>发表评论：</h3>
+		<div id="add-comment-info-div" style="display:none"></div>
 		<div id="prompt_replay_info">
 		   <p id="info_prompt_message">回复：&nbsp;&nbsp;</p>
 		   <p id="cancel_replay_button">
