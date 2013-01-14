@@ -19,11 +19,19 @@
   
   <servlet>  
       <servlet-name>springDispacher</servlet-name>  
-      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
       <init-param>  
            <param-name>contextConfigLocation</param-name>  
            <param-value>/WEB-INF/springMVC-config.xml</param-value>  
       </init-param>
+      <load-on-startup>1</load-on-startup> 
+  </servlet>
+  
+  <!-- 程序启动时自动运行 -->
+  <servlet>  
+      <servlet-name>AutoRunServlet</servlet-name>  
+      <servlet-class>com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet</servlet-class>
+      <load-on-startup>2</load-on-startup> 
   </servlet>
   
   <servlet-mapping>
