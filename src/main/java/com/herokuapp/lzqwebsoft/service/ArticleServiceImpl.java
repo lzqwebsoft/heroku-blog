@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,9 +81,11 @@ public class ArticleServiceImpl implements ArticleService {
 			article.setUpdateAt(now);
 			articleDAO.save(article);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log log = LogFactory.getLog(ArticleServiceImpl.class);
+            log.error(e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log log = LogFactory.getLog(ArticleServiceImpl.class);
+            log.error(e.getMessage(), e);
 			if(out!=null) {
 				try {
 					out.close();
@@ -131,9 +135,11 @@ public class ArticleServiceImpl implements ArticleService {
 			article.setUpdateAt(now);
 			articleDAO.edit(article);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log log = LogFactory.getLog(ArticleServiceImpl.class);
+            log.error(e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log log = LogFactory.getLog(ArticleServiceImpl.class);
+            log.error(e.getMessage(), e);
 			if(out!=null) {
 				try {
 					out.close();
@@ -161,7 +167,8 @@ public class ArticleServiceImpl implements ArticleService {
 				article.setContent(content);
 				return article;
 			} catch(IOException e) {
-				e.printStackTrace();
+				Log log = LogFactory.getLog(ArticleServiceImpl.class);
+	            log.error(e.getMessage(), e);
 				if(in!=null) {
 					try {
 						in.close();
@@ -208,7 +215,8 @@ public class ArticleServiceImpl implements ArticleService {
 					in.close();
 					article.setContent(content);
 				} catch(IOException e) {
-					e.printStackTrace();
+					Log log = LogFactory.getLog(ArticleServiceImpl.class);
+		            log.error(e.getMessage(), e);
 					if(in!=null) {
 						try {
 							in.close();
@@ -281,7 +289,8 @@ public class ArticleServiceImpl implements ArticleService {
 					in.close();
 					article.setContent(content);
 				} catch(IOException e) {
-					e.printStackTrace();
+					Log log = LogFactory.getLog(ArticleServiceImpl.class);
+		            log.error(e.getMessage(), e);
 					if(in!=null) {
 						try {
 							in.close();
