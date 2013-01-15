@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port $PORT target/simple-blog-1.0.1-*.war
+web: java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port $PORT target/heroku-blog-1.0.1.war
