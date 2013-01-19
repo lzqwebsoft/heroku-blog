@@ -27,20 +27,9 @@ public class CommonConstant {
 	 */
 	public static final String LAST_REQUEST_URL="lastRequestURL";
 	/**
-	 * 保存文章文本文件的目录
-	 */
-	public static final String ARTICLES_DIR=System.getProperty("web.contextPath")+"/WEB-INF/articles";
-	
-	/**
-	 * 上传的图片的保存目录名
-	 */
-	public static final String IMAGE_DIR=System.getProperty("web.contextPath")+"/upload-images";
-	
-	/**
 	 * 验证码
 	 */
 	public static final String CAPTCHA = "captcha";
-	
 	/**
 	 * 用户登录错误的次数
 	 */

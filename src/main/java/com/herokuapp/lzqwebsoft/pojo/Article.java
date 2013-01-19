@@ -16,7 +16,6 @@ public class Article {
 	private String title;
 	private boolean allowComment;
 	private boolean isTop;
-	private String contentPath;   // 文章内容文件的路径
 	private String content;
 	private int status;
 	private long readedNum;
@@ -64,12 +63,6 @@ public class Article {
 	}
 	public void setIsTop(boolean isTop) {
 		this.isTop = isTop;
-	}
-	public String getContentPath() {
-		return contentPath;
-	}
-	public void setContentPath(String contentPath) {
-		this.contentPath = contentPath;
 	}
 	public String getContent() {
 		return content;

@@ -4,11 +4,11 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
    <class name="Image" table="images">
-       <id name="id">
-		   <generator class="native" />
+       <id name="id" type="string">
+		   <generator class="assigned" />
        </id>
        <property name="fileName" length="255" not-null="true" column="filename" />
-       <property name="diskFilename" length="255" not-null="true" column="disk_filename" />
+       <property name="content" type="binary" not-null="true" column="content" length="6291456" />
        <property name="size" not-null="true" />
        <property name="descriptions" length="255" not-null="false" column="descriptions" />
        <property name="createAt" column="create_at" />

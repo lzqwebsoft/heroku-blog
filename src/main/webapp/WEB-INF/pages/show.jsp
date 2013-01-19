@@ -127,7 +127,7 @@
 		height : "120px", //编辑器的高度为100px
 		filterMode : false, //不会过滤HTML代码
 		resizeMode : 0, //编辑器只能调整高度
-		items: ['emoticons','fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold',
+		items: ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold',
 				'italic', 'underline', 'strikethrough', 'removeformat', '|', 'about'],
 		/*afterCreate : function(id) {
 			//可视化模式下输入内容时触发

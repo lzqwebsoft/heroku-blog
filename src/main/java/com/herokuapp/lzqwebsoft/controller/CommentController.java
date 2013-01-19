@@ -39,6 +39,13 @@ public class CommentController {
 	public String add(Comment comment, String parent_comment_id,
 			ModelMap model, HttpServletRequest request,
 			HttpSession session, HttpServletResponse response) {
+	    // 判断用户是否登录,则博主不用输入昵称与网址
+        User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
+        if(user!=null) {
+            comment.setReviewer(user.getUserName());
+            comment.setWebsite(request.getRemoteHost()+":"+request.getLocalPort()+request.getContextPath());
+        }
+        
 		// 验证数据的合法性
 		Locale locale = request.getLocale();
 		List<String> errors = new ArrayList<String>();
@@ -85,13 +92,6 @@ public class CommentController {
 			comment.setParentComment(parnetComment);
 		}
 		
-		// 判断用户是否登录,则博主不用输入昵称与网址
-		User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
-		if(user!=null) {
-			comment.setReviewer(user.getUserName());
-			comment.setWebsite(request.getRemoteHost()+":"+request.getLocalPort()+request.getContextPath());
-		}
-		
 		// 为网址加上http
 		String webSite = comment.getWebsite();
 		if(webSite!=null&&webSite.trim().length()>0)
@@ -102,6 +102,7 @@ public class CommentController {
 		List<Comment> comments = commentService.getAllParentComment(articleId);
 		model.addAttribute("comments", comments);
 		
+		// 当用于为空，说明是外人的评论，则要求发送邮件给予通知
 		if(user==null) {
 		    // 发送邮件给博言主，通知有新评论
 		    user = userService.getBlogOwner();

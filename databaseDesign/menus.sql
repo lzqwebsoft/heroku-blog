@@ -32,6 +32,6 @@ CREATE TABLE `menus` (
 -- ----------------------------
 -- Records of menus
 -- ----------------------------
-INSERT INTO `menus` VALUES ('1', '发表博客', 'new.html', '', '2012-12-13 18:15:08', '2012-12-13 18:15:11');
+INSERT INTO `menus` VALUES ('1', '发表博客', 'article/new.html', '', '2012-12-13 18:15:08', '2012-12-13 18:15:11');
 INSERT INTO `menus` VALUES ('2', '修改密码', 'change_password.html', '', '2012-12-13 18:16:44', '2012-12-13 18:16:46');
 INSERT INTO `menus` VALUES ('3', '设&nbsp;&nbsp;&nbsp;置', 'set.html', '', '2012-12-13 18:17:57', '2012-12-13 18:18:00');
