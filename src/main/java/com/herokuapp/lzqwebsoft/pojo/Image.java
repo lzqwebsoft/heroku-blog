@@ -8,16 +8,16 @@ import java.util.Date;
  *
  */
 public class Image {
-	private int id;
+	private String id;
 	private String fileName;
-	private String diskFilename;
+	private byte[] content;   // 图片的内容，使用二进制存储在数据库中
 	private long size;
 	private String descriptions;
 	private Date createAt;
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getFileName() {
@@ -26,11 +26,11 @@ public class Image {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	public String getDiskFilename() {
-        return diskFilename;
+    public byte[] getContent() {
+        return content;
     }
-    public void setDiskFilename(String diskFilename) {
-        this.diskFilename = diskFilename;
+    public void setContent(byte[] content) {
+        this.content = content;
     }
     public long getSize() {
         return size;
@@ -49,5 +49,34 @@ public class Image {
 	}
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
+	}
+	/**
+	 * 根据图片的文件名来得到对应的ContentType
+	 * @return ContentType
+	 */
+	public String getContentType(){
+	    if(fileName==null) {
+	        return null;
+	    } else {
+	        int index = fileName.lastIndexOf('.');
+	        if(index==-1)
+	            return null;
+	        String suffix = fileName.substring(index).toLowerCase();
+	        if(suffix.equals("gif")) {
+	            return "image/gif";
+	        } else if (suffix.equals("jpg")||suffix.equals("jpeg")||suffix.equals("jpe")) {
+	            return "image/jpeg";
+	        } else if (suffix.equals("png")) {
+                return "image/png";
+            } else if (suffix.equals("tiff")||suffix.equals("tif")) {
+                return "image/tiff";
+            } else if (suffix.equals("bmp")) {
+                return "image/x-ms-bmp";
+            } else if (suffix.equals("xpm")) {
+                return "image/x-xpixmap";
+            } else {
+                return null;
+            }
+	    }
 	}
 }

@@ -31,7 +31,7 @@
          <form:hidden path="id" />
       </p>
       <p><label for="article_content">博客内容</label></p>
-      <p><form:textarea path="content" id="content" /><form:hidden path="contentPath" /></p>
+      <p><form:textarea path="content" id="content" /></p>
       <p><label for="article_type">文章类别</label></p>
       <p>
          <form:select id="type" path="type.id">

@@ -26,5 +26,12 @@ public interface ImageService {
      * 根据图片对象的ID来删除指定的记录
      * @param id 图片ID
      */
-    public void delete(int id);
+    public void delete(String id);
+    
+    /**
+     * 根据图片的id来得到指定的图片对象
+     * @param id 图片id
+     * @return 图片对象
+     */
+    public Image getImageById(String id);
 }

@@ -3,15 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<c:forEach items="${requestScope.images}" var="image">    
+<c:forEach items="${requestScope.images}" var="image" varStatus="status">    
 <dl>
    <dd>
-      <a rel="lightbox[roadtrip]" title="${image.descriptions}" href="<%= request.getContextPath() %>/upload-images/${image.diskFilename}">
-          <img src="<%= request.getContextPath() %>/upload-images/${image.diskFilename}" width="140" height="104" alt="${image.fileName}" title="${image.fileName}" />
+      <a rel="lightbox[roadtrip]" title="${image.descriptions}" href="<%= request.getContextPath() %>/images/show/${image.id}.html">
+          <img src="<%= request.getContextPath() %>/images/show/${image.id}.html" width="140" height="104" alt="${image.fileName}" title="${image.fileName}" />
       </a>
    </dd>
    <dt>
-      <a title="${image.descriptions}" href="<%= request.getContextPath() %>/upload-images/${image.diskFilename}" rel="lightbox">图片${image.id}</a>&nbsp;&nbsp;
+      <a title="${image.fileName}" href="<%= request.getContextPath() %>/images/show/${image.id}.html" rel="lightbox">图片${status.index+1}</a>&nbsp;&nbsp;
       <a href="javascript:void(0)" onclick="delete_image('<spring:message code="page.confirm.delete.images" />', '${image.id}')" >删除</a>
    </dt>
 </dl>

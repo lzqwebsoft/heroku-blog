@@ -17,7 +17,7 @@
        <property name="title" length="255" column="title" />
        <property name="allowComment" column="allow_comment" />
        <property name="isTop" column="is_top" />
-       <property name="contentPath" length="255" not-null="true" column="content"/>
+       <property name="content" type="text" not-null="true" column="content"/>
        <property name="status" column="status" />
        <property name="readedNum" type="long" column="readed_num" />
        <property name="createAt" column="create_at" update="false"/>

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,11 +38,11 @@ public class ImageController {
 			
 			Image image = new Image();
 			image.setDescriptions(imgTitle);
-			String filePath = imageService.save(file, image);
-			if(filePath==null) {
+			String image_url = imageService.save(file, image);
+			if(image_url==null) {
 			    json.append("{\"error\": 1}");
 			} else {
-			    json.append("{\"error\": 0, \"url\": \""+request.getContextPath()+"/upload-images/"+ filePath +"\"}");
+			    json.append("{\"error\": 0, \"url\": \""+request.getContextPath()+"/"+ image_url +"\"}");
 			}
 			out.print(json);
 			out.close();
@@ -66,7 +67,8 @@ public class ImageController {
             List<Image> images = imageService.getAllImages();
             if(images!=null&&images.size()>0) {
             	for(Image image : images) {
-                    json.append("{\"filename\": \"").append(image.getDiskFilename())
+            	    StringBuffer image_url = new StringBuffer(request.getContextPath()).append("/images/delete/").append(image.getId()).append(".html");
+                    json.append("{\"filename\": \"").append(image_url.toString())
                         .append("\", \"is_photo\": true")
                         .append(", \"is_dir\": false") 
                         .append(", \"filesize\": \"").append(image.getSize())
@@ -90,11 +92,44 @@ public class ImageController {
 	}
 	
 	@RequestMapping("/images/delete/{imageId}")
-	public String delete(@PathVariable("imageId")int id, ModelMap model) {
+	public String delete(@PathVariable("imageId")String id, ModelMap model) {
 	    imageService.delete(id);
 	    
 	    List<Image> images = imageService.getAllImages();
 	    model.addAttribute("images", images);
 	    return "_images_tab";
+	}
+	
+	@RequestMapping("/images/show/{imageId}.html")
+	public void show(@PathVariable("imageId")String id, HttpServletResponse response) {
+	    Image image = imageService.getImageById(id);
+	    
+	    if(image!=null) {
+	        // 显示动态图片
+	        response.setStatus(HttpServletResponse.SC_OK);
+	        response.setContentType(image.getContentType());
+	        response.setContentLength((int)image.getSize());
+	        ServletOutputStream out = null;
+	        try {
+	            out = response.getOutputStream();
+	            out.write(image.getContent());
+	        } catch(IOException e) {
+	            e.printStackTrace();
+	            if(out!=null) {
+	                try {
+                        out.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+	            }
+	        }
+	    }
+	    else {
+	        try {
+                response.sendRedirect("resources/images/NoImageShow.jpg");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+	    }
 	}
 }

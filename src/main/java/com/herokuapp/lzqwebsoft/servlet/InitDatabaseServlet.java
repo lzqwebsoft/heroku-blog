@@ -30,7 +30,7 @@ public class InitDatabaseServlet extends HttpServlet {
             // 初始化菜单
             rs = stmt.executeQuery("SELECT * FROM menus");
             if(!rs.next()) {
-            	stmt.executeUpdate("INSERT INTO menus VALUES ('1', '发表博客', 'new.html', '1', '2012-12-13 18:15:08', '2012-12-13 18:15:11');");
+            	stmt.executeUpdate("INSERT INTO menus VALUES ('1', '发表博客', 'article/new.html', '1', '2012-12-13 18:15:08', '2012-12-13 18:15:11');");
                 stmt.executeUpdate("INSERT INTO menus VALUES ('2', '修改密码', 'change_password.html', '1', '2012-12-13 18:16:44', '2012-12-13 18:16:46');");
                 stmt.executeUpdate("INSERT INTO menus VALUES ('3', '设&nbsp;&nbsp;&nbsp;置', 'set.html', '1', '2012-12-13 18:17:57', '2012-12-13 18:18:00');");
             }
@@ -51,7 +51,7 @@ public class InitDatabaseServlet extends HttpServlet {
 
             String username = dbUri.getUserInfo().split(":")[0];
             String password = dbUri.getUserInfo().split(":")[1];
-            String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
 
             return DriverManager.getConnection(dbUrl, username, password);
         } catch(URISyntaxException e) {

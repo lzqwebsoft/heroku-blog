@@ -1,7 +1,7 @@
 package com.herokuapp.lzqwebsoft.service;
 
-import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.herokuapp.lzqwebsoft.dao.ImageDAO;
 import com.herokuapp.lzqwebsoft.pojo.Image;
-import com.herokuapp.lzqwebsoft.util.CommonConstant;
 import com.herokuapp.lzqwebsoft.util.SHA1Util;
 
 @Service("imageService")
@@ -22,31 +21,25 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String save(MultipartFile file, Image image) {
-        // 使用SHA1Util产生一个随机的16位的图片文件名
         String originalFilename = file.getOriginalFilename();
-        int index = originalFilename.lastIndexOf('.');
-        StringBuffer filePath = new StringBuffer(SHA1Util.generateSalt())
-                .append(originalFilename.subSequence(index, originalFilename.length()));
-        
+        // 使用SHA1Util产生一个随机的16位与时间截组成上传图片id
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
+        StringBuffer id = new StringBuffer(format.format(new Date()))
+                .append(SHA1Util.generateSalt());
+        image.setId(id.toString());
         image.setFileName(originalFilename);
         image.setCreateAt(new Date());
-        image.setDiskFilename(filePath.toString());
         image.setSize(file.getSize());
-        
-        File imageFile  = new File(CommonConstant.IMAGE_DIR.toString()+"/"+filePath);
         try {
-            if(!imageFile.exists())
-                imageFile.createNewFile();
-            // 将文件流保存到指定的文件
-            file.transferTo(imageFile);
-            // 图片入库
-            imageDAO.save(image);
+            image.setContent(file.getBytes());
             
-            return image.getDiskFilename();
-        } catch(IOException e) {
+            imageDAO.save(image);
+            return "images/show/"+ image.getId() +".html";
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        
+        return "resources/images/NoImageShow.jpg";
     }
 
     @Override
@@ -55,17 +48,15 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         Image image = imageDAO.getImageById(id);
         if(image!=null) {
-            String filePath = image.getDiskFilename();
-            String dirPath = CommonConstant.IMAGE_DIR;
-            File file = new File(dirPath+"/"+filePath);
-            if(file.exists()) {
-               if(file.delete()) {
-                   imageDAO.delete(image);
-               }
-            }
+            imageDAO.delete(image);
         }
+    }
+
+    @Override
+    public Image getImageById(String id) {
+        return imageDAO.getImageById(id);
     }
 }
