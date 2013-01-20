@@ -3,11 +3,15 @@ package com.herokuapp.lzqwebsoft.servlet;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.TimeZone;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.herokuapp.lzqwebsoft.util.CommonConstant;
 
 /**
  * 随服务器启动的Servlet用于向数据库中插入一些初始化的值
@@ -39,6 +43,8 @@ public class InitDatabaseServlet extends HttpServlet {
             if(!rs.next()) {
             	stmt.executeUpdate("INSERT INTO blog_infos VALUES ('1', '飘痕', '心诚则灵', '<h2 style=\"margin:0 0 5px 10px;\">Welcome you access my zone!</h2>\r\n<p style=\"margin:0 0 5px 15px;\">In building...</p>\r\n<p style=\"margin:0 0 5px 15px;\">Connect with me: <a style=\"color:red;\" href=\"https://twitter.com/lzqwebsoft\">Twitter</a></p>\r\n<p style=\"margin:0 0 5px 15px;\">本站点使用Heroku云平台建立，仅用于学习Java。</p>\r\n<p style=\"margin:0 0 5px 15px;\">基于Spring3.0 MVC 与 Hibernate3.6。</p>\r\n<hr style=\"margin-bottom:5px;\" />\r\n<p style=\"font-size:12px;margin-bottom:20px;text-align:center;\">Copyright © 2012,Powered by <a style=\"color:red;\" href=\"http://www.heroku.com\">Heroku</a></p>', 'lzqwebsoft@gmail.com', '0', '2012-12-19 17:26:32');");
             }
+            // 设置当前的系统时区，为北京时间
+            TimeZone.setDefault(TimeZone.getTimeZone(CommonConstant.DEAFULT_TIME_ZONE));
         } catch(Exception e) {
         	Log log = LogFactory.getLog(InitDatabaseServlet.class);
             log.error(e.getMessage(), e);
