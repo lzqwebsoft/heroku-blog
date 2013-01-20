@@ -34,4 +34,8 @@ public class CommonConstant {
 	 * 用户登录错误的次数
 	 */
 	public static final String ERROR_LOGIN_COUNT = "error_login_count";
+	/**
+	 * 系统默认的时区
+	 */
+	public static final String DEAFULT_TIME_ZONE="GMT+8";
 }
