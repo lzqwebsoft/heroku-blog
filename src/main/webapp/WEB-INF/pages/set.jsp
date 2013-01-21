@@ -15,6 +15,7 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/set.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_tab.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_type_tab.js" ></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/draft_tab.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/images_tab.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/kindeditor3.5/kindeditor.js"></script>
 <script type="text/javascript" charset="utf-8" src="<%= request.getContextPath() %>/resources/javascript/lightbox/lightbox.js"></script>
