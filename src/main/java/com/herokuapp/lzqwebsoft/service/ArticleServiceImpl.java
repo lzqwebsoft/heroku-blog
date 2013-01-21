@@ -114,8 +114,8 @@ public class ArticleServiceImpl implements ArticleService {
 		    String content = article.getContent();
 		    content = content.replaceAll("<.*?>", "");
             // 用于省略文章的内容
-            if(content.length()>300)
-                content = content.substring(0, 300);
+            if(content.length()>250)
+                content = content.substring(0, 250);
             content += "...";
             article.setContent(content);
 			articles.add(article);
@@ -131,8 +131,8 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Article> getAllDrafts() {
-		return articleDAO.getAllDraft();
+	public Page<Article> getAllDrafts(int pageNo, int pageSize) {
+		return articleDAO.getAllDraft(pageNo, pageSize);
 	}
 
 	@Override
@@ -168,8 +168,8 @@ public class ArticleServiceImpl implements ArticleService {
 		    String content = article.getContent();
 		    content = content.replaceAll("<.*?>", "");
   		    // 用于省略文章的内容
-		    if(content.length()>300)
-		        content = content.substring(0, 300);
+		    if(content.length()>250)
+		        content = content.substring(0, 250);
             content += "...";
             article.setContent(content);
             articles.add(article);

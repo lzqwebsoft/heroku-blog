@@ -133,25 +133,56 @@ public class ArticleController {
 	
 	//================== 主要用于set页面的AJAX处理=============
 	@RequestMapping("/delete/article/{articleId}")
-	public String deleteArticle(@PathVariable("articleId")String articleId,
-			HttpServletRequest request) {
+	public String deleteArticle(@PathVariable("articleId")String articleId, int articleTypeId,
+			String title, String pageNo, HttpServletRequest request) {
+		if(pageNo==null||pageNo.trim().length()<=0)
+			pageNo = "1";
+		int pageNoIndex = Integer.parseInt(pageNo);
+		
 		articleService.delete(articleId);
-		List<Article> articles = articleService.getAllAricleWithoutContent(0, 15).getData();
-		request.setAttribute("articles", articles);
-		// 所有的文章类型
-		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
-		request.setAttribute("articleTypes", articleTypes);
+		Page<Article> articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNoIndex, 15);
+		
+		// 如果删除的一条数据刚好是这一页的最后一条数据，则显示上页
+		if(pageNoIndex>1&&articles.getData().size()<=0)
+			articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNoIndex-1, 15);
+		
+		request.setAttribute("page", articles);
+		
+		request.setAttribute("articleTypeId", articleTypeId);
+		request.setAttribute("title", title);
 		
 		return "_article_tab";
 	}
 	
 	@RequestMapping("/delete/draft/{articleId}")
 	public String deleteDraft(@PathVariable("articleId")String articleId,
-			HttpServletRequest request) {
+			String pageNo, HttpServletRequest request) {
+		if(pageNo==null||pageNo.trim().length()<=0)
+			pageNo = "1";
+		int pageNoIndex = Integer.parseInt(pageNo);
+		
 		articleService.delete(articleId);
 		// 所有的草稿
-		List<Article> drafts =  articleService.getAllDrafts();
-		request.setAttribute("drafts", drafts);
+		Page<Article> page_drafts =  articleService.getAllDrafts(pageNoIndex, 15);
+		
+		// 如果删除的一条数据刚好是这一页的最后一条数据，则显示上页
+		if(pageNoIndex>1&&page_drafts.getData().size()<=0)
+			page_drafts = articleService.getAllDrafts(pageNoIndex-1, 15);
+			
+		request.setAttribute("page_drafts", page_drafts);
+		
+		return "_draft_tab";
+	}
+	
+	@RequestMapping("/draft/page")
+	public String pageDraft(String pageNo, HttpServletRequest request) {
+		if(pageNo==null||pageNo.trim().length()<=0)
+			pageNo = "1";
+		int pageNoIndex = Integer.parseInt(pageNo);
+		
+		// 所有的草稿
+		Page<Article> page_drafts =  articleService.getAllDrafts(pageNoIndex, 15);
+		request.setAttribute("page_drafts", page_drafts);
 		
 		return "_draft_tab";
 	}
@@ -169,9 +200,6 @@ public class ArticleController {
 		request.setAttribute("articleTypeId", articleTypeId);
 		request.setAttribute("title", title);
 		
-		// 所有的文章类型
-		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
-		request.setAttribute("articleTypes", articleTypes);
 		return "_article_tab";
 	}
 	

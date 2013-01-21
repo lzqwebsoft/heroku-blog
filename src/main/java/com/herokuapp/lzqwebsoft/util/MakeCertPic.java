@@ -64,7 +64,7 @@ public class MakeCertPic {
             // 设置每个字符的随机颜色
             Color color = new Color(20 + r.nextInt(210), 20 + r.nextInt(210), 20 + r.nextInt(210));
             g2d.setColor(color);
-            g2d.setFont(new Font("", Font.BOLD, 30));
+            g2d.setFont(new Font("", Font.PLAIN, 30));
             // 设置每个字符的随机旋转
             AffineTransform at = new AffineTransform();
             int number = r.nextInt(3) - 1;

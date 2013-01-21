@@ -18,31 +18,19 @@ function article_page_update(url, typeId, title, pageNo) {
 }
 
 // 删除文章
-function confirm_article_delete(message, id) {
+function confirm_article_delete(message, id, typeId, title, pageNo) {
 	var option = confirm(message);
 	if(option) {
 		$.ajax({
 			url: $("#context-path").text()+"/delete/article/"+id+".html",
 			type: "post",
+			data: {
+			    "articleTypeId": typeId,
+			    "title": title,
+			    "pageNo": pageNo
+			},
 			success: function(data, status) {
 			    $("#article_list_table").html(data);
-			},
-			error: function(xhr, strError, errorObj) {
-		    	alert(errorObj);
-		    }
-		});
-	}
-}
-
-//删除草稿
-function confirm_draft_delete(message, id) {
-	var option = confirm(message);
-	if(option) {
-		$.ajax({
-			url: $("#context-path").text()+"/delete/draft/"+id+".html",
-			type: "post",
-			success: function(data, status) {
-			    $("#draft_list").html(data);
 			},
 			error: function(xhr, strError, errorObj) {
 		    	alert(errorObj);

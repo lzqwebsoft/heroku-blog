@@ -52,9 +52,11 @@ public interface ArticleService {
 	
 	/**
 	 * 得到系统中的所有文章草稿
+	 * @param pageNo 当前的页数
+	 * @param pageSize 每页显示数
 	 * @return 文章草稿List集合
 	 */
-	public List<Article> getAllDrafts();
+	public Page<Article> getAllDrafts(int pageNo, int pageSize);
 	
 	/**
 	 * 根据文章的类型id与标题title来检索数据库，得到相应的文章集合

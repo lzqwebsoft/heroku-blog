@@ -47,9 +47,9 @@ public class ArticleDAO extends PageBaseDAO<Article> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Article> getAllDraft() {
+	public Page<Article> getAllDraft(int pageNo, int pageSize) {
 		String queryString = "from Article as art where art.status=0 order by art.createAt desc";
-		return (List<Article>)getHibernateTemple().find(queryString);
+		return pagedQuery(queryString, pageNo, pageSize);
 	}
 	
 	@SuppressWarnings("unchecked")

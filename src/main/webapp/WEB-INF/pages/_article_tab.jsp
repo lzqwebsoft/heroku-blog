@@ -7,7 +7,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <c:choose>
-<c:when test="${requestScope.page.data!=null&&fn:length(requestScope.page.data)>0}">
+<c:when test="${requestScope.page!=null&&requestScope.page.data!=null&&fn:length(requestScope.page.data)>0}">
 <table id="lstBox" cellspacing="0">
 	<tr>
 	  <th class="tdleft">标题</th>
@@ -44,7 +44,7 @@
 	          <a href='javascript:void(0)' onclick="update_set_top('${article.id}', true, this)">置顶</a> | 
 	       </c:otherwise>
 	       </c:choose>
-	       <a href='javascript:void(0)' onclick="confirm_article_delete('<spring:message code="page.confirm.delete.article" arguments="${article.title}"  />', '${article.id}')" name=del>删除</a>
+	       <a href='javascript:void(0)' onclick="confirm_article_delete('<spring:message code="page.confirm.delete.article" arguments="${article.title}"  />', '${article.id}', '${requestScope.articleTypeId}', '${requestScope.title}', '${requestScope.page.currentPageNo}')" name=del>删除</a>
 	   </td>
 	</tr>
 	</c:forEach>

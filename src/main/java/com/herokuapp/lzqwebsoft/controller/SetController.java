@@ -65,8 +65,8 @@ public class SetController {
 		List<Image> images = imageSerivce.getAllImages();
 		request.setAttribute("images", images);
 		// 所有的草稿
-		List<Article> drafts =  articleService.getAllDrafts();
-		request.setAttribute("drafts", drafts);
+		Page<Article> page_drafts =  articleService.getAllDrafts(1, 15);
+		request.setAttribute("page_drafts", page_drafts);
 		
 		return "set";
 	}
