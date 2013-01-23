@@ -21,6 +21,7 @@
    <div id="content-div">
       <form:form action="${pageContext.request.contextPath}/article/publish.html" method="post" modelAttribute="article">
       <h2>撰写博客</h2>
+      <p style="color: red;"><form:errors path="*"/></p>
       <p><label for="article_title">标题</label></p>
       <p>
          <form:select path="patternTypeId">

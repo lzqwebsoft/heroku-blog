@@ -67,4 +67,10 @@ public class ArticleTypeServiceImpl implements ArticleTypeService {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public ArticleType get(int id) {
+		return articleTypeDAO.getArticleTypeById(id);
+	}
+	
 }

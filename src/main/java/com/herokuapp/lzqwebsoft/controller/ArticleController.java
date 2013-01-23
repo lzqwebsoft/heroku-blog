@@ -1,14 +1,18 @@
 package com.herokuapp.lzqwebsoft.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +37,9 @@ public class ArticleController {
 	
 	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@Autowired
 	private ArticlePattern patterns;
@@ -78,36 +85,80 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("/article/publish")
-	public String publish(@ModelAttribute("article")Article article, int type_model,
-			String new_type, ModelMap model, HttpServletRequest request,
-			HttpSession session, String publish, String save, String editOrCreate) {
-		// 如果为添加类型，则先创建一个新的类型
-		boolean modelNew = false;
-		if(type_model==1) {
-			if(new_type!=null&&new_type.trim().length()>0) {
-				modelNew = true;
-			}
-		}
-		boolean isDraft = false;
-		if(publish!=null&&publish.trim().length()>0) {
-			isDraft = false;
-		} else {
-			isDraft = true;
-		}
-		// 添加作者
-		User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
-		article.setAuthor(user);
-		// 入库
-		if(editOrCreate!=null&&editOrCreate.equals("EDIT")) {
-			articleService.update(article, new_type, modelNew, isDraft);
-		} else {
-			articleService.save(article, new_type, modelNew, isDraft);
+	public String publish(@ModelAttribute("article")Article article, Errors errors, 
+			String type_model, String new_type, ModelMap model, HttpServletRequest request,
+			HttpSession session, String publish, String save, String editOrCreate, Locale locale) {
+		// 验证用户提交数据的合法性
+		String articleContentLabel = messageSource.getMessage("page.label.article.content", null, locale);
+		String articleTitleLabel = messageSource.getMessage("page.label.title", null, locale);
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "info.required", new Object[]{articleTitleLabel});
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "info.required", new Object[]{articleContentLabel});
+		int patternTypeId = article.getPatternTypeId();
+		if(patternTypeId==0) {
+			String patternLabel = messageSource.getMessage("page.label.pattern", null, locale);
+			errors.rejectValue("patternTypeId", "info.select", new Object[]{patternLabel}, "");
 		}
 		
-        model.addAttribute("patterns", patterns);
-		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
-		model.addAttribute("articleTypes", articleTypes);
-		return "redirect:/show/"+article.getId()+".html";
+		int type = 0;
+		// 文章类型添加的方式，为0表示通过下拉框选择，1表示再创建
+		try {
+			type = Integer.parseInt(type_model);
+		} catch(NumberFormatException e) {
+			type = 0;
+		}
+		
+		if(type==0) {
+			// 当为选择一个类别时
+			ArticleType articleType = article.getType();
+			if(articleType==null||articleType.getId()==0) {
+				String articleTypeLabel = messageSource.getMessage("page.label.article.type", null, locale);
+				errors.rejectValue("type.id", "info.select", new Object[]{articleTypeLabel}, "");
+			} else {
+				articleType = articleTypeService.get(articleType.getId());
+				if(articleType==null) {
+					errors.rejectValue("type", "info.select.articleType.notExist");
+				}
+			}
+		} else if (type==1) {
+			// 当为创建一个类别时
+			String articleTypeLabel = messageSource.getMessage("page.label.article.type", null, locale);
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "type.name", "info.required", new Object[]{articleTypeLabel});
+		}
+		
+		// 判断是否有错误
+		if(errors.hasErrors()) {
+			List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
+			model.addAttribute("articleTypes", articleTypes);
+			
+			model.addAttribute("patterns", patterns);
+			return "new";
+		} else {
+			// 如果为添加类型，则先创建一个新的类型
+			boolean modelNew = false;
+			if(type==1) {
+				if(new_type!=null&&new_type.trim().length()>0) {
+					modelNew = true;
+				}
+			}
+			boolean isDraft = false;
+			if(publish!=null&&publish.trim().length()>0) {
+				isDraft = false;
+			} else {
+				isDraft = true;
+			}
+			// 添加作者
+			User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
+			article.setAuthor(user);
+			// 入库
+			if(editOrCreate!=null&&editOrCreate.equals("EDIT")) {
+				articleService.update(article, new_type, modelNew, isDraft);
+			} else {
+				articleService.save(article, new_type, modelNew, isDraft);
+			}
+			
+	        model.addAttribute("patterns", patterns);
+			return "redirect:/show/"+article.getId()+".html";
+		}
 	}
 	
 	@RequestMapping("/edit/{articleId}")

@@ -38,4 +38,11 @@ public interface ArticleTypeService {
 	 * @param type_name 新名称
 	 */
 	public void update(String id, String type_name);
+	
+	/**
+	 * 由类型的id来得到一个类型对象
+	 * @param id 类型id
+	 * @return
+	 */
+	public ArticleType get(int id);
 }
