@@ -21,7 +21,7 @@ public class Article {
 	private long readedNum;
 	private Date createAt;
 	private Date updateAt;
-	private int commentCount;   // 一个虚拟的属性，记录对就评论的个数
+	private int commentCount;   // 一个虚拟的属性，记录对应评论的个数
 	private Set<Comment> comments;
 	public String getId() {
 		return id;
