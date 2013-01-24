@@ -24,7 +24,7 @@
      <div class="center-box">
          <ul class="q-menubox">
            <li class="q-menuitem">
-              <a href="<%= request.getContextPath() %>">首页</a>
+              <a href="<c:url value="/" />">首页</a>
            </li>
            <li class="q-menuitem">
               <a id="about-link" href="javascript:void(0)">关于</a>

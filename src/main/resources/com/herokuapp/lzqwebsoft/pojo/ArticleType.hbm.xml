@@ -11,8 +11,8 @@
        <property name="disable" not-null="true" column="disable" />
        <property name="createAt" column="create_at" />
        <property name="updateAt" column="update_at" />
-       <set name="articles" inverse="true" cascade="all" lazy="false">
-          <key  column="type_id" />
+       <set name="articles" inverse="true" cascade="all" lazy="false" where="status=1">
+          <key column="type_id" />
           <one-to-many class="Article" />
        </set>
     </class>

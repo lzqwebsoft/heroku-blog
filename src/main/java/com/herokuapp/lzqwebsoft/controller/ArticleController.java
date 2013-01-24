@@ -50,6 +50,8 @@ public class ArticleController {
 	public String show(@PathVariable("articleId")String articleId,
 			HttpSession session, ModelMap model) {
 		Article article = articleService.get(articleId);
+		if(article==null)
+			return "redirect:/error404.html";
 		model.addAttribute("article", article);
 		
 		// 阅读计数, 只有是没有登录的用户才进行记数

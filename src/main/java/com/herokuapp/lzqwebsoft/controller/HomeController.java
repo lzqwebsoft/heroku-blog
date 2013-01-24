@@ -99,4 +99,14 @@ public class HomeController{
 			}
 		}
 	}
+	
+	@RequestMapping(value="/error404")
+	public String error404() {
+		return "error404";
+	}
+	
+	@RequestMapping(value="/error503")
+	public String error503() {
+		return "error503";
+	}
 }

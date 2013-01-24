@@ -37,7 +37,7 @@
 	</div>
     
     <div id="article_type_link">
-       <p><a href="<%= request.getContextPath() %>">首页</a>&nbsp;»&nbsp;
+       <p><a href="<c:url value="/" />">首页</a>&nbsp;»&nbsp;
        <a href="<%= request.getContextPath() %>/select/${article.type.id}.html"><c:out value="${article.type.name}" /></a>&nbsp;»&nbsp;博客正文</p>
     </div>
     
@@ -111,8 +111,8 @@
 		   <form:hidden path="article.title"/>
 		   <input type="hidden" name="parent_comment_id" id="parent_comment_id"/>
 		   <c:if test="${sessionScope.user==null}">
-		   <p><form:input path="reviewer" /> 昵称</p>
-		   <p><form:input path="website" /> 个人网站</p>
+		   <p><form:input path="reviewer" maxlength="80"/> 昵称</p>
+		   <p><form:input path="website" maxlength="150"/> 个人网站</p>
 		   </c:if>
 		   <p>
 		      <form:textarea id="comment_content" path="content" onkeyup="string_number(this)" onblur="string_number(this)" />

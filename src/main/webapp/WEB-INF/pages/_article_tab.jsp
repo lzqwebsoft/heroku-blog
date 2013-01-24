@@ -23,7 +23,7 @@
 	       <span class='gray'>(<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>)</span>
 	   </td>
 	   <td><c:out value="${article.readedNum}" /></td>
-	   <td>0</td>
+	   <td><c:out value="${article.commentCount}" /></td>
 	   <td>
 	      <c:choose>
 	      <c:when test="${article.allowComment}">

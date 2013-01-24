@@ -23,7 +23,7 @@
        <span class='gray'>(<fmt:formatDate value="${draft.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>)</span>
    </td>
    <td><c:out value="${draft.readedNum}" /></td>
-   <td>0</td>
+   <td><c:out value="${draft.commentCount}" /></td>
    <td><a href='javascript:void(0)' class='lock'>&nbsp;</a></td>
    <td>
        <a href='<%= request.getContextPath() %>/edit/${draft.id}.html'>编辑</a> | 
