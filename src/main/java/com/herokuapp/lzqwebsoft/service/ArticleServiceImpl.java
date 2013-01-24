@@ -92,6 +92,14 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
+	public void addViewedCount(Article article) {
+		long count = article.getReadedNum();
+		count ++;
+		article.setReadedNum(count);
+		articleDAO.update(article);
+	}
+
+	@Override
 	public Article get(String id) {
 		Article article = articleDAO.getArticleById(id);
 		return article;
@@ -114,9 +122,10 @@ public class ArticleServiceImpl implements ArticleService {
 		    String content = article.getContent();
 		    content = content.replaceAll("<.*?>", "");
             // 用于省略文章的内容
-            if(content.length()>250)
+            if(content.length()>250) {
                 content = content.substring(0, 250);
-            content += "...";
+                content += "...";
+            }
             article.setContent(content);
 			articles.add(article);
 		}
@@ -168,9 +177,10 @@ public class ArticleServiceImpl implements ArticleService {
 		    String content = article.getContent();
 		    content = content.replaceAll("<.*?>", "");
   		    // 用于省略文章的内容
-		    if(content.length()>250)
+		    if(content.length()>250) {
 		        content = content.substring(0, 250);
-            content += "...";
+		        content += "...";
+		    }
             article.setContent(content);
             articles.add(article);
 		}

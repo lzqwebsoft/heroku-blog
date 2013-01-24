@@ -22,6 +22,7 @@
 	  <mvc:interceptor>
 		  <mvc:mapping path="/show/*.html" />
 		  <mvc:mapping path="/index.html" />
+		  <mvc:mapping path="/select/*.html" />
 		  <bean class="com.herokuapp.lzqwebsoft.interceptor.BlogInfoInterceptor" />
 	  </mvc:interceptor>
    </mvc:interceptors>

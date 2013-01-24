@@ -7,8 +7,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="author" content="Dave Shea" />
-  <meta name="keywords" content="design, css," />
+  <meta name="author" content="lzqwebsoft, Johnny" />
+  <meta name="keywords" content="lzqwebsoft, Johnny, herokuapp, heroku-blog, blog" />
   <meta name="description" content="" />
   <meta name="robots" content="all" />
   <title><spring:message code="page.title" /></title>
@@ -58,11 +58,20 @@
     <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
     <c:forEach items="${page.data}" var="article">
     <div class="explanation">
-      <h3><a href="${pageContext.request.contextPath}/show/${article.id}.html"><c:out value="${article.title}" /></a></h3>
+       
+      <h3>
+         <span class="pattern_${article.patternTypeId} pattern_span"></span>
+         <a href="${pageContext.request.contextPath}/show/${article.id}.html">
+             <c:out value="${article.title}" />
+         </a>
+         <c:if test="${article.isTop}">
+            <font color="red">[置顶]</font>
+         </c:if>
+      </h3>
           <p class="article_date">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
           <p class="article_description"><c:out value="${article.content}"  escapeXml="false"/></p>
           <p>
-             <a href="show/${article.id}.html">阅读(100)</a>&nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="show/${article.id}.html">阅读(${article.readedNum})</a>&nbsp;&nbsp;&nbsp;&nbsp;
              <a href="show/${article.id}.html#reply_article">评论(0)</a>&nbsp;&nbsp;&nbsp;&nbsp;
              <c:if test="${sessionScope.user!=null}">
              <a href="edit/${article.id}.html">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -164,7 +173,7 @@
   </div>
   
   <div id="footer">
-       Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
+     Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
   </div>
 
 </div>

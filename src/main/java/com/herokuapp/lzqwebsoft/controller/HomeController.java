@@ -36,6 +36,11 @@ public class HomeController{
 			pageNo = "1";
 		int pageNoIndex = Integer.parseInt(pageNo);
 		Page<Article> page = articleService.getAllAricle(pageNoIndex, 15);
+		// 当请求的页面数中没有数据，则重定向到上一页
+		if(pageNoIndex>1&&page.getData().size()<=0) {
+			model.addAttribute("pageNo", pageNoIndex-1);
+			return "redirect:/index.html";
+		}
 		model.addAttribute("page", page);
 		
 		// 阅读排行榜的前10篇博文
@@ -55,6 +60,11 @@ public class HomeController{
 		int pageNoIndex = Integer.parseInt(pageNo);
 		
 		Page<Article> articles = articleService.getArticleByTypeId(articleTypeId, pageNoIndex, 15);
+		// 当请求的页面数中没有数据，则重定向到上一页
+		if(pageNoIndex>1&&articles.getData().size()<=0) {
+			model.addAttribute("pageNo", pageNoIndex-1);
+			return "redirect:/select/"+articleTypeId+".html";
+		}
 		model.addAttribute("page", articles);
 		
 		List<Article> top10Articles = articleService.getReadedTop10();

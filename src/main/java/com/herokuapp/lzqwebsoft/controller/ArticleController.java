@@ -1,5 +1,6 @@
 package com.herokuapp.lzqwebsoft.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,11 +45,36 @@ public class ArticleController {
 	@Autowired
 	private ArticlePattern patterns;
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/show/{articleId}")
 	public String show(@PathVariable("articleId")String articleId,
-			ModelMap model) {
+			HttpSession session, ModelMap model) {
 		Article article = articleService.get(articleId);
 		model.addAttribute("article", article);
+		
+		// 阅读计数, 只有是没有登录的用户才进行记数
+		if(session.getAttribute(CommonConstant.LOGIN_USER)==null) {
+			List<String> viewedArticles = (List<String> )session.getAttribute(CommonConstant.VIEWED_ARTICLES);
+			if(viewedArticles==null) {
+				viewedArticles = new ArrayList<String>();
+				viewedArticles.add(articleId);
+				articleService.addViewedCount(article);
+				session.setAttribute(CommonConstant.VIEWED_ARTICLES, viewedArticles);
+			} else {
+				boolean viewed = false;
+				for(String viewedArticle : viewedArticles) {
+					if(viewedArticle.equals(articleId)) {
+						viewed = true;
+						break;
+					}
+				}
+				if(!viewed) {
+					viewedArticles.add(articleId);
+					articleService.addViewedCount(article);
+					session.setAttribute(CommonConstant.VIEWED_ARTICLES, viewedArticles);
+				}
+			}
+		}
 		
 		List<Comment> comments = commentService.getAllParentComment(articleId);
 		model.addAttribute("comments", comments);
@@ -121,8 +147,10 @@ public class ArticleController {
 			}
 		} else if (type==1) {
 			// 当为创建一个类别时
-			String articleTypeLabel = messageSource.getMessage("page.label.article.type", null, locale);
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "type.name", "info.required", new Object[]{articleTypeLabel});
+			if(new_type==null||new_type.trim().length()<=0) {
+				String articleTypeLabel = messageSource.getMessage("page.label.article.type", null, locale);
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "type.name", "info.required", new Object[]{articleTypeLabel});
+			}
 		}
 		
 		// 判断是否有错误
@@ -176,8 +204,8 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("/delete/{articleId}")
-	public void delete(@PathVariable("articleId")String articleId,
-			HttpServletResponse response) {
+	public void delete(@PathVariable("articleId")String articleId, String url,
+			String pageNo, HttpServletResponse response) {
 		articleService.delete(articleId);
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
