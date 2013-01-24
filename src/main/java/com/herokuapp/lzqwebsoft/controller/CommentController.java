@@ -43,7 +43,7 @@ public class CommentController {
         User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
         if(user!=null) {
             comment.setReviewer(user.getUserName());
-            comment.setWebsite(request.getRemoteHost()+":"+request.getLocalPort()+request.getContextPath());
+            comment.setWebsite(request.getServerName()+":"+request.getServerPort()+request.getContextPath());
         }
         
 		// 验证数据的合法性
@@ -107,8 +107,8 @@ public class CommentController {
 		    // 发送邮件给博言主，通知有新评论
 		    user = userService.getBlogOwner();
             if(user.getEmail()!=null){
-                StringBuffer link = new StringBuffer("http://").append(request.getRemoteAddr());
-                int port = request.getLocalPort();
+                StringBuffer link = new StringBuffer("http://").append(request.getServerName());
+                int port = request.getServerPort();
                 if(port!=80)
                     link.append(":").append(port);
                 link.append("").append(request.getContextPath())

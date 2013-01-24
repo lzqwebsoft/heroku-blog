@@ -21,6 +21,7 @@ public class Article {
 	private long readedNum;
 	private Date createAt;
 	private Date updateAt;
+	private int commentCount;   // 一个虚拟的属性，记录对就评论的个数
 	private Set<Comment> comments;
 	public String getId() {
 		return id;
@@ -93,6 +94,12 @@ public class Article {
 	}
 	public void setUpdateAt(Date updateAt) {
 		this.updateAt = updateAt;
+	}
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
 	}
 	public Set<Comment> getComments() {
 		return comments;
