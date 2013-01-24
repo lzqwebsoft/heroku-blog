@@ -42,13 +42,13 @@ public class ArticleDAO extends PageBaseDAO<Article> {
 	
 	@SuppressWarnings("unchecked")
 	public Page<Article> getAllArticle(int pageNo, int pageSize) {
-		String queryString = "from Article as art where art.status=1 order by art.createAt desc";
+		String queryString = "from Article as art where art.status=1 order by art.isTop desc, art.createAt desc";
 		return pagedQuery(queryString, pageNo, pageSize);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Page<Article> getAllDraft(int pageNo, int pageSize) {
-		String queryString = "from Article as art where art.status=0 order by art.createAt desc";
+		String queryString = "from Article as art where art.status=0 order by art.isTop desc, art.createAt desc";
 		return pagedQuery(queryString, pageNo, pageSize);
 	}
 	
@@ -58,10 +58,10 @@ public class ArticleDAO extends PageBaseDAO<Article> {
 		String likeParam = new StringBuffer("%").append(title).append("%").toString();
 		Page<Article> page = new Page<Article>();
 		if(typeId==0) {
-			queryString = "from Article as art where art.status=1 and art.title like ? order by art.createAt desc";
+			queryString = "from Article as art where art.status=1 and art.title like ? order by art.isTop desc, art.createAt desc";
 			page = pagedQuery(queryString, pageNo, pageSize, new Object[]{likeParam});
 		} else {
-			queryString = "from Article as art where art.status=1 and art.type.id=? and art.title like ? order by art.createAt desc";
+			queryString = "from Article as art where art.status=1 and art.type.id=? and art.title like ? order by art.isTop desc, art.createAt desc";
 			page = pagedQuery(queryString, pageNo, pageSize, new Object[]{typeId, likeParam});
 		}
 		return page;
@@ -69,7 +69,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
 	
 	@SuppressWarnings("unchecked")
 	public Page<Article> selectArticleByTypeId(int typeId, int pageNo, int pageSize) {
-		String queryString = "from Article as art where art.status=1 and art.type.id=? order by art.createAt desc";
+		String queryString = "from Article as art where art.status=1 and art.type.id=? order by art.isTop desc, art.createAt desc";
 		return pagedQuery(queryString, pageNo, pageSize, typeId);
 	}
 	

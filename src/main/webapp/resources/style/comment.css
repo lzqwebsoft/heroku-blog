@@ -246,6 +246,24 @@ abbr, acronym {
     height: 18px;
     /*width: 424px;*/
 }
+.pattern_span {
+	display: inline-block;
+    height: 19px;
+    margin: 0 2px 0 0;
+    width: 19px;
+}
+.pattern_1 {
+	background: url('../images/pattern_1.gif') no-repeat scroll 0 0 transparent;
+	vertical-align: middle;
+}
+.pattern_2 {
+	background: url('../images/pattern_2.gif') no-repeat scroll 0 0 transparent;
+	vertical-align: middle;
+}
+.pattern_3 {
+	background: url('../images/pattern_3.gif') no-repeat scroll 0 0 transparent;
+	vertical-align: middle;
+}
 .explanation h3  a{
 	color: #000000;
 }

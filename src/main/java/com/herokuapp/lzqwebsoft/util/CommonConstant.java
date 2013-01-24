@@ -38,4 +38,8 @@ public class CommonConstant {
 	 * 系统默认的时区
 	 */
 	public static final String DEAFULT_TIME_ZONE="GMT+8";
+	/**
+	 * 标记用户阅读的文章Id
+	 */
+	public static final String VIEWED_ARTICLES = "viewed_articles";
 }

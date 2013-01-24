@@ -42,9 +42,15 @@
     </div>
     
     <div id="article_content">
-       <h3><c:out value="${article.title}"/></h3>
+       <h3>
+          <span class="pattern_${article.patternTypeId} pattern_span"></span>
+          <c:out value="${article.title}"/>
+          <c:if test="${article.isTop}">
+            <font color="red">[置顶]</font>
+          </c:if>
+       </h3>
        <p class="article_date">
-          <span>发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>  ，已有100次阅读</span>
+          <span>发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>  ，已有${article.readedNum}次阅读</span>
           <span class="article_operate">
              <a href="#reply_article">评论</a>(${fn:length(comments)})&nbsp;
              <c:if test="${sessionScope.user!=null}">

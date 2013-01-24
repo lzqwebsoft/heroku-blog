@@ -26,6 +26,12 @@ public interface ArticleService {
 	public void update(Article article, String typeName, boolean modelNew, boolean isDraft);
 	
 	/**
+	 * 文章的阅读次数加1
+	 * @param article 对应的文章
+	 */
+	public void addViewedCount(Article article);
+	
+	/**
 	 * 由指定的ID得到文章对象
 	 * @param id 文章ID
 	 * @return 文章对象
