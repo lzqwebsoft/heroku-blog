@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticlePattern;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
+import com.herokuapp.lzqwebsoft.pojo.CodeTheme;
 import com.herokuapp.lzqwebsoft.pojo.Comment;
 import com.herokuapp.lzqwebsoft.pojo.Page;
 import com.herokuapp.lzqwebsoft.pojo.User;
@@ -44,6 +45,9 @@ public class ArticleController {
 	
 	@Autowired
 	private ArticlePattern patterns;
+	
+	@Autowired
+	private CodeTheme themes;
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/show/{articleId}")
@@ -104,6 +108,7 @@ public class ArticleController {
 		model.addAttribute("article", article);
 		
 		model.addAttribute("patterns", patterns);
+		model.addAttribute("codeThemes", themes);
 		
 		model.addAttribute("editOrCreate", "CREATE");
 		
@@ -161,6 +166,7 @@ public class ArticleController {
 			model.addAttribute("articleTypes", articleTypes);
 			
 			model.addAttribute("patterns", patterns);
+			model.addAttribute("codeThemes", themes);
 			return "new";
 		} else {
 			// 如果为添加类型，则先创建一个新的类型
@@ -186,7 +192,6 @@ public class ArticleController {
 				articleService.save(article, new_type, modelNew, isDraft);
 			}
 			
-	        model.addAttribute("patterns", patterns);
 			return "redirect:/show/"+article.getId()+".html";
 		}
 	}
@@ -197,6 +202,7 @@ public class ArticleController {
 		model.addAttribute("article", article);
 		
         model.addAttribute("patterns", patterns);
+        model.addAttribute("codeThemes", themes);
         model.addAttribute("editOrCreate", "EDIT");
 		
 		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();

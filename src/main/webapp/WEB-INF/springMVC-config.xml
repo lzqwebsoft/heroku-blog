@@ -63,4 +63,19 @@
           </map>
       </property>
    </bean>
+   
+   <bean id="themes" class="com.herokuapp.lzqwebsoft.pojo.CodeTheme">
+      <property name="themes">
+        <map>
+          <entry key="Default" value="Default" />
+          <entry key="Django" value="Django" />
+          <entry key="Eclipse" value="Eclipse" />
+          <entry key="Emacs" value="Emacs" />
+          <entry key="FadeToGrey" value="FadeToGrey" />
+          <entry key="MDUltra" value="MDUltra" />
+          <entry key="Midnight" value="Midnight" />
+          <entry key="RDark" value="RDark" />
+        </map>
+      </property>
+   </bean>
 </beans>

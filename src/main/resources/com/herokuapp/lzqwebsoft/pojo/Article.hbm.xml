@@ -16,6 +16,7 @@
        <property name="patternTypeId" not-null="true" column="pattern_type"/>
        <property name="title" length="255" column="title" />
        <property name="allowComment" column="allow_comment" />
+       <property name="codeTheme" length="100" column="code_theme" />
        <property name="isTop" column="is_top" />
        <property name="content" type="text" not-null="true" column="content"/>
        <property name="status" column="status" />

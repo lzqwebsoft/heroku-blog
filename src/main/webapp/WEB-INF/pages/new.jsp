@@ -43,10 +43,17 @@
          <input id="type_model" name="type_model" type="hidden" value="0" />
          <a href="javascript:void(0)" onclick="change_type(this); return false;">新建分类</a>
       </p>
+      <p>
+         <label for="code_theme" style="padding-right: 10px;">代码主题</label>
+         <form:select path="codeTheme">
+            <form:options items="${codeThemes.themes}" />
+         </form:select>
+      </p>
       <p style="margin-bottom: 10px;">
          <label for="allow_discuss">允许评论？</label>
          <form:radiobutton path="allowComment" value="true"/>是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          <form:radiobutton path="allowComment" value="false"/>否
+         <form:hidden path="isTop" />
       </p>
       <p>
          <input type="hidden" name="editOrCreate" value="${editOrCreate}" />
