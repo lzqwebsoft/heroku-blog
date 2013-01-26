@@ -15,6 +15,7 @@ public class Article {
 	private int patternTypeId;
 	private String title;
 	private boolean allowComment;
+	private String codeTheme;     // 代码的主题
 	private boolean isTop;
 	private String content;
 	private int status;
@@ -59,7 +60,13 @@ public class Article {
 	public void setAllowComment(boolean allowComment) {
 		this.allowComment = allowComment;
 	}
-	public boolean getIsTop() {
+	public String getCodeTheme() {
+        return codeTheme;
+    }
+    public void setCodeTheme(String codeTheme) {
+        this.codeTheme = codeTheme;
+    }
+    public boolean getIsTop() {
 		return isTop;
 	}
 	public void setIsTop(boolean isTop) {

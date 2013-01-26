@@ -43,7 +43,7 @@ public class CommentController {
         User user = (User)session.getAttribute(CommonConstant.LOGIN_USER);
         if(user!=null) {
             comment.setReviewer(user.getUserName());
-            comment.setWebsite(request.getServerName()+":"+request.getServerPort()+request.getContextPath());
+            comment.setWebsite("http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath());
         }
         
 		// 验证数据的合法性
@@ -51,13 +51,30 @@ public class CommentController {
 		List<String> errors = new ArrayList<String>();
 		String reviewer = comment.getReviewer();
 		String contentStr = comment.getContent();
+		String website = comment.getWebsite();
 		if(reviewer==null||reviewer.trim().length()<=0) {
 			String reviewerLabel = messageSource.getMessage("page.label.reviewer", null, locale);
 			errors.add(messageSource.getMessage("info.required", new Object[]{reviewerLabel}, locale));
+		} else if(reviewer.trim().length()>80) {
+		    String reviewerLabel = messageSource.getMessage("page.label.reviewer", null, locale);
+		    errors.add(messageSource.getMessage("info.length.long", new Object[]{reviewerLabel, 80}, locale));
+		}
+		if(website!=null&&website.trim().length()>0&&!website.matches("^http[s]?:\\/\\/(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*(\\:([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]{1}|6553[0-5]))?(\\/\\w*)*(\\.\\w*)?(\\?\\S*)?$")) {
+		    errors.add(messageSource.getMessage("info.invalid.website", null, locale));
 		}
 		if(contentStr==null||contentStr.trim().length()<=0) {
 			String contentLabel = messageSource.getMessage("page.label.content", null, locale);
 			errors.add(messageSource.getMessage("info.required", new Object[]{contentLabel}, locale));
+		} else {
+		    contentStr = contentStr.toLowerCase();
+		    contentStr = contentStr.replaceAll("<(img|embed).*?>", "K");
+		    contentStr = contentStr.replaceAll("<.*?>", "");
+		    contentStr = contentStr.replaceAll("\r\n|\n|\r/g", "");
+		    contentStr = contentStr.trim();
+		    if(contentStr.length()>120) {
+		        String contentLabel = messageSource.getMessage("page.label.content", null, locale);
+		        errors.add(messageSource.getMessage("info.length.long", new Object[]{contentLabel, 120}, locale));
+		    }
 		}
 		if(errors.size()>0) {
 			PrintWriter out = null;
@@ -92,10 +109,6 @@ public class CommentController {
 			comment.setParentComment(parnetComment);
 		}
 		
-		// 为网址加上http
-		String webSite = comment.getWebsite();
-		if(webSite!=null&&webSite.trim().length()>0)
-			comment.setWebsite("http://"+webSite);
 		commentService.save(comment);
 		
 		String articleId = comment.getArticle().getId();

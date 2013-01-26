@@ -1,4 +1,5 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -15,8 +16,16 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/show.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/article_comments.js"></script>
+<c:choose>
+<c:when test="${article.codeTheme==null}">
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shCoreDefault.css" />  
-<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shThemeDefault.css" />  
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shThemeDefault.css" />
+</c:when>
+<c:otherwise>
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shCore${article.codeTheme}.css" />  
+<link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shTheme${article.codeTheme}.css" />
+</c:otherwise>
+</c:choose>
 <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/javascript/shl/styles/shCore.css" />
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/shl/scripts/shCore.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/shl/scripts/shAutoloader.js"></script>
@@ -150,7 +159,7 @@
 		},*/
 		afterChange : function(id) {
 			var count = KE.count(id, 'text');
-			if(count>=120){
+			if(count>120){
 				KE.$('wordcount').innerHTML="您输入的超过了<span id='str'>120</span>个字";
 			} 
 			else {
