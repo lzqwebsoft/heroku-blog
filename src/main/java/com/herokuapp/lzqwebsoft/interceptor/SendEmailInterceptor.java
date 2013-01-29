@@ -32,14 +32,17 @@ public class SendEmailInterceptor implements HandlerInterceptor {
 	
 	@Autowired
 	private UserService userService;
+	
+	// 用于指示是否评论成功
+	private boolean isSuccessed;
 
 	@Override
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception exception)
 			throws Exception {
 		User user = (User)request.getSession().getAttribute(CommonConstant.LOGIN_USER);
-		// 当用于为空，说明是外人的评论，则要求发送邮件给予通知
-		if(user==null) {
+		// 当用于为空，并添加评论成功，说明是外人的评论，则要求发送邮件给予通知
+		if(user==null&&isSuccessed) {
 		    // 发送邮件给博言主，通知有新评论
 		    user = userService.getBlogOwner();
 		    BlogInfo blogInfo = blogInfoService.getSystemBlogInfo();
@@ -64,6 +67,8 @@ public class SendEmailInterceptor implements HandlerInterceptor {
                 String to = email;
                 // 发送邮件
                 MailUtil.sendEMail(to, title, content);
+                
+                isSuccessed = false;
             }
 		}
 	}
@@ -71,7 +76,16 @@ public class SendEmailInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response,
 			Object handler, ModelAndView view) throws Exception {
-		
+	    if(view!=null) {
+	        String viewName = view.getViewName();
+	        if(viewName!=null&&viewName.equalsIgnoreCase("_article_comments"))
+	            isSuccessed = true;
+	        else
+	            isSuccessed = false;
+	    } else {
+	        isSuccessed = false;
+	    }
+	    
 	}
 
 	@Override
