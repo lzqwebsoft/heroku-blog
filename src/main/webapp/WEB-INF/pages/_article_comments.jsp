@@ -45,11 +45,11 @@
           </c:choose>
           <span>
              <c:choose>
-             <c:when test="${comment.isBlogger}">
-                <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '博主')">回复</a>&nbsp;
+             <c:when test="${childComment.isBlogger}">
+                <a href="#reply_article" title="回复" onclick="replay_comment('${childComment.id}', '博主')">回复</a>&nbsp;
              </c:when>
              <c:otherwise>
-                <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '${childComment.reviewer}')">回复</a>&nbsp;
+                <a href="#reply_article" title="回复" onclick="replay_comment('${childComment.id}', '${childComment.reviewer}')">回复</a>&nbsp;
              </c:otherwise>
              </c:choose>
              <c:if test="${sessionScope.user!=null}">
