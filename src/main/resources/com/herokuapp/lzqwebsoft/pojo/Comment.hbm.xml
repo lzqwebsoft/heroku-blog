@@ -13,6 +13,7 @@
        <property name="website" length="255" column="website" />
        <property name="content" type="text" not-null="true" column="content" />
        <property name="createAt" column="create_at" />
+       <property name="isBlogger" column="is_blogger"/>
        <!-- 自关联一对多关系 -->
        <many-to-one name="parentComment" class="Comment" foreign-key="fk_parent"
            column="parent_id" cascade="save-update" />

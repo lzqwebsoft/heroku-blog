@@ -20,17 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.herokuapp.lzqwebsoft.pojo.Comment;
 import com.herokuapp.lzqwebsoft.pojo.User;
 import com.herokuapp.lzqwebsoft.service.CommentService;
-import com.herokuapp.lzqwebsoft.service.UserService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
-import com.herokuapp.lzqwebsoft.util.MailUtil;
 
 @Controller
 public class CommentController {
 	@Autowired
 	private CommentService commentService;
-	
-	@Autowired
-	private UserService userService;
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -44,6 +39,8 @@ public class CommentController {
         if(user!=null) {
             comment.setReviewer(user.getUserName());
             comment.setWebsite("http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath());
+            // 标记此条评论由博主产生
+            comment.setIsBlogger(true);
         }
         
 		// 验证数据的合法性
@@ -59,7 +56,7 @@ public class CommentController {
 		    String reviewerLabel = messageSource.getMessage("page.label.reviewer", null, locale);
 		    errors.add(messageSource.getMessage("info.length.long", new Object[]{reviewerLabel, 80}, locale));
 		}
-		if(website!=null&&website.trim().length()>0&&!website.matches("^http[s]?:\\/\\/(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*(\\:([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]{1}|6553[0-5]))?(\\/\\w*)*(\\.\\w*)?(\\?\\S*)?$")) {
+		if(website!=null&&website.trim().length()>0&&!website.matches("^((http[s]?)(://))(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*((:\\d+)?)(/(\\w+(-\\w+)*))*$")) {
 		    errors.add(messageSource.getMessage("info.invalid.website", null, locale));
 		}
 		if(contentStr==null||contentStr.trim().length()<=0) {
@@ -114,31 +111,6 @@ public class CommentController {
 		String articleId = comment.getArticle().getId();
 		List<Comment> comments = commentService.getAllParentComment(articleId);
 		model.addAttribute("comments", comments);
-		
-		// 当用于为空，说明是外人的评论，则要求发送邮件给予通知
-		if(user==null) {
-		    // 发送邮件给博言主，通知有新评论
-		    user = userService.getBlogOwner();
-            if(user.getEmail()!=null){
-                StringBuffer link = new StringBuffer("http://").append(request.getServerName());
-                int port = request.getServerPort();
-                if(port!=80)
-                    link.append(":").append(port);
-                link.append("").append(request.getContextPath())
-                    .append("/show/").append(articleId).append(".html").toString();
-                final String content = messageSource.getMessage("email.addComment.content", new Object[]{user.getUserName(), 
-                		comment.getArticle().getTitle(), link.toString()}, locale);
-                final String title = messageSource.getMessage("email.addComment.title", null, locale);
-                final String to = user.getEmail();
-                new Thread() {
-                    @Override
-                    public void run() {
-                        MailUtil.sendEMail(to, title, content);
-                    }
-                    
-                }.start();
-            }
-		}
 		
 		return "_article_comments";
 	}

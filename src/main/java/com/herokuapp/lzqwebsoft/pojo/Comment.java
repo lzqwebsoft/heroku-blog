@@ -14,6 +14,7 @@ public class Comment {
 	private String reviewer;
 	private String website;
 	private String content;
+	private boolean isBlogger;            // 标记此条评论是否由博主产生
 	private Comment parentComment;        // 对应的父评论
 	private Set<Comment> childComments;   // 对应的子评论
 	private Date createAt;
@@ -46,6 +47,12 @@ public class Comment {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public boolean getIsBlogger() {
+		return isBlogger;
+	}
+	public void setIsBlogger(boolean isBlogger) {
+		this.isBlogger = isBlogger;
 	}
 	public Comment getParentComment() {
 		return parentComment;
