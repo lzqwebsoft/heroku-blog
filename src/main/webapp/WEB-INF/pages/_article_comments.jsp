@@ -9,9 +9,23 @@
 <c:forEach items="${comments}" var="comment">
 <div class="root_comment">
    <p>
-      <a href="<c:out value="${comment.website}" default="javascript:void(0)" />">${comment.reviewer}</a>发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/> 
+      <c:choose>
+      <c:when test="${comment.isBlogger}">
+      <font color="red">博主</font>发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+      </c:when>
+      <c:otherwise>
+      <a href="<c:out value="${comment.website}" default="javascript:void(0)" />">${comment.reviewer}</a>发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+      </c:otherwise>
+      </c:choose>
       <span>
-         <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '${comment.reviewer}')">回复</a>&nbsp;
+         <c:choose>
+         <c:when test="${comment.isBlogger}">
+           <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '博主')">回复</a>&nbsp;
+         </c:when>
+         <c:otherwise>
+           <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '${comment.reviewer}')">回复</a>&nbsp;
+         </c:otherwise>
+         </c:choose>
          <c:if test="${sessionScope.user!=null}">
          <a href="javascript:void(0)" title="删除" onclick="delete_article_comment('${comment.id}')">删除</a>
          </c:if>
@@ -21,9 +35,23 @@
    <c:forEach items="${comment.childComments}" var="childComment">
    <div class="child_comment">
       <p>
-          Re：<a href="<c:out value="${childComment.website}" default="javascript:void(0)" />">${childComment.reviewer}</a>发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+          <c:choose>
+          <c:when test="${childComment.isBlogger}">
+             <font color="red">博主</font>发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+          </c:when>
+          <c:otherwise>
+             Re：<a href="<c:out value="${childComment.website}" default="javascript:void(0)" />">${childComment.reviewer}</a>发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+          </c:otherwise>
+          </c:choose>
           <span>
-             <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '${childComment.reviewer}')">回复</a>&nbsp;
+             <c:choose>
+             <c:when test="${comment.isBlogger}">
+                <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '博主')">回复</a>&nbsp;
+             </c:when>
+             <c:otherwise>
+                <a href="#reply_article" title="回复" onclick="replay_comment('${comment.id}', '${childComment.reviewer}')">回复</a>&nbsp;
+             </c:otherwise>
+             </c:choose>
              <c:if test="${sessionScope.user!=null}">
              <a href="javascript:void(0)" title="删除" onclick="delete_article_comment('${childComment.id}')">删除</a>
              </c:if>
