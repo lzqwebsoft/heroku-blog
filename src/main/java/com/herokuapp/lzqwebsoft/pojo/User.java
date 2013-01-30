@@ -13,6 +13,8 @@ public class User {
     private String password;
     private String email;
     private String salt;
+    private String sid;         // 用户找回密码时的验证ID
+    private long endTime;       // 验证ID的失效时间
     private Date lastLogin;
     private Date createAt;
     private Date updateAt;
@@ -46,6 +48,18 @@ public class User {
 	}
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+	public String getSid() {
+		return sid;
+	}
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+	public long getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
 	}
 	public Date getLastLogin() {
 		return lastLogin;

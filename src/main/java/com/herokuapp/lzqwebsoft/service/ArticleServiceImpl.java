@@ -86,7 +86,6 @@ public class ArticleServiceImpl implements ArticleService {
             article.setStatus(0);
         else
             article.setStatus(1);
-        article.setReadedNum(0);
         article.setUpdateAt(now);
         articleDAO.edit(article);
 	}

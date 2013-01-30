@@ -39,13 +39,13 @@
            <td align="right">
                <label for="newPassword"><spring:message code="page.label.changepwd.newpassword" />：</label>
            </td>
-           <td align="left"><form:password path="newPassword" /></td>
+           <td align="left"><form:password path="newPassword" maxlength="20" /></td>
          </tr>
          <tr>
            <td align="right">
               <label for="confirmPassword"><spring:message code="page.label.changepwd.confirmPassword" />：</label>
            </td>
-           <td align="left"><form:password path="confirmPassword" /></td>
+           <td align="left"><form:password path="confirmPassword" maxlength="20" /></td>
          </tr>
          <tr>
             <td align="center" colspan="2">

@@ -62,5 +62,14 @@ public class UserDAO{
 
         return users;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public User getUserByEmail(String email) {
+		List<User> list = (List<User>)getHibernateTemple().find("from User u where u.email=?", new Object[]{email});
+		if(list!=null&&list.size()>0) {
+		    User user = list.get(0);
+		    return user;
+		}
+		return null;
+	}
 }

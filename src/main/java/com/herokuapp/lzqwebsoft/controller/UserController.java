@@ -2,6 +2,10 @@ package com.herokuapp.lzqwebsoft.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +26,7 @@ import com.herokuapp.lzqwebsoft.pojo.ChangePasswordUserBean;
 import com.herokuapp.lzqwebsoft.pojo.User;
 import com.herokuapp.lzqwebsoft.service.UserService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
+import com.herokuapp.lzqwebsoft.util.MailUtil;
 import com.herokuapp.lzqwebsoft.util.SHA1Util;
 
 /**
@@ -192,5 +197,156 @@ public class UserController {
             }
     	}
     	return "change_password";
+    }
+    
+    @RequestMapping("/forget_pwd")
+    public String forgetPassword() {
+    	return "forget_pwd";
+    }
+    
+    @RequestMapping("/found_pwd")
+    public String foundPassword(String email, ModelMap model,
+    		HttpServletRequest request, Locale locale) {
+    	if(email==null||email.trim().length()<=0) {
+    		String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
+    		String errorInfo = messageSource.getMessage("info.required", new Object[]{emailLabel}, locale);
+    		model.addAttribute("errorInfo", errorInfo);
+    		return "forget_pwd";
+    	}
+    	if(!email.matches("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")) {
+    		String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
+    		String errorInfo = messageSource.getMessage("info.invalid", new Object[]{emailLabel}, locale);
+    		model.addAttribute("errorInfo", errorInfo);
+    		model.addAttribute("email", email);
+    		return "forget_pwd";
+    	}
+    	
+    	// 验证数据库中是否存在指定邮箱
+    	User user = userService.validEmail(email);
+    	if(user==null) {
+    		String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
+    		String errorInfo = messageSource.getMessage("info.notexist", new Object[]{emailLabel}, locale);
+    		model.addAttribute("errorInfo", errorInfo);
+    		model.addAttribute("email", email);
+    		return "forget_pwd";
+    	}
+    	
+    	// 生成sid
+    	String sid = SHA1Util.generateSalt();
+    	Date date = new Date();
+    	long endTime = date.getTime()+1800000;
+    	user.setSid(sid);
+    	user.setEndTime(endTime);
+    	userService.update(user);
+    	
+    	// 发送邮件给用户邮箱
+    	StringBuffer link = new StringBuffer("http://").append(request.getServerName());
+        int port = request.getServerPort();
+        if(port!=80)
+            link.append(":").append(port);
+        link.append(request.getContextPath()).append("/authenticate.html?sid=").append(sid)
+          .append("&uid=").append(user.getId());
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(date);
+    	String subject = messageSource.getMessage("email.foundpwd.title", null, locale);
+    	String content = messageSource.getMessage("email.foundpwd.content", 
+    			new Object[]{user.getUserName(), dateStr, link.toString()}, locale);
+    	MailUtil.sendEMail(user.getEmail(), subject, content);
+    	
+    	model.addAttribute("email", email);
+    	return "found_pwd";
+    }
+    
+    @RequestMapping("/authenticate")
+    public String authenticate(String sid, String uid, ModelMap model,
+    		HttpSession session) {
+    	if(sid==null||sid.trim().length()<=0) {
+    		return "redirect:/error404.html";
+    	}
+    	
+    	if(uid==null||uid.trim().length()<=0) {
+    		return "redirect:/error404.html";
+    	}
+    	
+    	User user = userService.getUser(uid);
+    	if(user==null) {
+    		return "redirect:/error404.html";
+    	}
+    	
+    	// 检查失效
+    	Date now = new Date();
+    	if(now.getTime()>user.getEndTime()) {
+    		return "redirect:/error404.html";
+    	}
+    	// 检查sid是否是有效的值
+    	if(!user.getSid().equals(sid)) {
+    		return "redirect:/error404.html";
+    	}
+    	// 将链接设置过期
+    	user.setEndTime(0);
+    	userService.update(user);
+    	
+    	model.addAttribute("uid", uid);
+    	model.addAttribute("sid", sid);
+    	      
+    	return "reset_pwd";
+    }
+    
+    @RequestMapping(value="/reset_pwd", method=RequestMethod.POST)
+    public String resetPwd(String sid, String uid, String newPassword, String confirmPassword,
+    		HttpSession session, ModelMap model, Locale locale) {
+    	List<String> errors = new ArrayList<String>();
+    	// 没有sid，则说明是非法的访问。
+        if(sid==null||sid.trim().length()<=0
+        		||uid==null||uid.trim().length()<=0) {
+    		String errorInfo = messageSource.getMessage("info.illegal.access", null, locale);
+    		errors.add(errorInfo);
+    		model.addAttribute("errorInfos", errors);
+    		return "reset_pwd";
+    	} 
+    	
+    	User user = userService.getUser(uid);
+    	if(user==null||!sid.equals(user.getSid())) {
+    		String errorInfo = messageSource.getMessage("info.illegal.access", null, locale);
+    		errors.add(errorInfo);
+    		model.addAttribute("errorInfos", errors);
+    		return "reset_pwd";
+    	}
+    	
+    	// 验证密码的合法性
+    	if(newPassword==null||newPassword.equals("")) {
+    		String newPasswordLabel = messageSource.getMessage("page.label.changepwd.newpassword", null, locale);
+    		String errorInfo = messageSource.getMessage("info.required", new Object[]{newPasswordLabel}, locale);
+    		errors.add(errorInfo);
+    	} else if (newPassword.length()<6||newPassword.length()>20) {
+    		String errorInfo = messageSource.getMessage("info.changepwd.newpassword.invalid", null, locale);
+    		errors.add(errorInfo);
+    	}
+    	if(confirmPassword==null||confirmPassword.equals("")) {
+    		String confirmPwdLabel = messageSource.getMessage("page.label.changepwd.confirmPassword", null, locale);
+    		String errorInfo = messageSource.getMessage("info.required", new Object[]{confirmPwdLabel}, locale);
+    		errors.add(errorInfo);
+    	} else if (!confirmPassword.equals(newPassword)) {
+    		String errorInfo = messageSource.getMessage("info.changepwd.confirmPassword.invalid", null, locale);
+    		errors.add(errorInfo);
+    	}
+    	
+    	if(errors.size()>0) {
+    		// 如果有错误则给予提示信息
+    		model.addAttribute("uid", uid);
+        	model.addAttribute("sid", sid);
+        	
+    		model.addAttribute("newPassword", newPassword);
+    		model.addAttribute("confirmPassword", confirmPassword);
+    		model.addAttribute("errorInfos", errors);
+    		return "reset_pwd";
+    	} else {
+    		user.setLastLogin(new Date());
+    		user.setSid("");
+    		userService.update(user);
+    		userService.changePassword(user, newPassword);
+            session.setAttribute(CommonConstant.LOGIN_USER, user);
+            // 修改成功后，重定向首页
+            return "redirect:index.html";
+    	}
     }
 }

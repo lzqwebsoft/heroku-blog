@@ -29,7 +29,7 @@ public class InitDatabaseServlet extends HttpServlet {
             // 初始化用户
             ResultSet rs = stmt.executeQuery("SELECT * FROM users");
             if(!rs.next()) {
-            	stmt.executeUpdate("INSERT INTO users VALUES ('1', 'websoft', '31bde66d9873701bed3e0d0ffd626f9d235583', '751939573@qq.com', '8e04ee997d285749ecfcd280a3e1e9', '2012-12-17 16:02:26', '2012-12-13 16:43:03', '2012-12-17 16:02:06');");
+            	stmt.executeUpdate("INSERT INTO users VALUES ('1', 'websoft', '31bde66d9873701bed3e0d0ffd626f9d235583', '751939573@qq.com', '8e04ee997d285749ecfcd280a3e1e9', '', '0','2012-12-17 16:02:26', '2012-12-13 16:43:03', '2012-12-17 16:02:06');");
             }
             // 初始化菜单
             rs = stmt.executeQuery("SELECT * FROM menus");

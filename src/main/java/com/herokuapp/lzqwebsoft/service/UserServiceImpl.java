@@ -51,4 +51,28 @@ public class UserServiceImpl implements UserService {
 			return users.get(0);
 		return null;
 	}
+
+	@Override
+	public User validEmail(String email) {
+		return userDAO.getUserByEmail(email);
+	}
+
+	@Override
+	public User getUser(String userid) {
+		Long uid = null;
+		try {
+			uid = Long.parseLong(userid);
+		} catch(NumberFormatException e) {
+			return null;
+		}
+		if(uid==null)
+			return null;
+		
+		return userDAO.getUser(uid);
+	}
+
+	@Override
+	public void update(User user) {
+		userDAO.update(user);
+	}
 }

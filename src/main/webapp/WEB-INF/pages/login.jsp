@@ -72,7 +72,7 @@
              </tr>
              </c:if>
              <tr>
-               <td align="right"><a href="javascript:void(0)">忘记密码&nbsp;&nbsp;&nbsp;</a></td>
+               <td align="right"><a href="<c:url value="/forget_pwd.html" />">忘记密码&nbsp;&nbsp;&nbsp;</a></td>
                <td align="left">&nbsp;</td>
                <td align="left">&nbsp;</td>
              </tr>

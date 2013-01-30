@@ -54,6 +54,7 @@
          <form:radiobutton path="allowComment" value="true"/>是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          <form:radiobutton path="allowComment" value="false"/>否
          <form:hidden path="isTop" />
+         <form:hidden path="readedNum" />
       </p>
       <p>
          <input type="hidden" name="editOrCreate" value="${editOrCreate}" />
