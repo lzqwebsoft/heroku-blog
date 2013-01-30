@@ -11,6 +11,10 @@
         <property name="password" length="40" not-null="true"/>
         <property name="email" length="60" not-null="true"/>
         <property name="salt" length="64" not-null="true" />
+        <property name="sid" length="64" />
+        <property name="endTime" type="long">
+           <column name="end_time" not-null="false" default="0" />
+        </property>
         <property name="lastLogin" column="last_login_on" />
         <property name="createAt" column="create_at" />
         <property name="updateAt" column="update_at" />

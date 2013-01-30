@@ -70,6 +70,11 @@
     <error-code>404</error-code>
     <location>/error404.html</location>
   </error-page>
+  
+  <error-page>
+    <error-code>405</error-code>
+    <location>/error404.html</location>
+  </error-page>
 
   <error-page>
     <error-code>503</error-code>

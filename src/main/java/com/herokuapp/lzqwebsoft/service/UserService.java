@@ -31,4 +31,24 @@ public interface UserService {
 	 * @return User对象
 	 */
 	public User getBlogOwner();
+	
+	/**
+	 * 查询所有用户数据，查看是否存在指定的邮箱。
+	 * @param email 待查询的邮箱
+	 * @return 如果存在指定的邮箱，则返回对应的用户，没有则返回为null
+	 */
+	public User validEmail(String email);
+	
+	/**
+	 * 更新User对象数据
+	 * @param user User对象
+	 */
+	public void update(User user);
+	
+	/**
+	 * 由用户ID得到用户对象
+	 * @param userid 用户id
+	 * @return 用户对象
+	 */
+	public User getUser(String userid);
 }
