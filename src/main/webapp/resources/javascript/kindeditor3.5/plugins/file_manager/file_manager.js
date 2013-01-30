@@ -63,7 +63,8 @@ KE.event.ready(function() {
 		}
 	};
 	var bindEvent = function (el, result, data, createFunc) {
-		var fileUrl = result.current_url + data.filename;
+//		var fileUrl = result.current_url + data.filename;
+		var fileUrl= data.dir_path;
 		fileUrl = KE.format.getUrl(fileUrl, 'absolute');
 		if (data.is_dir) {
 			el.onclick = (function (url, path, title) {
@@ -152,6 +153,8 @@ KE.event.ready(function() {
 		var fileList = result.file_list;
 		for (var i = 0, len = fileList.length; i < len; i++) {
 			var data = fileList[i];
+			if(data==null)
+				continue;
 			var div = KE.$$('div', document);
 			div.className = 'file-view-area';
 			viewDiv.appendChild(div);
@@ -163,7 +166,8 @@ KE.event.ready(function() {
 			var cell = tableObj.cell;
 			cell.valign = 'middle';
 			cell.align = 'center';
-			var fileUrl = result.current_url + data.filename;
+//			var fileUrl = result.current_url + data.filename;
+			var fileUrl=data.dir_path;
 			var iconUrl = data.is_dir ? './images/folder-64.gif' : (data.is_photo ? fileUrl : './images/file-64.gif');
 			var img = KE.$$('img', document);
 			img.src = iconUrl;

@@ -3959,11 +3959,11 @@ KE.plugin.image = {
 		} else {
 			urlBox = KE.$('url', dialogDoc);
 		}
-		if (!urlBox.value.match(/\.(jpg|jpeg|gif|bmp|png)(\s|\?|$)/i)) {
-			alert(KE.lang['invalidImg']);
-			urlBox.focus();
-			return false;
-		}
+//		if (!urlBox.value.match(/\.(jpg|jpeg|gif|bmp|png)(\s|\?|$)/i)) {
+//			alert(KE.lang['invalidImg']);
+//			urlBox.focus();
+//			return false;
+//		}
 		if (!width.match(/^\d*$/)) {
 			alert(KE.lang['invalidWidth']);
 			KE.$('imgWidth', dialogDoc).focus();
