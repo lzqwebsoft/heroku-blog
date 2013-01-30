@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.herokuapp.lzqwebsoft.pojo.Image;
 import com.herokuapp.lzqwebsoft.service.ImageService;
 
+
 @Controller
 public class ImageController {
     
@@ -67,8 +68,9 @@ public class ImageController {
             List<Image> images = imageService.getAllImages();
             if(images!=null&&images.size()>0) {
             	for(Image image : images) {
-            	    StringBuffer image_url = new StringBuffer(request.getContextPath()).append("/images/delete/").append(image.getId()).append(".html");
-                    json.append("{\"filename\": \"").append(image_url.toString())
+            	    StringBuffer image_url = new StringBuffer(request.getContextPath()).append("/images/show/").append(image.getId()).append(".html");
+                    json.append("{\"filename\": \"").append(image.getFileName())
+                        .append("\", \"dir_path\": \"").append(image_url.toString())
                         .append("\", \"is_photo\": true")
                         .append(", \"is_dir\": false") 
                         .append(", \"filesize\": \"").append(image.getSize())

@@ -52,7 +52,7 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession();
         boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER)==null) ? false: true;
         if(!isLogined){
-        	String requestURL = new UrlPathHelper().getOriginatingRequestUri(request);
+        	String requestURL = new UrlPathHelper().getPathWithinApplication(request);
     		ResourceBundle rb = ResourceBundle.getBundle("checkpath");
     		// 得到需要检查的URL的个数
     		int count = Integer.parseInt(rb.getString("authentication.checkpath.count"));
@@ -62,7 +62,7 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
     			Pattern pattern = Pattern.compile(".*"+url+"$", Pattern.CASE_INSENSITIVE);
     			Matcher matcher = pattern.matcher(requestURL);
     			if(url!=null&&matcher.matches()) {
-    				session.setAttribute(CommonConstant.LAST_REQUEST_URL, url);
+    				session.setAttribute(CommonConstant.LAST_REQUEST_URL, requestURL);
     				response.sendRedirect(request.getContextPath()+"/signIn.html");
     				return false;
     			}
