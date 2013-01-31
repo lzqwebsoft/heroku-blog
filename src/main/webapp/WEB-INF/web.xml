@@ -28,11 +28,11 @@
   </servlet>
   
   <!-- 程序启动时自动运行 -->
-  <servlet>  
-      <servlet-name>AutoRunServlet</servlet-name>  
-      <servlet-class>com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet</servlet-class>
-      <load-on-startup>2</load-on-startup> 
-  </servlet>
+<!--  <servlet>  -->
+<!--      <servlet-name>AutoRunServlet</servlet-name>  -->
+<!--      <servlet-class>com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet</servlet-class>-->
+<!--      <load-on-startup>2</load-on-startup> -->
+<!--  </servlet>-->
   
   <servlet-mapping>
       <servlet-name>springDispacher</servlet-name>
