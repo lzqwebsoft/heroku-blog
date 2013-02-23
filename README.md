@@ -1,6 +1,6 @@
 heroku blog
 ===========
-一个博客WEB应用，基于Spring3 MVC与Hibernate3， 前台使用JQuery， 用于部署在Heroku上，项目运行预览：[http://lzqwebsoft.herokuapp.com](http://lzqwebsoft.herokuapp.com, "我的空间")。
+一个博客WEB应用，基于Spring3 MVC与Hibernate3， 前台使用JQuery， 用于部署在Heroku上，项目运行预览：[http://lzqwebsoft.herokuapp.com](http://lzqwebsoft.herokuapp.com "我的空间")。
 
 ####部署开发环境
 如果你想二次开发本应用，可以将其部署在Eclipse上（本应用使用Jetty作为容器运行）,如下：
@@ -56,7 +56,7 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 &lt;/build>
 </pre>
 
-在使用本程序时还要注意配置数据库的连接信息（本地运行使用MySQL），根据个人情况配置：src\main\resources\database.properties文件。
+在使用本程序时还要注意配置数据库的连接信息（本地运行使用MySQL），根据个人情况配置：｀src\main\resources\database.properties｀文件。同时在运行前，需要先在SQL环境中执行databaseDesign目录中的几个sql脚本程序，来导入程序运行时的初始化数据。
 更多关于Maven与Jetty在Eclipse中的开发配置，可以参考下列博客：<br>
 [http://blog.csdn.net/whuslei/article/details/6647275](http://blog.csdn.net/whuslei/article/details/6647275)<br>
 [http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html](http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html)
