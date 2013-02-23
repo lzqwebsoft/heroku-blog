@@ -5,12 +5,12 @@ heroku blog
 ####部署开发环境
 如果你想二次开发本应用，可以将其部署在Eclipse上（本应用使用Jetty作为容器运行）,如下：
 
-######1. 下载
+#####1. 下载
 点击[https://github.com/lzqwebsoft/heroku-blog](https://github.com/lzqwebsoft/heroku-blog)页面中的<b>ZIP</b>链接将其打包成zip文件，下载到本地。或使用git命令将其克隆到本地：
 
 `$git clone https://github.com/lzqwebsoft/heroku-blog.git`
 
-######2. 安装maven
+#####2. 安装maven
 本应用使用maven管理，因此事先要确保您的机器上已经安装maven，在命令行下输入:
 
 `$mvn --version`
@@ -24,10 +24,10 @@ Java home: C:\Program Files\Java\jdk1.6.0_10\jre
 Default locale: en_US, platform encoding: Cp1252
 OS name: "windows vista", version: "6.1", arch: "x86", family: "windows"
 </pre>
-如果提示的是找不到git命令，说明你还没有安装maven，或没有安装成功。
+如果提示的是找不到mvn命令，说明你还没有安装maven，或没有安装成功。
 
-请到[http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)下载maven，然后将maven的bin目录加入到环境的环境变量中。
-######3. 在Eclipse中配置jetty进行调试
+请到[http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)下载maven，然后将maven的bin目录加入到系统的环境变量中。
+#####3. 在Eclipse中配置jetty并调试
 + 将下载的heroku-blog应用目录导入到Eclipse项目中。
 + 将M2_REPO加入到Eclipse的classpath中（这一步即是将Maven的仓库包导入为Eclipse的ClassPath），使用菜单：<br />
 Window > Preferences. Select the Java > Build Path > Classpath Variables page；<br />接着点击New，新建M2_REPO变量，路径设为Maven的仓库路径，默认为：(windows)C:\Documents and Settings\（当前用户）\.m2\repository,(Linux)~\.m2\repository。
@@ -56,19 +56,19 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 &lt;/build>
 </pre>
 
-再使用本程序时还要注意配置数据库连接（使用MySQL），根据个人情况配置：src\main\resources\database.properties文件。
-更多关于Maven与Jetty在Eclipse中的开发配置，可以参考下列博客：
+在使用本程序时还要注意配置数据库的连接信息（本地运行使用MySQL），根据个人情况配置：src\main\resources\database.properties文件。
+更多关于Maven与Jetty在Eclipse中的开发配置，可以参考下列博客：<br>
 [http://blog.csdn.net/whuslei/article/details/6647275](http://blog.csdn.net/whuslei/article/details/6647275)<br>
 [http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html](http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html)
 <br/>
-#####部署到Heroku云端
+####部署到Heroku云端
 使用本项目的源码，只需做一点点的更改，就可以将其部署在Heroku云端，从而拥有一个真正的博客。
 
-######1. 配置你的Heroku环境
-首先你需要到Heroku官网上下载heroku客户端工具包，然后在注册一个heroku帐号，并申请一个heroku帐号，详情你可以到Heroku的官网的[开发者中心](https://devcenter.heroku.com/articles/quickstart)，查看相应的博客，也可以到我的博客查看翻译后的文章：[http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606).
+#####1. 配置你的Heroku环境
+首先你需要到Heroku官网上下载heroku客户端工具包，并申请一个heroku帐号，详情可以到Heroku的官网的[开发者中心](https://devcenter.heroku.com/articles/quickstart)，查看相应的博客，也可以到我的博客查看翻译后的文章：[http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606).
 
 #####2. 配置数据库信息
-由于heroku提示的免费的数据库是PostgreSQL，因此需要修改数据库配置文件：`src/main/resources/spring-database-context.xml`，关于数据源的配署如下：
+由于heroku提供的免费的数据库是PostgreSQL，因此需要修改数据库配置文件：`src/main/resources/spring-database-context.xml`，关于数据源的配署如下：
 <pre>
 &lt;bean id="dbUrl" class="java.net.URI"&gt;
     &lt;constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/&gt;
@@ -85,10 +85,10 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.PostgreSQLDialect&lt;/prop&gt;
 &lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;
 </pre>
-当然了部署到heroku上的数据库是可以通过Add-ons功能更改，也不一定要更改为PostgreSQL，这都要根据你为heroku上的应用添加的数据库来决定，详情可以参考heroku的帮助文档，这里个人还是比较推荐使用PostgreSQL数据库
+当然了部署到heroku上的数据库是可以通过Add-ons功能更改的，也不一定要更改为PostgreSQL，这都要根据你为heroku上的应用添加的数据库来决定，详情可以参考heroku的帮助文档，这里个人还是比较推荐使用PostgreSQL数据库。
 
 #####3. 配置程序自启动Servlet类
-由于本程序在启动时，需要一修初始化的数据，因此需要一种方法，确保程序在第一次初始化时，将一些必要的数据导入数据库，这就是我编写自启动Servlet类的目地；默认情况下自启动Servlet类的配置是关闭的，需要到`src/main/webapp/WEB-INF/web.xml`文件中将其打开，如下：
+由于本程序在启动时，需要一些初始化的数据，因此需要一种方法，确保程序在第一次初始化时，将一些必要的数据导入数据库，这就是编写自启动Servlet类的目地；默认情况下自启动Servlet类的配置是关闭的，需要到`src/main/webapp/WEB-INF/web.xml`文件中将其打开，如下：
 <pre>
 &lt;servlet&gt;
     &lt;servlet-name>AutoRunServlet&lt;/servlet-name&gt; 
@@ -96,16 +96,16 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
     &lt;load-on-startup&gt;2&lt;/load-on-startup&gt; 
 &lt;/servlet&gt;
 </pre>
-从上面的配置可知控制程序自启动的Servlet类是`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`,它控制着登录本博客应用的帐号与密码，还有一些登录后的博客设置信息与管理的菜单项。
+从上面的配置可知控制程序自启动的Servlet类是`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`,它控制着登录本博客应用的初始帐号与密码，还有一些登录后的博客设置信息与管理的菜单。
 默认情况下提供登录本博客的初始帐户名是websoft,密码是通过SHA1加密的123456。
 #####4. 配置邮件服务
-本博客拥有博客新评论与修改密码时邮件提示功能，也就是说当你博客有网友的新评论或忘记密码时，会由你事先配置好的邮件服务器中发关一篇博客到你指定的邮箱中，予以提示作用。
+本博客拥有博客新评论与修改密码的邮件提示功能，也就是说当你博客有网友的新评论或进行找回密码时，会由你事先配置好的邮件服务器中发送一份邮件到你指定的邮箱中，予以提示。
 控制新评论的邮箱是由`blog_infos`表中的邮件项控制，可到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
 <pre>
 stmt.executeUpdate("INSERT INTO blog_infos VALUES ('1', '飘痕', '心诚则灵', '关于内容', 'lzqwebsoft@gmail.com', '0', '2012-12-19 17:26:32');");
 </pre>
 即当有新评论时，`lzqwebsoft@gmail.com`邮箱会收到提示。<br />
-控制用户帐户的变更是由`users`表的邮件项控制，也可到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
+控制用户帐户的变更是由`users`表的邮件项控制，同样需要到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
 <pre>
 stmt.executeUpdate("INSERT INTO users VALUES ('1', 'websoft', '31bde66d9873701bed3e0d0ffd626f9d235583', '751939573@qq.com', '8e04ee997d285749ecfcd280a3e1e9', '', '0','2012-12-17 16:02:26', '2012-12-13 16:43:03', '2012-12-17 16:02:06');");
 </pre>
@@ -125,9 +125,9 @@ mail.address.from=lzqwebsoft@gmail.com
 \#mail.address.password=
 mail.isDebug=false
 </pre>
-上面使用的配置邮件服务采用的是google的邮件服务，你可以根据个人的情况修改，可能对于你的邮箱上面的有些项可能不是必须的，那么你可能还要修改`src/main/java/com/herokuapp/lzqwebsoft/util/MailUtil.java`文件中的邮件配置代码。
+上面使用的配置邮件服务采用的是google的邮件服务，你可以根据个人的情况修改，可能对于你的邮箱，上面的有些项可能不是必须的，那么你可能还要修改`src/main/java/com/herokuapp/lzqwebsoft/util/MailUtil.java`文件中的邮件配置代码。
 #####5. 修改pom.xml
-由于部署在本地时使用的是mysql数据库，而pushing上传到Heroku云端更改的是PostgreSQL数据库，因些需要修改项目依赖的驱动架包，因此需要对pom.xml文件进行一定的更改，如下上传Heroku上时应该使用如下pom.xml文件:
+由于部署在本地时使用的是mysql数据库，而pushing上传到Heroku云端使用的是PostgreSQL数据库，因些需要修改项目依赖的驱动架包，即需要对pom.xml文件进行一定的更改，如下上传Heroku上时应该使用如下pom.xml文件:
 <pre>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -346,7 +346,7 @@ mail.isDebug=false
 &lt;/project&gt;
 </pre>
 #####6. 上传部署
-根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，再上传之前最后先在本地跑一下，看是否成功；
-关于使用Git部署上传Java应用到Heroku可以参考翻译的官网博客：
+根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，再上传之前最好先在本地跑一下，看是否成功；
+关于使用Git部署上传Java应用可以参考翻译的官网博客：
 [http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606)<br />
-由于本项目还在开发中，可以还有一些BUG，欢迎聪明的你来拍砖。
+由于本项目还在开发中，可能还有一些BUG，欢迎聪明的你来拍砖。
