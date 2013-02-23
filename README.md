@@ -56,7 +56,7 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 &lt;/build>
 </pre>
 
-在使用本程序时还要注意配置数据库的连接信息（本地运行使用MySQL），根据个人情况配置：｀src\main\resources\database.properties｀文件。同时在运行前，需要先在SQL环境中执行databaseDesign目录中的几个sql脚本程序，来导入程序运行时的初始化数据。
+在使用本程序时还要注意配置数据库的连接信息（本地运行使用MySQL），根据个人情况配置：`src\main\resources\database.properties`文件。同时在运行前，需要先在SQL环境中执行databaseDesign目录中的几个sql脚本程序，来导入程序运行时的初始化数据。
 更多关于Maven与Jetty在Eclipse中的开发配置，可以参考下列博客：<br>
 [http://blog.csdn.net/whuslei/article/details/6647275](http://blog.csdn.net/whuslei/article/details/6647275)<br>
 [http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html](http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html)
@@ -99,7 +99,7 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 从上面的配置可知控制程序自启动的Servlet类是`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`,它控制着登录本博客应用的初始帐号与密码，还有一些登录后的博客设置信息与管理的菜单。
 默认情况下提供登录本博客的初始帐户名是websoft,密码是通过SHA1加密的123456。
 #####4. 配置邮件服务
-本博客拥有博客新评论与修改密码的邮件提示功能，也就是说当你博客有网友的新评论或进行找回密码时，会由你事先配置好的邮件服务器中发送一份邮件到你指定的邮箱中，予以提示。
+本博客拥有博客新评论邮件提示与邮件验证找回密码的功能，也就是说当你博客有网友的新评论或进行找回密码时，会由你事先配置好的邮件服务器中发送一份邮件到你指定的邮箱中，予以提示。<br />
 控制新评论的邮箱是由`blog_infos`表中的邮件项控制，可到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
 <pre>
 stmt.executeUpdate("INSERT INTO blog_infos VALUES ('1', '飘痕', '心诚则灵', '关于内容', 'lzqwebsoft@gmail.com', '0', '2012-12-19 17:26:32');");
@@ -111,7 +111,7 @@ stmt.executeUpdate("INSERT INTO users VALUES ('1', 'websoft', '31bde66d9873701be
 </pre>
 即当用户有找回密码的操作时，邮件`751939573@qq.com`会收到提示。
 
-下面最为重要的就是配置邮件服务，就是使用什么邮件来向上面两个邮件发送邮件，关于服务器端的邮件配置，在`src/main/resources/mail-config.properties`文件中配置，如下：
+下面最为重要的就是配置邮件服务，就是使用什么邮件来向上面两个邮箱发送邮件，关于服务器端的邮件配置，在`src/main/resources/mail-config.properties`文件中，如下：
 <pre>
 mail.smtp.host=smtp.gmail.com
 mail.smtp.auth=true
@@ -121,8 +121,8 @@ mail.smtp.port=465
 mail.smtp.socketFactory.port=465
 
 mail.address.from=lzqwebsoft@gmail.com
-\#mail.address.username=
-\#mail.address.password=
+mail.address.username=
+mail.address.password=
 mail.isDebug=false
 </pre>
 上面使用的配置邮件服务采用的是google的邮件服务，你可以根据个人的情况修改，可能对于你的邮箱，上面的有些项可能不是必须的，那么你可能还要修改`src/main/java/com/herokuapp/lzqwebsoft/util/MailUtil.java`文件中的邮件配置代码。
@@ -346,7 +346,7 @@ mail.isDebug=false
 &lt;/project&gt;
 </pre>
 #####6. 上传部署
-根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，再上传之前最好先在本地跑一下，看是否成功；
+根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，在上传之前最好先在本地跑一下，看是否成功；
 关于使用Git部署上传Java应用可以参考翻译的官网博客：
 [http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606)<br />
 由于本项目还在开发中，可能还有一些BUG，欢迎聪明的你来拍砖。
