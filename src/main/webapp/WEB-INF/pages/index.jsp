@@ -142,7 +142,7 @@
         <c:when test="${top10Articles!=null&&fn:length(top10Articles)>0}">
         <ul>
           <c:forEach items="${top10Articles}" var="top10">
-             <li><a href="<%=request.getContextPath()%>/show/${top10.id}.html">${top10.title}(${top10.readedNum})</a></li>
+             <li><a href="<%=request.getContextPath()%>/show/${top10.id}.html" title="${top10.title}">${top10.title}</a><span>(${top10.readedNum})</span></li>
           </c:forEach>
         </ul>
         </c:when>
