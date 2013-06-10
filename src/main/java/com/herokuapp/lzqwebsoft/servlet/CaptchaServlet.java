@@ -42,7 +42,7 @@ public class CaptchaServlet extends HttpServlet {
         
         HttpSession session = request.getSession(true);
         //设置session对象5分钟失效
-        session.setMaxInactiveInterval(5*60);
+//        session.setMaxInactiveInterval(5*60);
         session.setAttribute(CommonConstant.CAPTCHA, certString);
     }
 }

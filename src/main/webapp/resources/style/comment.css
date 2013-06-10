@@ -239,7 +239,7 @@ abbr, acronym {
     margin: 0px 0 0 40px;
     padding-bottom: 26px !important;
     text-align: justify;
-    min-height: 700px;
+    min-height: 750px;
     width: 470px;
 }
 .explanation h3 {
@@ -363,6 +363,18 @@ abbr, acronym {
     margin-bottom: 4px;
     font-family: 'Microsoft YaHei',微软雅黑,tahoma,verdana,helvetica;
     font-size: 13px;
+}
+#larchives li a {
+    display: inline-block;
+    height: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 145px;
+}
+#larchives li span {
+    display: inline-block;
+    float: right;
+    height: 14px;
 }
 #linkList ul a {
     font-style: italic;
