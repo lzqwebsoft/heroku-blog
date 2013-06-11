@@ -366,15 +366,15 @@ abbr, acronym {
 }
 #larchives li a {
     display: inline-block;
-    height: 14px;
+    height: 18px;
     overflow: hidden;
     white-space: nowrap;
-    width: 145px;
+    width: 140px;
 }
 #larchives li span {
     display: inline-block;
     float: right;
-    height: 14px;
+    height: 18px;
 }
 #linkList ul a {
     font-style: italic;
