@@ -1,5 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!-- These extra divs/spans may be used as catch-alls to add extra imagery. -->
-<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div><div id="extraDiv3"><span></span></div>
-<div id="extraDiv4"><span></span></div><div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.Date" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:useBean id="currDate" class="java.util.Date"></jsp:useBean>  
+<hr />
+<footer>
+    <p>
+        Powered by <a href="http://www.heroku.com">Heroku</a>, UI by <a href="http://www.bootcss.com/">Bootstrap</a>, Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
+    </p>
+    <p>Copyright &copy; 2012 - <fmt:formatDate value="${currDate}" pattern="yyyy" /></p>
+</footer>

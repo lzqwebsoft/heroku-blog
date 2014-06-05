@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>解析12306订票流程-lzqwebsoft's blog</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/comment.css" />
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="js/shl/styles/shCoreDefault.css" />  
+    <link type="text/css" rel="stylesheet" href="js/shl/styles/shThemeDefault.css" />
+    <link type="text/css" rel="stylesheet" href="js/shl/styles/shCore.css" />
+    <script type="text/javascript" src="js/shl/scripts/shCore.js"></script>
+    <script type="text/javascript" src="js/shl/scripts/shAutoloader.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="js/ke4/themes/default/default.css" />  
+    <script type="text/javascript" charset="utf-8" src="js/ke4/kindeditor-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/ke4/lang/zh_CN.js"></script>
+
+    <style type="text/css">
+        /* 代码块CSS */
+        .my_pre {
+            display: block;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            line-height: 1.42857;
+            font-size: 13px;
+            margin: 0 0 10px;
+            padding: 9.5px;
+            word-break: break-all;
+            word-wrap: break-word;
+        }
+        /* 文章目录CSS */
+        .bs-sidebar {
+          margin-top: 10px;
+          padding-top:    10px;
+          padding-bottom: 10px;
+          text-shadow: 0 1px 0 #fff;
+          background-color: #f7f5fa;
+          border-radius: 5px;
+        }
+        .bs-sidenav-title {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .bs-sidenav-title:hover{
+          color: #563d7c;
+          background-color: transparent;
+          border-right: 1px solid #563d7c;
+          background-color: #EEEEEE;
+        }
+
+        /* All levels of nav */
+        .bs-sidebar .nav li a {
+          display: block;
+          color: #716b7a;
+          padding: 5px 20px;
+        }
+        /* Nav: second level (shown on .active) */
+        .bs-sidebar .nav .nav {
+          margin-bottom: 8px;
+        }
+        .bs-sidebar .nav .nav > li > a {
+          padding-top:    3px;
+          padding-bottom: 3px;
+          padding-left: 40px;
+          font-size: 90%;
+        }
+
+        /* 评论CSS */
+        .root_comment {
+            margin-bottom: 10px;
+        }
+        .root_comment p, #prompt_replay_info p{
+            background-image: linear-gradient(to bottom, #F5F5F5 0px, #E8E8E8 100%);
+            background-repeat: repeat-x;
+            border-color: #DCDCDC;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset, 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            padding: 5px;
+            background-color: #F5F5F5;
+            min-height: 20px;
+            margin: 2px 0 5px 0;
+        }
+        .child_comment {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .comment_content,.comment_content p{
+            background-color: #FFF;
+            padding-left: 4px;
+        }
+    </style>
+</head>
+
+<body style="padding-top: 70px;">
+	<!-- 导航菜单 -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- 左导航菜单 -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">飘痕の博客</a>
+            </div>
+
+            <!-- 右导航菜单 -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="about.html" data-toggle="modal" data-target="#aboutDailog">关于</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">管理<span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">登&nbsp;&nbsp;录</a></li>
+                            <li><a href="#">注&nbsp;&nbsp;销</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">发表博客</a></li>
+                            <li><a href="#">修改密码</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">设&nbsp;&nbsp;置</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 回到页面顶点 -->
+    <div class="goBackToTop">
+        <a id="gototop" href="#blog-header" title="回到顶端" style="display: none;">TOP</a>
+    </div>
+
+    <!-- 关于对话框主体 -->
+    <div class="modal fade" id="aboutDailog" tabindex="-1" role="dialog" aria-labelledby="aboutDailogLabel" aria-hidden="true"></div>
+
+    <!-- 主体内容 -->
+    <div class="container" id="blog-header">
+    	<div class="page-header">
+            <h1>飘痕 <small>自由自在的学习编程艺术</small></h1>
+        </div>
+
+        <ol class="breadcrumb">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">Python</a></li>
+            <li class="active">博客正文</li>
+        </ol>
+
+        <div class="media" role="main">
+            <div class="media-body">
+                <h3 class="media-heading"><span class="label label-default">转</span> 解决近期heroku push timeout错误</h3>
+                <div class="row">
+                    <div class="col-xs-6">发表于：2013-04-19 19:42:45，已有73次阅读</div>
+                    <div class="col-xs-6 text-right">
+                        <a class="btn btn-default btn-sm" role="button" href="#reply_comment">评论(0)</a>
+                        <a class="btn btn-primary btn-sm" role="button" href="#">编辑</a>
+                        <a class="btn btn-danger btn-sm" role="button" href="http://www.baidu.com" onclick='return confirm("hello");'>删除</a>
+                    </div>
+                </div>
+
+                <!-- 文章目录，自动生成 -->
+                <div id="table_of_contents" class="row hidden">
+                    <div class="col-md-6">
+                        <div class="bs-sidebar hidden-print" role="complementary">
+                            <div class="bs-sidenav-title" data-toggle="collapse" data-target="#auto_contents"><b>目录</b></div>
+                            <ul id="auto_contents" class="nav bs-sidenav collapse">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="article_content">
+<!------------_------------- ------------- -->
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <ul class="pager">
+                <li class="previous"><a href="#">&larr; Linux下设置静态IP与DNS解析器</a></li>
+                <li class="next"><a href="#">在Heroku上部署Java应用－部署Java &rarr;</a></li>
+            </ul>
+        </div>
+
+        <div id="assume_you_like" class="panel panel-default active">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-toggle="collapse"  href="#collapseTwo">相关文章</a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="list-group panel-collapse collapse">
+                <a href="#" class="list-group-item">Dapibus ac facilisis in (2014-08-01 12:38:00)</a>
+                <a href="#" class="list-group-item">Morbi leo risus (2014-08-01 12:38:00)</a>
+                <a href="#" class="list-group-item">Porta ac consectetur ac (2014-08-01 12:38:00)</a>
+                <a href="#" class="list-group-item">Vestibulum at eros (2014-08-01 12:38:00)</a>
+            </div>
+        </div>
+
+        <div id="article_comment" class="panel panel-default">
+            <div class="panel-heading">评论</div>
+            <div class="panel-body">
+                <div class="root_comment">
+                    <p><a>土匪头子</a>发表于：2013-02-26 11:21:28
+                        <span class="pull-right">
+                            <a href="#reply_article" title="回复" onclick="replay_comment('1', '博主')">回复</a>
+                            <a href="javascript:void(0)" title="删除" onclick="">删除</a>
+                        </span>
+                    </p>
+                    <div class="comment_content">测试评论功能。</div>
+                    <div class="child_comment">
+                        <p>博主发表于：2013-01-29 14:12:55 
+                            <span class="pull-right">
+                                <a href="#reply_article" title="回复" onclick="">回复</a>
+                                <a href="javascript:void(0)" title="删除" onclick="">删除</a>
+                            </span>
+                        </p>
+                        <div class="comment_content">博主评论标记</div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <div id="add-comment-info-div" class="alert alert-danger hidden"></div>
+                        <div id="prompt_replay_info" style='display: none'>
+                            <p>
+                                <span id="info_prompt_message">回复：&nbsp;&nbsp;</span>
+                                <span id="cancel_replay_button">
+                                    <a href="javascript:void(0)" class="pull-right"  onclick="cancel_replay_comment();">取消</a>
+                                </span>
+                            </p>
+                        </div>
+                        <form id="reply_comment" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="reviewer" name="reviewer" placeholder="请输入昵称">
+                                </div>
+                                <label for="reviewer" class="col-sm-1">昵称<font color='red'>*</font></label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="url" class="form-control" id="website" name="website" placeholder="请输入个人网站">
+                                </div>
+                                <label for="website" class="col-sm-1">个人网站</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <textarea id="comment_content" name="content" class="form-control" rows="4"></textarea>
+                                    <span id="wordcount" class="help-block pull-right">您还可输入<span id="str">120</span>个字</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <button type="submit" class="btn btn-primary">发表评论</button>
+                                </div>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <footer>
+             <p>
+                Powered by <a href="http://www.heroku.com">Heroku</a>, UI by <a href="http://www.bootcss.com/">Bootstrap</a>, Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.</p>
+             <p>Copyright &copy; 2012 - 2014
+            </p>
+        </footer>
+    </div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/comment.js"></script>
+
+    <script src="js/show.js"></script>
+</body>
+</html>

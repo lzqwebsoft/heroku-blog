@@ -1,47 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><spring:message code="page.title" /></title>
-    <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/style/comment.css" />
-    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
-    <style type="text/css">
-       div form p {
-          margin: 7px;
-       }
-       div form p input[type=submit] {
-          padding: 3px 5px 1px 5px;
-          font-size: 80%;
-          
-       }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>找回密码-<spring:message code="page.title" /></title>
+    <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 </head>
+
 <body>
-    <%@ include file="/WEB-INF/pages/common/header.jsp" %>
-    
-    <div id="container">
-        <div id="content-div" style="margin: 50px 40px 10px 40px;">
-            <h2><spring:message code="page.label.foundPwd" /></h2>
-            <p style="margin: 15px;"><spring:message code="page.label.foundPwd.prompt.info" /></p>
-            <div style="margin: 10px auto; width: 300px; height: 130px;">
-               <form action="<c:url value="/found_pwd.html" />" method="post">
-               <p style="color: red;">${errorInfo}</p>
-               <p><label for="email">邮箱：</label><input type="text" name="email" value="${email}" style="padding: 2px; width:193px;" /></p>
-               <p style="text-align: right; padding-right: 38px;"><input type="submit" value="确定" /></p>
-               </form>
+    <%@ include file="/WEB-INF/pages/common/header.jsp"%>
+
+    <!-- 主体内容 -->
+    <div id="blog-header" class="container">
+        <h2><spring:message code="page.label.foundPwd" /></h2>
+        <h3><small><spring:message code="page.label.foundPwd.prompt.info" /></small></h3>
+
+        <form action="<c:url value="/found_pwd.html" />" method="post" class="form-horizontal" role="form">
+          <p style="color: red;">${errorInfo}</p>
+          <div class="form-group">
+            <label for="email" class="col-sm-4 control-label">邮箱：</label>
+            <div class="col-sm-4">
+              <input type="email" class="form-control" name="email" value="${email}" placeholder="Email">
             </div>
-        </div>
-        
-        <div style="text-align: center; font: 14px/20px 'Microsoft YaHei',微软雅黑,Arial,Lucida Grande,Tahoma,sans-serif;">
-          Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
-        </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-6 col-sm-2 text-right">
+              <button type="submit" class="btn btn-default">确定</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- 页面底端说明 -->
+        <%@ include file="/WEB-INF/pages/common/footer.jsp"%>
     </div>
-    
-    <%@ include file="/WEB-INF/pages/common/footer.jsp" %>
+
+    <%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
 </body>
 </html>

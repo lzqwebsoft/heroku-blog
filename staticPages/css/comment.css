@@ -1,0 +1,22 @@
+/*=====回到顶端======*/
+#gototop {
+	display:none;
+	position:fixed;
+	right: 3%;
+	bottom: 10%;
+	color:#666;
+	font-weight:bold;
+	text-decoration:none;
+	text-shadow: 0 1px 0 #FFFFFF;
+	border:1px solid #CCC;
+	border-radius: 5px;
+	background:#ffffff;
+	padding:5px;
+	z-index: 200;
+}
+#gototop:hover{
+	background-color: #EEE;
+	color:#000;
+	border-color:#999;
+}
+/*==================*/

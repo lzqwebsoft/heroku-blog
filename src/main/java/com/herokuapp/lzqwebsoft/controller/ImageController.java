@@ -68,9 +68,9 @@ public class ImageController {
             List<Image> images = imageService.getAllImages();
             if(images!=null&&images.size()>0) {
             	for(Image image : images) {
-            	    StringBuffer image_url = new StringBuffer(request.getContextPath()).append("/images/show/").append(image.getId()).append(".html");
-                    json.append("{\"filename\": \"").append(image.getFileName())
-                        .append("\", \"dir_path\": \"").append(image_url.toString())
+            	    StringBuffer image_url = new StringBuffer(image.getId()).append(".html");
+                    json.append("{\"filename\": \"").append(image_url.toString())
+//                        .append("\", \"dir_path\": \"").append(image_url.toString())
                         .append("\", \"is_photo\": true")
                         .append(", \"is_dir\": false") 
                         .append(", \"filesize\": \"").append(image.getSize())
@@ -78,7 +78,7 @@ public class ImageController {
                 }
                 json.deleteCharAt(json.length()-1);
                 json.append("], ");
-                json.append("\"current_url\": \"").append(request.getContextPath()).append("/upload-images/")
+                json.append("\"current_url\": \"").append(request.getContextPath()).append("/images/show/")
                     .append("\", \"total_count\": ").append(images.size()).append("}");
             } else {
             	json.append("], \"total_count\": 0}");

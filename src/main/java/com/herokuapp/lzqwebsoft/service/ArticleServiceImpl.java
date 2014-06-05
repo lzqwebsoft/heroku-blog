@@ -121,8 +121,8 @@ public class ArticleServiceImpl implements ArticleService {
 		    String content = article.getContent();
 		    content = content.replaceAll("<.*?>", "");
             // 用于省略文章的内容
-            if(content.length()>250) {
-                content = content.substring(0, 250);
+            if(content.length()>400) {
+                content = content.substring(0, 400);
                 content += "...";
             }
             article.setContent(content);

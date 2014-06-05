@@ -114,4 +114,15 @@ public class Article {
 	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
 	}
+	// 判断文单原创，转载，翻译
+	public String getPatternTypeLabel() {
+	    if(this.patternTypeId==1)
+	        return "<span class='label label-success'>原</span>";
+	    else if(this.patternTypeId==2)
+	        return "<span class='label label-default'>转</span>";
+	    else if(this.patternTypeId==3)
+	        return "<span class='label label-warning'>译</span>";
+	    else
+	        return "";
+	}
 }

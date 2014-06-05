@@ -1,5 +1,6 @@
 *.class
-
+*.prefs
+.settings
 # Package Files #
 target
 *.jar
