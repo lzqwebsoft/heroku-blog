@@ -37,147 +37,150 @@ import com.herokuapp.lzqwebsoft.util.SHA1Util;
  */
 @Controller
 public class UserController {
-	
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private MessageSource messageSource;
     
-	// JSON登录
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private MessageSource messageSource;
+    
+    // JSON登录
     @RequestMapping(value="/login")
     public void login(String username, String password, String captcha, 
-    		HttpServletResponse response, HttpSession session, Locale locale) {
+            HttpServletResponse response, HttpSession session, Locale locale) {
         // 用户验证
         PrintWriter out = null;
         try {
-			out = response.getWriter();
-			response.setStatus(HttpServletResponse.SC_OK);
-			response.setContentType("application/json;charset=UTF-8");
-			StringBuffer json = new StringBuffer();
-			String validateCode = (String)session.getAttribute(CommonConstant.CAPTCHA);
-			// 计算登录失败次数
-			if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)==null) {
-		    	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
-		    }
-			int errorNum = (Integer)session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
-			if(username==null||username.trim().length()<=0
-					||password==null||password.length()<=0) {
-				errorNum++;
-				json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
-			    .append(messageSource.getMessage("info.login.nameOrPasswordEmpty", null, locale)).append("\"}");
-				session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
-			} else if(errorNum>=3&&!validateCode.equalsIgnoreCase(captcha)) {
-				errorNum++;
-				json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
-			    .append(messageSource.getMessage("info.login.invalid.captcha", null, locale)).append("\"}");
-				session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
-			} else {
-				User user = userService.loginService(username, password);
-				if(user!=null) {
-					json.append("{\"status\": \"SUCCESS\", \"messages\": \"\", \"error_num\": 0}");
-					session.setAttribute(CommonConstant.LOGIN_USER, user);
-					// 移除错误登录计数
-					if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)!=null)
-		        		session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
-		        } else {
-		        	errorNum++;
-		        	json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
-		        	    .append(messageSource.getMessage("info.login.error", null, locale)).append("\"}");
-		        	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
-		        }
-			}
-			out.print(json);
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			if(out!=null) {
-				out.close();
-			}
-		}
+            out = response.getWriter();
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json;charset=UTF-8");
+            StringBuffer json = new StringBuffer();
+            String validateCode = (String)session.getAttribute(CommonConstant.CAPTCHA);
+            // 计算登录失败次数
+            if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)==null) {
+                session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
+            }
+            int errorNum = (Integer)session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+            if(username==null||username.trim().length()<=0
+                    ||password==null||password.length()<=0) {
+                errorNum++;
+                json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
+                .append(messageSource.getMessage("info.login.nameOrPasswordEmpty", null, locale)).append("\"}");
+                session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+            } else if(errorNum>=3&&!validateCode.equalsIgnoreCase(captcha)) {
+                errorNum++;
+                json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
+                .append(messageSource.getMessage("info.login.invalid.captcha", null, locale)).append("\"}");
+                session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+            } else {
+                User user = userService.loginService(username, password);
+                if(user!=null) {
+                    json.append("{\"status\": \"SUCCESS\", \"messages\": \"\", \"error_num\": 0}");
+                    session.setAttribute(CommonConstant.LOGIN_USER, user);
+                    // 移除错误登录计数
+                    if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)!=null)
+                        session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+                } else {
+                    errorNum++;
+                    json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
+                        .append(messageSource.getMessage("info.login.error", null, locale)).append("\"}");
+                    session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+                }
+            }
+            out.print(json);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            if(out!=null) {
+                out.close();
+            }
+        }
     }
     
     // GET链接到登录页面
     @RequestMapping(value="/signIn", method=RequestMethod.GET) 
-	public String signInGet(ModelMap model){
-    	model.addAttribute("user", new User());
-		return "login";
-	}
-	
+    public String signInGet(ModelMap model){
+        model.addAttribute("user", new User());
+        return "login";
+    }
+    
     // POST处理登录
-	@RequestMapping(value="/signIn", method=RequestMethod.POST) 
-	public String signInPOST(@ModelAttribute("user")User user, String validateCode, HttpServletRequest request,
-			HttpSession session, Errors errors){
-	    // 验证用户信息
-	    String userName  = user.getUserName();
-	    String password = user.getPassword();
-	    // 验证码
-	    String captcha = (String)session.getAttribute(CommonConstant.CAPTCHA);
-	    // 计算登录错误的次数
-	    if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)==null) {
-	    	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
-	    }
-	    int errorNum = (Integer)session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
-	    if(userName==null||userName.trim().length()<=0
-	    		||password==null||password.length()<=0) {
-	    	errors.reject("info.login.nameOrPasswordEmpty");
-	    } else if (errorNum>=3&&!validateCode.equalsIgnoreCase(captcha)) {
-	    	errors.reject("info.login.invalid.captcha");
-	    }
-		if(errors.hasErrors()) {
-			errorNum++;
-			session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
-		    return "login";
-		} else {
-		    User dbuser = userService.loginService(user.getUserName(), user.getPassword());
-	        if(dbuser!=null) {
-	        	if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)!=null)
-	        		session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
-	            session.setAttribute(CommonConstant.LOGIN_USER, dbuser);
-	            String lastReqUrl = (String)session.getAttribute(CommonConstant.LAST_REQUEST_URL);
-	            if(lastReqUrl!=null&&lastReqUrl.trim().length()>0&&!lastReqUrl.endsWith("signIn.html")) {
-	            	session.removeAttribute(CommonConstant.LAST_REQUEST_URL);
-	                return "redirect:"+lastReqUrl;
-	            } else {
-	                // 如果没有则重定向到index画面
-	                return "redirect:index.html";
-	            }
-	        } else {
-	        	errors.reject("info.login.error");
-	        	errorNum++;
-	        	session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
-	            return "login";
-	        }
-		}
-	}
+    @RequestMapping(value="/signIn", method=RequestMethod.POST) 
+    public String signInPOST(@ModelAttribute("user")User user, String validateCode, HttpServletRequest request,
+            HttpSession session, Errors errors){
+        // 验证用户信息
+        String userName  = user.getUserName();
+        String password = user.getPassword();
+        // 验证码
+        String captcha = (String)session.getAttribute(CommonConstant.CAPTCHA);
+        // 计算登录错误的次数
+        if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)==null) {
+            session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
+        }
+        int errorNum = (Integer)session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+        if(userName==null||userName.trim().length()<=0
+                ||password==null||password.length()<=0) {
+            errors.reject("info.login.nameOrPasswordEmpty");
+        } else if (errorNum>=3) {
+            if(validateCode!=null && !validateCode.equalsIgnoreCase(captcha))
+                errors.reject("info.login.invalid.captcha");
+            else if(validateCode==null || validateCode.trim().length()<=0)
+                errors.reject("info.login.invalid.captchaEmpty");
+        }
+        if(errors.hasErrors()) {
+            errorNum++;
+            session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+            return "login";
+        } else {
+            User dbuser = userService.loginService(user.getUserName(), user.getPassword());
+            if(dbuser!=null) {
+                if(session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT)!=null)
+                    session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+                session.setAttribute(CommonConstant.LOGIN_USER, dbuser);
+                String lastReqUrl = (String)session.getAttribute(CommonConstant.LAST_REQUEST_URL);
+                if(lastReqUrl!=null&&lastReqUrl.trim().length()>0&&!lastReqUrl.endsWith("signIn.html")) {
+                    session.removeAttribute(CommonConstant.LAST_REQUEST_URL);
+                    return "redirect:"+lastReqUrl;
+                } else {
+                    // 如果没有则重定向到index画面
+                    return "redirect:index.html";
+                }
+            } else {
+                errors.reject("info.login.error");
+                errorNum++;
+                session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+                return "login";
+            }
+        }
+    }
     
     @RequestMapping(value="/logout")
     public String logout(HttpServletRequest request, HttpSession session) {
-    	// 销毁session对象
-    	if(session.getAttribute(CommonConstant.LOGIN_USER)!=null)
-    	    session.invalidate();
-    	// 从请求的Header的REFERER属性中得到上一次请求的URL
-    	String lastReqUrl = request.getHeader("Referer");
-    	if(lastReqUrl!=null&&lastReqUrl.trim().length()>0) {
-    	    return "redirect:"+lastReqUrl;
-    	} else {
-    	    // 如果没有则重定向到signIn画面
-    	    return "redirect:signIn.html";
-    	}
+        // 销毁session对象
+        if(session.getAttribute(CommonConstant.LOGIN_USER)!=null)
+            session.invalidate();
+        // 从请求的Header的REFERER属性中得到上一次请求的URL
+        String lastReqUrl = request.getHeader("Referer");
+        if(lastReqUrl!=null&&lastReqUrl.trim().length()>0) {
+            return "redirect:"+lastReqUrl;
+        } else {
+            // 如果没有则重定向到signIn画面
+            return "redirect:signIn.html";
+        }
     }
     
     @RequestMapping(value="/changepwd_handle", method=RequestMethod.POST)
     public String changePWD(@ModelAttribute("userBean")ChangePasswordUserBean userBean, ModelMap model,
-    		HttpSession session, Errors errors, Locale locale) {
-    	// 使用ValidationUtils工具包验证数据的合法性
+            HttpSession session, Errors errors, Locale locale) {
+        // 使用ValidationUtils工具包验证数据的合法性
         String passwordLabel = messageSource.getMessage("page.label.changepwd.password", null, locale);
         String newPasswordLabel = messageSource.getMessage("page.label.changepwd.newpassword", null, locale);
         String confirmPasswordLabel = messageSource.getMessage("page.label.changepwd.confirmPassword", null, locale);
-    	ValidationUtils.rejectIfEmpty(errors, "password", "info.changepwd.required", new Object[]{passwordLabel});
-    	ValidationUtils.rejectIfEmpty(errors, "newPassword", "info.changepwd.required", new Object[]{newPasswordLabel});
-    	ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "info.changepwd.required", new Object[]{confirmPasswordLabel});
-    	if(!errors.hasErrors()) {
-    	    if(userBean.getNewPassword().length()<6||userBean.getNewPassword().length()>20) {
+        ValidationUtils.rejectIfEmpty(errors, "password", "info.changepwd.required", new Object[]{passwordLabel});
+        ValidationUtils.rejectIfEmpty(errors, "newPassword", "info.changepwd.required", new Object[]{newPasswordLabel});
+        ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "info.changepwd.required", new Object[]{confirmPasswordLabel});
+        if(!errors.hasErrors()) {
+            if(userBean.getNewPassword().length()<6||userBean.getNewPassword().length()>20) {
                 errors.rejectValue("newPassword", "info.changepwd.newpassword.invalid");
             } else if (!userBean.getConfirmPassword().equals(userBean.getNewPassword())){
                 errors.rejectValue("confirmPassword", "info.changepwd.confirmPassword.invalid");
@@ -195,158 +198,158 @@ public class UserController {
                     errors.rejectValue("password", "info.changepwd.password.invalid");
                 }
             }
-    	}
-    	return "change_password";
+        }
+        return "change_password";
     }
     
     @RequestMapping("/forget_pwd")
     public String forgetPassword() {
-    	return "forget_pwd";
+        return "forget_pwd";
     }
     
     @RequestMapping("/found_pwd")
     public String foundPassword(String email, ModelMap model,
-    		HttpServletRequest request, Locale locale) {
-    	if(email==null||email.trim().length()<=0) {
-    		String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
-    		String errorInfo = messageSource.getMessage("info.required", new Object[]{emailLabel}, locale);
-    		model.addAttribute("errorInfo", errorInfo);
-    		return "forget_pwd";
-    	}
-    	if(!email.matches("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")) {
-    		String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
-    		String errorInfo = messageSource.getMessage("info.invalid", new Object[]{emailLabel}, locale);
-    		model.addAttribute("errorInfo", errorInfo);
-    		model.addAttribute("email", email);
-    		return "forget_pwd";
-    	}
-    	
-    	// 验证数据库中是否存在指定邮箱
-    	User user = userService.validEmail(email);
-    	if(user==null) {
-    		String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
-    		String errorInfo = messageSource.getMessage("info.notexist", new Object[]{emailLabel}, locale);
-    		model.addAttribute("errorInfo", errorInfo);
-    		model.addAttribute("email", email);
-    		return "forget_pwd";
-    	}
-    	
-    	// 生成sid
-    	String sid = SHA1Util.generateSalt();
-    	Date date = new Date();
-    	long endTime = date.getTime()+1800000;
-    	user.setSid(sid);
-    	user.setEndTime(endTime);
-    	userService.update(user);
-    	
-    	// 发送邮件给用户邮箱
-    	StringBuffer link = new StringBuffer("http://").append(request.getServerName());
+            HttpServletRequest request, Locale locale) {
+        if(email==null||email.trim().length()<=0) {
+            String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
+            String errorInfo = messageSource.getMessage("info.required", new Object[]{emailLabel}, locale);
+            model.addAttribute("errorInfo", errorInfo);
+            return "forget_pwd";
+        }
+        if(!email.matches("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")) {
+            String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
+            String errorInfo = messageSource.getMessage("info.invalid", new Object[]{emailLabel}, locale);
+            model.addAttribute("errorInfo", errorInfo);
+            model.addAttribute("email", email);
+            return "forget_pwd";
+        }
+        
+        // 验证数据库中是否存在指定邮箱
+        User user = userService.validEmail(email);
+        if(user==null) {
+            String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
+            String errorInfo = messageSource.getMessage("info.notexist", new Object[]{emailLabel}, locale);
+            model.addAttribute("errorInfo", errorInfo);
+            model.addAttribute("email", email);
+            return "forget_pwd";
+        }
+        
+        // 生成sid
+        String sid = SHA1Util.generateSalt();
+        Date date = new Date();
+        long endTime = date.getTime()+1800000;
+        user.setSid(sid);
+        user.setEndTime(endTime);
+        userService.update(user);
+        
+        // 发送邮件给用户邮箱
+        StringBuffer link = new StringBuffer("http://").append(request.getServerName());
         int port = request.getServerPort();
         if(port!=80)
             link.append(":").append(port);
         link.append(request.getContextPath()).append("/authenticate.html?sid=").append(sid)
           .append("&uid=").append(user.getId());
         String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(date);
-    	String subject = messageSource.getMessage("email.foundpwd.title", null, locale);
-    	String content = messageSource.getMessage("email.foundpwd.content", 
-    			new Object[]{user.getUserName(), dateStr, link.toString()}, locale);
-    	MailUtil.sendEMail(user.getEmail(), subject, content);
-    	
-    	model.addAttribute("email", email);
-    	return "found_pwd";
+        String subject = messageSource.getMessage("email.foundpwd.title", null, locale);
+        String content = messageSource.getMessage("email.foundpwd.content", 
+                new Object[]{user.getUserName(), dateStr, link.toString()}, locale);
+        MailUtil.sendEMail(user.getEmail(), subject, content);
+        
+        model.addAttribute("email", email);
+        return "found_pwd";
     }
     
     @RequestMapping("/authenticate")
     public String authenticate(String sid, String uid, ModelMap model,
-    		HttpSession session) {
-    	if(sid==null||sid.trim().length()<=0) {
-    		return "redirect:/error404.html";
-    	}
-    	
-    	if(uid==null||uid.trim().length()<=0) {
-    		return "redirect:/error404.html";
-    	}
-    	
-    	User user = userService.getUser(uid);
-    	if(user==null) {
-    		return "redirect:/error404.html";
-    	}
-    	
-    	// 检查失效
-    	Date now = new Date();
-    	if(now.getTime()>user.getEndTime()) {
-    		return "redirect:/error404.html";
-    	}
-    	// 检查sid是否是有效的值
-    	if(!user.getSid().equals(sid)) {
-    		return "redirect:/error404.html";
-    	}
-    	// 将链接设置过期
-    	user.setEndTime(0);
-    	userService.update(user);
-    	
-    	model.addAttribute("uid", uid);
-    	model.addAttribute("sid", sid);
-    	      
-    	return "reset_pwd";
+            HttpSession session) {
+        if(sid==null||sid.trim().length()<=0) {
+            return "redirect:/error404.html";
+        }
+        
+        if(uid==null||uid.trim().length()<=0) {
+            return "redirect:/error404.html";
+        }
+        
+        User user = userService.getUser(uid);
+        if(user==null) {
+            return "redirect:/error404.html";
+        }
+        
+        // 检查失效
+        Date now = new Date();
+        if(now.getTime()>user.getEndTime()) {
+            return "redirect:/error404.html";
+        }
+        // 检查sid是否是有效的值
+        if(!user.getSid().equals(sid)) {
+            return "redirect:/error404.html";
+        }
+        // 将链接设置过期
+        user.setEndTime(0);
+        userService.update(user);
+        
+        model.addAttribute("uid", uid);
+        model.addAttribute("sid", sid);
+              
+        return "reset_pwd";
     }
     
     @RequestMapping(value="/reset_pwd", method=RequestMethod.POST)
     public String resetPwd(String sid, String uid, String newPassword, String confirmPassword,
-    		HttpSession session, ModelMap model, Locale locale) {
-    	List<String> errors = new ArrayList<String>();
-    	// 没有sid，则说明是非法的访问。
+            HttpSession session, ModelMap model, Locale locale) {
+        List<String> errors = new ArrayList<String>();
+        // 没有sid，则说明是非法的访问。
         if(sid==null||sid.trim().length()<=0
-        		||uid==null||uid.trim().length()<=0) {
-    		String errorInfo = messageSource.getMessage("info.illegal.access", null, locale);
-    		errors.add(errorInfo);
-    		model.addAttribute("errorInfos", errors);
-    		return "reset_pwd";
-    	} 
-    	
-    	User user = userService.getUser(uid);
-    	if(user==null||!sid.equals(user.getSid())) {
-    		String errorInfo = messageSource.getMessage("info.illegal.access", null, locale);
-    		errors.add(errorInfo);
-    		model.addAttribute("errorInfos", errors);
-    		return "reset_pwd";
-    	}
-    	
-    	// 验证密码的合法性
-    	if(newPassword==null||newPassword.equals("")) {
-    		String newPasswordLabel = messageSource.getMessage("page.label.changepwd.newpassword", null, locale);
-    		String errorInfo = messageSource.getMessage("info.required", new Object[]{newPasswordLabel}, locale);
-    		errors.add(errorInfo);
-    	} else if (newPassword.length()<6||newPassword.length()>20) {
-    		String errorInfo = messageSource.getMessage("info.changepwd.newpassword.invalid", null, locale);
-    		errors.add(errorInfo);
-    	}
-    	if(confirmPassword==null||confirmPassword.equals("")) {
-    		String confirmPwdLabel = messageSource.getMessage("page.label.changepwd.confirmPassword", null, locale);
-    		String errorInfo = messageSource.getMessage("info.required", new Object[]{confirmPwdLabel}, locale);
-    		errors.add(errorInfo);
-    	} else if (!confirmPassword.equals(newPassword)) {
-    		String errorInfo = messageSource.getMessage("info.changepwd.confirmPassword.invalid", null, locale);
-    		errors.add(errorInfo);
-    	}
-    	
-    	if(errors.size()>0) {
-    		// 如果有错误则给予提示信息
-    		model.addAttribute("uid", uid);
-        	model.addAttribute("sid", sid);
-        	
-    		model.addAttribute("newPassword", newPassword);
-    		model.addAttribute("confirmPassword", confirmPassword);
-    		model.addAttribute("errorInfos", errors);
-    		return "reset_pwd";
-    	} else {
-    		user.setLastLogin(new Date());
-    		user.setSid("");
-    		userService.update(user);
-    		userService.changePassword(user, newPassword);
+                ||uid==null||uid.trim().length()<=0) {
+            String errorInfo = messageSource.getMessage("info.illegal.access", null, locale);
+            errors.add(errorInfo);
+            model.addAttribute("errorInfos", errors);
+            return "reset_pwd";
+        } 
+        
+        User user = userService.getUser(uid);
+        if(user==null||!sid.equals(user.getSid())) {
+            String errorInfo = messageSource.getMessage("info.illegal.access", null, locale);
+            errors.add(errorInfo);
+            model.addAttribute("errorInfos", errors);
+            return "reset_pwd";
+        }
+        
+        // 验证密码的合法性
+        if(newPassword==null||newPassword.equals("")) {
+            String newPasswordLabel = messageSource.getMessage("page.label.changepwd.newpassword", null, locale);
+            String errorInfo = messageSource.getMessage("info.required", new Object[]{newPasswordLabel}, locale);
+            errors.add(errorInfo);
+        } else if (newPassword.length()<6||newPassword.length()>20) {
+            String errorInfo = messageSource.getMessage("info.changepwd.newpassword.invalid", null, locale);
+            errors.add(errorInfo);
+        }
+        if(confirmPassword==null||confirmPassword.equals("")) {
+            String confirmPwdLabel = messageSource.getMessage("page.label.changepwd.confirmPassword", null, locale);
+            String errorInfo = messageSource.getMessage("info.required", new Object[]{confirmPwdLabel}, locale);
+            errors.add(errorInfo);
+        } else if (!confirmPassword.equals(newPassword)) {
+            String errorInfo = messageSource.getMessage("info.changepwd.confirmPassword.invalid", null, locale);
+            errors.add(errorInfo);
+        }
+        
+        if(errors.size()>0) {
+            // 如果有错误则给予提示信息
+            model.addAttribute("uid", uid);
+            model.addAttribute("sid", sid);
+            
+            model.addAttribute("newPassword", newPassword);
+            model.addAttribute("confirmPassword", confirmPassword);
+            model.addAttribute("errorInfos", errors);
+            return "reset_pwd";
+        } else {
+            user.setLastLogin(new Date());
+            user.setSid("");
+            userService.update(user);
+            userService.changePassword(user, newPassword);
             session.setAttribute(CommonConstant.LOGIN_USER, user);
             // 修改成功后，重定向首页
             return "redirect:index.html";
-    	}
+        }
     }
 }

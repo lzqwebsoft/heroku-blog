@@ -1,183 +1,152 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ page import="org.springframework.web.util.UrlPathHelper" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page import="org.springframework.web.util.UrlPathHelper"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="author" content="lzqwebsoft, Johnny" />
-  <meta name="keywords" content="lzqwebsoft, Johnny, herokuapp, heroku-blog, blog" />
-  <meta name="description" content="" />
-  <meta name="robots" content="all" />
-  <title><spring:message code="page.title" /></title>
-  <style type="text/css" title="currentStyle" media="screen">
-    @import "<%= request.getContextPath() %>/resources/style/comment.css";
-  </style>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/comment.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/default.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/resources/javascript/index.js"></script>
-  <!--<link rel="Shortcut Icon" type="image/x-icon" href="http://www.csszengarden.com/favicon.ico" />-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title><spring:message code="page.title" /></title>
+<%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 </head>
 
-<body id="css-zen-garden">
-<%@ include file="/WEB-INF/pages/common/header.jsp" %>
+<body>
+    <%@ include file="/WEB-INF/pages/common/header.jsp"%>
 
-<div id="container">
-  <div id="intro">
-    <div id="pageHeader">
-      <c:if test="${requestScope.blogInfo!=null}">
-      <h1><span>${requestScope.blogInfo.head}</span></h1>
-      <h2><span>${requestScope.blogInfo.descriptions}</span></h2>
-      </c:if>
-    </div>
-
-<!--    <div id="quickSummary">-->
-<!--        <h2>In building...</h2>-->
-<!--          <p>&nbsp;</p>-->
-<!--          <p>&nbsp;</p>-->
-<!--          <p>${sessionScope.user.userName }</p>-->
-<!--          <p>&nbsp;</p>-->
-<!--          <p>&nbsp;</p>-->
-<!--    </div>-->
-
-<!--    <div id="preamble">-->
-<!--      <h2>文章标题</h2>-->
-<!--          <p>&nbsp;</p>-->
-<!--          <p>&nbsp;</p>-->
-<!--          <p>&nbsp;</p>-->
-<!--          <p>&nbsp;</p>-->
-<!--          <p>&nbsp;</p>-->
-<!--    </div>-->
-  </div>
-
-  <div id="supportingText">
-    <c:choose>
-    <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
-    <c:forEach items="${page.data}" var="article">
-    <div class="explanation">
-       
-      <h3>
-         <span class="pattern_${article.patternTypeId} pattern_span"></span>
-         <a href="${pageContext.request.contextPath}/show/${article.id}.html">
-             <c:out value="${article.title}" />
-         </a>
-         <c:if test="${article.isTop}">
-            <font color="red">[置顶]</font>
-         </c:if>
-      </h3>
-          <p class="article_date">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
-          <p class="article_description"><c:out value="${article.content}"  escapeXml="false"/></p>
-          <p>
-             <a href="show/${article.id}.html">阅读(${article.readedNum})</a>&nbsp;&nbsp;&nbsp;&nbsp;
-             <a href="show/${article.id}.html#reply_article">评论(${article.commentCount})</a>&nbsp;&nbsp;&nbsp;&nbsp;
-             <c:if test="${sessionScope.user!=null}">
-             <a href="edit/${article.id}.html">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
-             <a href="javascript:void(0)" onclick="confirm_article_delete('<spring:message code="page.confirm.delete.article" arguments="${article.title}"  />', '${article.id}')">删除</a>
-             </c:if>
-          </p>
-    </div>
-    </c:forEach>
-    </c:when>
-    <c:otherwise>
-    <div class="explanation">
-       <p>暂无</p>  
-    </div>
-    </c:otherwise>
-    </c:choose>
-    
-    <div id="page_number">
-       <c:if test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
-       <div id="page_description">${page.totalCount}篇文章, 共${page.totalPageCount}页</div>
-       <div id="page_count">
-          <ul>
-            <c:if test="${page.hasPreviousPage}">
-               <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo-1}">上一页</a></li>
+    <!-- 主体内容 -->
+    <div id="blog-header" class="container" style="background-color: #FFF;">
+        <div class="page-header">
+            <c:if test="${requestScope.blogInfo!=null}">
+                <h1>
+                    ${requestScope.blogInfo.head}&nbsp;<small>${requestScope.blogInfo.descriptions}</small>
+                </h1>
             </c:if>
-            
-            <c:forEach var="index" begin="${page.pageRangeStart}" end="${page.pageRangeEnd}" step="1">
-            <c:choose>
-            <c:when test="${index!=page.currentPageNo}">
-               <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${index}">${index}</a></li>
-            </c:when>
-            <c:otherwise>
-               <li><a href="javascript:void(0)" class="selected">${index}</a></li>
-            </c:otherwise>
-            </c:choose>
-            </c:forEach>
-            
-            <c:if test="${page.hasNextPage}">
-               <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo+1}">下一页</a></li>
-            </c:if>
-          </ul>
-       </div>
-       </c:if>
+        </div>
+
+        <div class="row row-offcanvas row-offcanvas-right">
+            <div class="col-xs-12 col-sm-9">
+                <c:choose>
+                    <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
+                        <c:forEach items="${page.data}" var="article">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        <c:out value="${article.patternTypeLabel}" escapeXml="false" /> <a href="${pageContext.request.contextPath}/show/${article.id}.html"><c:out value="${article.title}" /></a>
+                                        <c:if test="${article.isTop}">
+                                            <span class="label label-danger">置顶</span>
+                                        </c:if>
+                                    </h4>
+                                    <p>发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
+                                    <p style="text-indent: 2em;">
+                                        <c:out value="${article.content}" escapeXml="false" />
+                                    </p>
+                                    <p>
+                                        <a class="btn btn-default" role="button" href="show/${article.id}.html">阅读(${article.readedNum})</span></a> <a class="btn btn-default" role="button" href="show/${article.id}.html#reply_comment">评论(${article.commentCount})</span></a>
+                                        <c:if test="${sessionScope.user!=null}">
+                                            <a class="btn btn-primary" role="button" href="edit/${article.id}.html">编辑</a>
+                                            <a class="btn btn-danger" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
+                                        </c:if>
+                                    </p>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p>暂无内容</p>
+                    </c:otherwise>
+                </c:choose>
+                <!-- 翻页 -->
+                <c:if test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
+                    <ul class="pagination">
+                        <c:if test="${page.hasPreviousPage}">
+                            <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo-1}">&laquo;</a></li>
+                        </c:if>
+                        <c:forEach var="index" begin="${page.pageRangeStart}" end="${page.pageRangeEnd}" step="1">
+                            <c:choose>
+                                <c:when test="${index!=page.currentPageNo}">
+                                    <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${index}">${index}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="active"><a>${index}<span class="sr-only">(current)</span></a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <c:if test="${page.hasNextPage}">
+                            <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo+1}">&raquo;</a></li>
+                        </c:if>
+                    </ul>
+                    <div id="page_description">${page.totalCount}篇文章, 共${page.totalPageCount}页</div>
+                </c:if>
+            </div>
+
+            <!-- 右导航菜单 -->
+            <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                <div class="panel panel-default">
+                    <div class="panel-heading">文章分类</div>
+                    <div class="panel-body">
+                        <c:choose>
+                        <c:when test="${articleTypes!=null&&fn:length(articleTypes)>0}">
+                        <div class="list-group">
+                            <c:forEach items="${articleTypes}" var="articleType">
+                                <c:if test="${!articleType.disable}">
+                                <a href="<%= request.getContextPath() %>/select/${articleType.id}.html" class="list-group-item <c:if test="${requestScope.articleTypeId!=null && requestScope.articleTypeId==articleType.id}"><c:out value="active" /></c:if>">${articleType.name}<span class="badge">${fn:length(articleType.articles)}</span></a>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                        </c:when>
+                        <c:otherwise>
+                            <p>暂无</p>
+                        </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">阅读排行</div>
+                    <c:choose>
+                        <c:when test="${top10Articles!=null&&fn:length(top10Articles)>0}">
+                            <div class="list-group">
+                                <c:forEach items="${top10Articles}" var="top10">
+                                    <a href="<%=request.getContextPath()%>/show/${top10.id}.html" title="${top10.title}" class="list-group-item">${top10.title}<span class="badge pull-right">${top10.readedNum}</span></a>
+                                </c:forEach>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="panel-body"><p>暂无</p></div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">相关链接</div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <a href="http://blog.csdn.net/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> CSDN</a>
+                            <a href="http://my.oschina.net/websoft" class="list-group-item glyphicon glyphicon-link"> 开源中国</a>
+                            <a href="http://weibo.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> 新浪微博</a>
+                            <a href="https://www.facebook.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Facebook</a>
+                            <a href="https://twitter.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Tiwtter</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">联系我</div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <a href="mailto:lzqwebsoft@gmail.com" class="list-group-item glyphicon glyphicon-envelope"> lzqwebsoft@gmail.com</a> <a href="mailto:751939573@qq.com" class="list-group-item glyphicon glyphicon-envelope"> 751939573@qq.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面底端说明 -->
+        <%@ include file="/WEB-INF/pages/common/footer.jsp"%>
     </div>
-  </div>
 
-  
-  <div id="linkList">
-    <div id="linkList2">
-      <div id="lselect">
-        <h3 class="select"><span>文章分类:</span></h3>
-        <c:choose>
-        <c:when test="${articleTypes!=null&&fn:length(articleTypes)>0}">
-        <ul>
-          <c:forEach items="${articleTypes}" var="articleType" >
-          <li><a href="<%= request.getContextPath() %>/select/${articleType.id}.html">${articleType.name}(${fn:length(articleType.articles)})</a></li>
-          </c:forEach>
-        </ul>
-        </c:when>
-        <c:otherwise>
-          <p>暂无</p>
-        </c:otherwise>
-        </c:choose>
-      </div>
-
-      <div id="larchives">
-        <h3 class="archives"><span>阅读排行:</span></h3>
-        <c:choose>
-        <c:when test="${top10Articles!=null&&fn:length(top10Articles)>0}">
-        <ul>
-          <c:forEach items="${top10Articles}" var="top10">
-             <li><a href="<%=request.getContextPath()%>/show/${top10.id}.html" title="${top10.title}">${top10.title}</a><span>(${top10.readedNum})</span></li>
-          </c:forEach>
-        </ul>
-        </c:when>
-        <c:otherwise>
-          <p>暂无</p>
-        </c:otherwise>
-        </c:choose>
-      </div>
-      
-      <div id="lresources">
-        <h3 class="resources"><span>网站链接:</span></h3>
-        <ul>
-          <li><a href="http://blog.csdn.net/xianqiang1">CSDN</a></li>
-          <li><a href="http://my.oschina.net/websoft">OSChina</a></li>
-          <li><a href="http://weibo.com/lzqwebsoft">Sina微博</a></li>
-          <li><a href="https://twitter.com/lzqwebsoft">Twitter</a></li>
-        </ul>
-      </div>
-            
-      <div id="lconnect">
-        <h3 class="connect"><span>联系我:</span></h3>
-          <ul>
-              <li>lzqwebsoft@gmail.com</li>
-              <li>751939573@qq.com</li>
-          </ul>
-      </div>
-    </div>
-  </div>
-  
-  <div id="footer">
-     Powered by <a href="http://www.heroku.com">Heroku</a>,Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.
-  </div>
-
-</div>
-
-<%@ include file="/WEB-INF/pages/common/footer.jsp" %>
+<%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
 </body>
 </html>

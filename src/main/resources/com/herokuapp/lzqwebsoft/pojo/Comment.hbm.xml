@@ -16,10 +16,17 @@
        <property name="isBlogger" column="is_blogger"/>
        <!-- 自关联一对多关系 -->
        <many-to-one name="parentComment" class="Comment" foreign-key="fk_parent"
-           column="parent_id" cascade="save-update" />
+           column="parent_id" cascade="delete" />
+       <many-to-one name="rootComment" class="Comment" foreign-key="fk_root_comment"
+           column="root_id" cascade="delete" />
        <set name="childComments" inverse="true" cascade="all" lazy="false"
             embed-xml="false" order-by="create_at asc">
           <key column="parent_id" />
+          <one-to-many class="Comment" />
+       </set>
+       <set name="allChildComments" inverse="true" cascade="all" lazy="false"
+            embed-xml="false" order-by="create_at asc">
+          <key column="root_id" />
           <one-to-many class="Comment" />
        </set>
     </class>

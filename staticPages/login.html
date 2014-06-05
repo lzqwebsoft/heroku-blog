@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>博主登录-lzqwebsoft's blog</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/comment.css" />
+    <style type="text/css">
+    .form-signin {
+      max-width: 330px;
+      padding: 15px;
+      margin: 0 auto;
+    }
+    .form-signin .form-signin-heading{
+      margin-bottom: 10px;
+    }
+    .form-signin .form-control {
+      position: relative;
+      font-size: 16px;
+      height: auto;
+      padding: 10px;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+    }
+    .form-signin .input-group {
+        margin: 5px 0;
+    }
+    .form-signin .form-control:focus {
+      z-index: 2;
+    }
+    .form-signin>a{
+        display: block;
+        overflow: hidden;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    </style>
+</head>
+
+<body style="padding-top: 70px;">
+	<!-- 导航菜单 -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- 左导航菜单 -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">飘痕の博客</a>
+            </div>
+
+            <!-- 右导航菜单 -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="about.html" data-toggle="modal" data-target="#aboutDailog">关于</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">管理<span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">登&nbsp;&nbsp;录</a></li>
+                            <li><a href="#">注&nbsp;&nbsp;销</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">发表博客</a></li>
+                            <li><a href="#">修改密码</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">设&nbsp;&nbsp;置</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主体内容 -->
+    <div class="container">
+        <h2>博主登录</h2>
+
+        <!-- 回到页面顶点 -->
+        <div class="goBackToTop">
+            <a id="gototop" href="#blog-header" title="回到顶端" style="display: none;">TOP</a>
+        </div>
+
+        <!-- 关于对话框主体 -->
+        <div class="modal fade" id="aboutDailog" tabindex="-1" role="dialog" aria-labelledby="aboutDailogLabel" aria-hidden="true"></div>
+
+        <div id="login_zone">
+            <div id="login-info-div" class="alert alert-danger hidden"><strong>错误：</strong>无效的用户名与密码</div>
+        	<form class="form-signin" role="form">
+                <div class="input-group">
+                    <span class="input-group-addon"><div class='glyphicon glyphicon-user'></div></span>
+                    <input type="text" name="username" class="form-control" placeholder="帐号" required autofocus>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><div class='glyphicon glyphicon-wrench'></div></span>
+                    <input type="password" name="username" class="form-control" placeholder="密码" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><div class='glyphicon glyphicon-picture'></div></span>
+                    <input type="text" name="validateCode" class="form-control" placeholder="验证码" required>
+                </div>
+                <span>
+                    <img id="captcha-image" src="http://lzqwebsoft.net/captcha.jpg" title="验证码" alt="验证码" />
+                    <a href="#">看不清，换一张</a>
+                </span>
+                <a href="#">忘记密码</a>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">登 录</button>
+            </form>
+        </div>
+
+        <hr />
+        <footer>
+             <p>
+                Powered by <a href="http://www.heroku.com">Heroku</a>, UI by <a href="http://www.bootcss.com/">Bootstrap</a>, Design by <a href="https://twitter.com/lzqwebsoft">Johnny</a>.</p>
+             <p>Copyright &copy; 2012 - 2014
+            </p>
+        </footer>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/comment.js"></script>  
+</body>
+</html>
