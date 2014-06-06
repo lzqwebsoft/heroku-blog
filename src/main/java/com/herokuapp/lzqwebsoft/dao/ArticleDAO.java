@@ -129,7 +129,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
 	
 	@SuppressWarnings("unchecked")
 	public Article getNextArticle(final Article article) {
-		final String queryString = "from Article as art where art.createAt>? order by art.createAt desc";
+		final String queryString = "from Article as art where art.createAt>? order by art.createAt asc";
 		List<Article> list =  (List<Article>) getHibernateTemple().executeFind(
 				new HibernateCallback() {
 					public List<Article> doInHibernate(Session session)
