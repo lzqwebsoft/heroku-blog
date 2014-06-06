@@ -175,9 +175,9 @@
                     <a class="bds_mshare" data-cmd="mshare"></a>
                     <a class="bds_qzone" data-cmd="qzone" href="#"></a>
                     <a class="bds_tsina" data-cmd="tsina"></a>
-                    <a class="bds_baidu" data-cmd="baidu"></a>
-                    <a class="bds_renren" data-cmd="renren"></a>
-                    <a class="bds_tqq" data-cmd="tqq"></a>
+                    <a class="bds_weixin" data-cmd="weixin"></a>
+                    <a class="bds_fbook" data-cmd="fbook"></a>
+                    <a class="bds_twi" data-cmd="twi"></a>
                     <a class="bds_more" data-cmd="more">更多</a>
                     <a class="bds_count" data-cmd="count"></a>
                 </div>
