@@ -62,12 +62,12 @@
                 </h1>
             </c:if>
         </div>
-
         <div class="row row-offcanvas row-offcanvas-right">
+            <p class="pull-right visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">点击导航</button>
+            </p>
             <div class="col-xs-12 col-sm-9">
-                <p class="pull-right visible-xs">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">点击导航</button>
-                </p>
+                
                 <c:choose>
                     <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
                         <c:forEach items="${page.data}" var="article">
