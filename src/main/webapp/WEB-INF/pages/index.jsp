@@ -10,6 +10,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title><spring:message code="page.title" /></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
+<style type="text/css">
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-right.active {
+    right: 50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left.active {
+    left: 50%; /* 6 columns */
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%; /* 6 columns */
+  }
+}
+</style>
 </head>
 
 <body>
@@ -24,9 +62,12 @@
                 </h1>
             </c:if>
         </div>
-
         <div class="row row-offcanvas row-offcanvas-right">
+            <p class="pull-right visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">点击导航</button>
+            </p>
             <div class="col-xs-12 col-sm-9">
+                
                 <c:choose>
                     <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
                         <c:forEach items="${page.data}" var="article">
@@ -148,5 +189,12 @@
     </div>
 
 <%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('[data-toggle=offcanvas]').click(function() {
+    $('.row-offcanvas').toggleClass('active');
+  });
+});
+</script>
 </body>
 </html>
