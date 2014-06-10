@@ -69,3 +69,30 @@ function check_article_input() {
     prompt_info.addClass("hidden").html("");
     return true;
 }
+// 定时循还执行文章保存,每5分钟执行一次
+var timeid = window.setInterval(autoSaveArticle, 300000);
+function autoSaveArticle() {
+	editor.sync();
+    var formData = $("#article").serialize();
+    $.ajax({
+        url: $("#context-path").text()+"/article/autoSave.html",
+        type: "post",
+        data: formData,
+        dataType: "json",
+        success: function(data) {
+            if(data.status=="SUCCESS") {
+                var message = "系统自动保存成功！";
+                if(data.messages)
+                    message = data.messages;
+                $("#auto_prompt_info").css({color: "green"}).html(message);
+                if(data.article_id) {
+                    $("#id").val(data.article_id);
+                    $("#editOrCreate").val("EDIT");
+                }
+            }
+        },
+        error: function(xhr, strError, errorObj) {
+        	$("#auto_prompt_info").css({color: "red"}).html(errorObj);
+        }
+    });
+}
