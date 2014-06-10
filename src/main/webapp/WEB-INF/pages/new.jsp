@@ -26,6 +26,7 @@
         <h2>撰写博客</h2>
 
         <div id="prompt_info" class="alert alert-danger hidden"></div>
+        <div id="auto_prompt_info"></div>
         <form:form action="${pageContext.request.contextPath}/article/publish.html" onsubmit="return check_article_input();" method="post" modelAttribute="article">
             <div class="form-group">
                 <label for="article_title">标题</label>
@@ -83,7 +84,7 @@
                     <form:hidden path="readedNum" />
                 </div>
             </div>
-            <input type="hidden" name="editOrCreate" value="${editOrCreate}" />
+            <input type="hidden" id="editOrCreate" name="editOrCreate" value="${editOrCreate}" />
             <button type="submit" name="publish" value="1" class="btn btn-primary">发表</button>
             <button type="submit" name="save" value="1" class="btn btn-default">保存为草稿</button>
         </form:form>
