@@ -1,5 +1,4 @@
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" />
-<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/bootstrap-theme.min.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/comment.css" />
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

@@ -150,7 +150,7 @@
                         <c:when test="${top10Articles!=null&&fn:length(top10Articles)>0}">
                             <div class="list-group">
                                 <c:forEach items="${top10Articles}" var="top10">
-                                    <a href="<%=request.getContextPath()%>/show/${top10.id}.html" title="${top10.title}" class="list-group-item">${top10.title}<span class="badge pull-right">${top10.readedNum}</span></a>
+                                    <a href="<%=request.getContextPath()%>/show/${top10.id}.html" title="${top10.title}" class="list-group-item" style="overflow: hidden;">${top10.title}<span class="badge pull-right">${top10.readedNum}</span></a>
                                 </c:forEach>
                             </div>
                         </c:when>
