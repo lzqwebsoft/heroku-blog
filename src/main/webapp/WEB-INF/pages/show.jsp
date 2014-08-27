@@ -134,54 +134,50 @@
             <li class="active">博客正文</li>
         </ol>
 
-        <div class="media" role="main">
-            <div class="media-body">
-                <h3 class="media-heading">
-                    <c:out value="${article.patternTypeLabel}" escapeXml="false" />
-                    <c:out value="${article.title}" />
-                    <c:if test="${article.isTop}">
-                        <span class="label label-danger">置顶</span>
-                    </c:if>
-                </h3>
-                <div class="row">
-                    <div class="col-xs-6">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />，已有${article.readedNum}次阅读</div>
-                    <div class="col-xs-6 text-right">
-                        <a class="btn btn-default btn-sm" role="button" href="#reply_comment">评论(${fn:length(comments)})</a>
-                        <c:if test="${sessionScope.user!=null}">
-                            <a class="btn btn-primary btn-sm" role="button" href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>
-                            <a class="btn btn-danger btn-sm" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
-                        </c:if>
-                    </div>
-                </div>
+        <h3 class="media-heading">
+            <c:out value="${article.patternTypeLabel}" escapeXml="false" />
+            <c:out value="${article.title}" />
+            <c:if test="${article.isTop}">
+                <span class="label label-danger">置顶</span>
+            </c:if>
+        </h3>
+        <div class="row">
+            <div class="col-xs-6">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />，已有${article.readedNum}次阅读</div>
+            <div class="col-xs-6 text-right">
+                <a class="btn btn-default btn-sm" role="button" href="#reply_comment">评论(${fn:length(comments)})</a>
+                <c:if test="${sessionScope.user!=null}">
+                    <a class="btn btn-primary btn-sm" role="button" href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>
+                    <a class="btn btn-danger btn-sm" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
+                </c:if>
+            </div>
+        </div>
 
-                <!-- 文章目录，自动生成 -->
-                <div id="table_of_contents" class="row hidden">
-                    <div class="col-md-6">
-                        <div class="bs-sidebar hidden-print" role="complementary">
-                            <div class="bs-sidenav-title" data-toggle="collapse" data-target="#auto_contents">
-                                <b>目录</b>
-                            </div>
-                            <ul id="auto_contents" class="nav bs-sidenav collapse">
-                            </ul>
-                        </div>
+        <!-- 文章目录，自动生成 -->
+        <div id="table_of_contents" class="row hidden">
+            <div class="col-md-6">
+                <div class="bs-sidebar hidden-print" role="complementary">
+                    <div class="bs-sidenav-title" data-toggle="collapse" data-target="#auto_contents">
+                        <b>目录</b>
                     </div>
-                </div>
-
-                <!-- 文章内容 -->
-                <div id="article_content">
-                    <c:out value="${article.content}" escapeXml="false" />
-                </div>
-                <div class="bdsharebuttonbox" data-tag="share_1">
-                    <a class="bds_mshare" data-cmd="mshare"></a>
-                    <a class="bds_qzone" data-cmd="qzone" href="#"></a>
-                    <a class="bds_tsina" data-cmd="tsina"></a>
-                    <a class="bds_weixin" data-cmd="weixin"></a>
-                    <a class="bds_fbook" data-cmd="fbook"></a>
-                    <a class="bds_twi" data-cmd="twi"></a>
-                    <a class="bds_more" data-cmd="more">更多</a>
-                    <a class="bds_count" data-cmd="count"></a>
+                    <ul id="auto_contents" class="nav bs-sidenav collapse">
+                    </ul>
                 </div>
             </div>
+        </div>
+
+        <!-- 文章内容 -->
+        <div id="article_content" style="margin-top: 10px;">
+            <c:out value="${article.content}" escapeXml="false" />
+        </div>
+        <div class="bdsharebuttonbox" data-tag="share_1">
+            <a class="bds_mshare" data-cmd="mshare"></a>
+            <a class="bds_qzone" data-cmd="qzone" href="#"></a>
+            <a class="bds_tsina" data-cmd="tsina"></a>
+            <a class="bds_weixin" data-cmd="weixin"></a>
+            <a class="bds_fbook" data-cmd="fbook"></a>
+            <a class="bds_twi" data-cmd="twi"></a>
+            <a class="bds_more" data-cmd="more">更多</a>
+            <a class="bds_count" data-cmd="count"></a>
         </div>
 
         <div class="row">
@@ -209,7 +205,7 @@
                             </a>
                         </c:forEach>
                     </c:when>
-                    <c:otherwise>暂无</c:otherwise>
+                    <c:otherwise><p class="list-group-item">暂无</p></c:otherwise>
                 </c:choose>
             </div>
         </div>
