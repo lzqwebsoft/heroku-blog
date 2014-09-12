@@ -1,6 +1,9 @@
+<!-- PACE: Automatic page load progress bar -->
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/pace-theme-minimal.css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/pace.min.js"></script>
+
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/comment.css" />
-<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/pace-theme-minimal.css" />
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
