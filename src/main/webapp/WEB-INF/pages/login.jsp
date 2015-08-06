@@ -91,6 +91,9 @@
         $("#update-captcha-link").click(function() {
             $("#captcha-image").attr("src", "captcha.jpg?"+ Math.floor(Math.random()*100));
         });
+        $("#captcha-image").click(function() {
+            $(this).attr("src", "${pageContext.request.contextPath}/captcha.jpg?"+ Math.floor(Math.random()*100));
+        });
     });
     </script>
 </body>

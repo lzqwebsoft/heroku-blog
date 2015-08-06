@@ -204,6 +204,8 @@ $(function() {
                     editor.html("");
                     $("#validateCode").parent().removeClass("has-error");
                 }
+                // 提交后更新图片验证码
+                $("#update-captcha-link").triggerHandler("click");
             },
             error: function(xhr, strError, errorObj) {
                 alert(errorObj);

@@ -87,6 +87,8 @@ public class UserController {
                     session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
                 }
             }
+            // 验证通过后清除SESSION验证码
+            session.removeAttribute(CommonConstant.CAPTCHA);
             out.print(json);
             out.close();
         } catch (IOException e) {

@@ -81,6 +81,8 @@ public class CommentController {
         if (!validateCode.equalsIgnoreCase(captcha)) {
             errors.add(messageSource.getMessage("info.invalid.captcha", null, locale));
         }
+        // 验证通过后清除SESSION验证码
+        session.removeAttribute(CommonConstant.CAPTCHA);
         // 验证当前博客是否允许评论
         Article article = comment.getArticle();
         article = articleService.get(article.getId());

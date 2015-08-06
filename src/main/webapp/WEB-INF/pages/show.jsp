@@ -280,6 +280,9 @@
             $("#update-captcha-link").click(function() {
                 $("#captcha-image").attr("src", "${pageContext.request.contextPath}/captcha.jpg?"+ Math.floor(Math.random()*100));
             });
+            $("#captcha-image").click(function() {
+                $(this).attr("src", "${pageContext.request.contextPath}/captcha.jpg?"+ Math.floor(Math.random()*100));
+            });
         });
     </script>
     <script type="text/javascript" charset="utf-8">

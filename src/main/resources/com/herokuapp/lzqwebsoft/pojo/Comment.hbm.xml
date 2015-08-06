@@ -16,9 +16,9 @@
        <property name="isBlogger" column="is_blogger"/>
        <!-- 自关联一对多关系 -->
        <many-to-one name="parentComment" class="Comment" foreign-key="fk_parent"
-           column="parent_id" cascade="delete" />
+           column="parent_id"/>
        <many-to-one name="rootComment" class="Comment" foreign-key="fk_root_comment"
-           column="root_id" cascade="delete" />
+           column="root_id"/>
        <set name="childComments" inverse="true" cascade="all" lazy="false"
             embed-xml="false" order-by="create_at asc">
           <key column="parent_id" />
