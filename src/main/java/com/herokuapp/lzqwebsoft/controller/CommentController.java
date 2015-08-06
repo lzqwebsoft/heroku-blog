@@ -36,7 +36,8 @@ public class CommentController {
     private MessageSource messageSource;
 
     @RequestMapping("/comment/add")
-    public String add(Comment comment, String parent_comment_id, String root_comment_id, ModelMap model, HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+    public String add(Comment comment, String parent_comment_id, String root_comment_id, String validateCode,
+            ModelMap model, HttpServletRequest request, HttpSession session, HttpServletResponse response) {
         // 判断用户是否登录,则博主不用输入昵称与网址
         User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
         if (user != null) {
@@ -75,6 +76,10 @@ public class CommentController {
                 String contentLabel = messageSource.getMessage("page.label.content", null, locale);
                 errors.add(messageSource.getMessage("info.length.long", new Object[] { contentLabel, 120 }, locale));
             }
+        }
+        String captcha = (String)session.getAttribute(CommonConstant.CAPTCHA);
+        if (!validateCode.equalsIgnoreCase(captcha)) {
+            errors.add(messageSource.getMessage("info.invalid.captcha", null, locale));
         }
         // 验证当前博客是否允许评论
         Article article = comment.getArticle();
