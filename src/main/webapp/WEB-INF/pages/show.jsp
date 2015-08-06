@@ -252,6 +252,12 @@
                                     <span id="wordcount" class="help-block pull-right">您还可输入<span id="str">120</span>个字</span>
                                 </div>
                             </div>
+                            <div class="form-group hidden" id="validateCodeZone">
+                                 <div class="col-sm-2">
+                                    <input type="text" name="validateCode" id="validateCode" class="form-control" placeholder="图片验证码" />
+                                 </div>
+                                 <span class="col-sm-4 pull-left" style="margin: 0; padding: 0;"><img id="captcha-image" src="${pageContext.request.contextPath}/captcha.jpg" title="验证码" alt="验证码" /><a href="javascript:void(0)" style="margin-left: 10px;" id="update-captcha-link">看不清，换一张</a></span>
+                            </div>
                             <div class="form-group">
                                 <div class="col-sm-5">
                                     <button type="submit" class="btn btn-primary">发表评论</button>
@@ -269,6 +275,13 @@
 
     <%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
     <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#update-captcha-link").click(function() {
+                $("#captcha-image").attr("src", "${pageContext.request.contextPath}/captcha.jpg?"+ Math.floor(Math.random()*100));
+            });
+        });
+    </script>
     <script type="text/javascript" charset="utf-8">
         window._bd_share_config = {
             share : [{

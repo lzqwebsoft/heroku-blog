@@ -62,6 +62,9 @@ KindEditor.ready(function(K) {
                     $("#add-comment-info-div").removeClass("show").addClass("hidden");
                 }
             }
+        },
+        afterFocus : function() {
+            $("#validateCodeZone").removeClass('hidden');
         }
     });
 });
@@ -164,6 +167,15 @@ $(function() {
             editor.focus();
             info_node.removeClass("hidden").addClass("show");
             info_node.attr('type', "2").html("<p><strong>错误：</strong>评论内容不能为空！</p>");
+            return false;
+        }
+        // 图片验证码填写
+        var validateCode = $("#validateCode").val();
+        if($("#validateCode").length > 0 && $.trim(validateCode)=="") {
+            $("#validateCode").parent().addClass("has-error");
+            $("#validateCode").focus();
+            info_node.removeClass("hidden").addClass("show");
+            info_node.attr('type', '3').html("<p><strong>错误：</strong>请输入图片验证码！</p>");
             return false;
         }
         // 提交用户数据
