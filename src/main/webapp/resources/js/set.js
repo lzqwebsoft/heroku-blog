@@ -253,6 +253,24 @@ function confirm_draft_delete(message, id, pageNo) {
     }
 }
 //===================================================================
+
+//============================image tab==============================
+function delete_image(message, id) {
+    var option = confirm(message);
+    if (option) {
+        $.ajax({
+            url : "images/delete/" + id + ".html",
+            type : "post",
+            success : function(data, status) {
+                $("#blog_images_list").html(data);
+            },
+            error : function(xhr, strError, errorObj) {
+                alert(errorObj);
+            }
+        });
+    }
+}
+//===================================================================
 $(function() {
     // ========================= 选项卡切换特效===========================
     var tagBoxs = [];
