@@ -85,9 +85,9 @@ public class HomeController{
     public void about(HttpServletResponse response) {
         PrintWriter out = null;
         try {
-            out = response.getWriter();
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("text/html;charset=UTF-8");
+            out = response.getWriter();
             BlogInfo blogInfo = blogInfoService.getSystemBlogInfo();
             
             out.print("<div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button><h4 class=\"modal-title\" id=\"myModalLabel\">关于站点</h4></div><div class=\"modal-body\">");
