@@ -64,6 +64,14 @@
       <param-value>-1</param-value>
     </context-param>
   -->
+    <context-param>
+      <param-name>org.eclipse.jetty.servlet.SessionCookie</param-name>
+      <param-value>LZQWEBSOFT_SESSIONID</param-value>
+    </context-param>
+    <context-param>
+      <param-name>org.eclipse.jetty.servlet.SessionIdPathParameterName</param-name>
+      <param-value>lzqsessionid</param-value>
+    </context-param>
 
   <!-- ==================================================================== -->
   <!-- The default servlet.                                                 -->
