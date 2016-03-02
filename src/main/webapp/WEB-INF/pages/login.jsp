@@ -72,7 +72,7 @@
                     <div class="input-group">
                         <span class="input-group-addon"><div class='glyphicon glyphicon-picture'></div></span> <input type="text" name="validateCode" class="form-control" placeholder="验证码" required />
                     </div>
-                    <span><img id="captcha-image" src="captcha.jpg" title="验证码" alt="验证码" /> <a href="javascript:void(0)" id="update-captcha-link">看不清，换一张</a></span>
+                    <span><img id="captcha-image" src="captcha.html" title="验证码" alt="验证码" /> <a href="javascript:void(0)" id="update-captcha-link">看不清，换一张</a></span>
                 </c:if>
                 <div class="input-group">
                     <a href="<c:url value="/forget_pwd.html" />">忘记密码</a>
@@ -89,10 +89,10 @@
     <script type="text/javascript">
     $(function() {
         $("#update-captcha-link").click(function() {
-            $("#captcha-image").attr("src", "captcha.jpg?"+ Math.floor(Math.random()*100));
+            $("#captcha-image").attr("src", "captcha.html?"+ Math.floor(Math.random()*100));
         });
         $("#captcha-image").click(function() {
-            $(this).attr("src", "${pageContext.request.contextPath}/captcha.jpg?"+ Math.floor(Math.random()*100));
+            $(this).attr("src", "${pageContext.request.contextPath}/captcha.html?"+ Math.floor(Math.random()*100));
         });
     });
     </script>

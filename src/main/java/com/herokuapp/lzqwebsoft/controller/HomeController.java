@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
@@ -20,6 +24,8 @@ import com.herokuapp.lzqwebsoft.pojo.Page;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
+import com.herokuapp.lzqwebsoft.util.CommonConstant;
+import com.herokuapp.lzqwebsoft.util.MakeCertPic;
 
 @Controller
 public class HomeController{
@@ -99,6 +105,27 @@ public class HomeController{
             if(out!=null) {
                 out.close();
             }
+        }
+    }
+    
+    /**
+     * 图片验证码
+     */
+    @RequestMapping(value = "/captcha", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public void captcha(HttpServletRequest request, HttpServletResponse response) {
+        response.setHeader("Pragma", "No-cache");  
+        response.setHeader("Cache-Control", "No-cache");  
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        
+        try {
+            MakeCertPic certPic = new MakeCertPic();
+            String certString = certPic.getCertPic(100, 30, response.getOutputStream());
+            //设置session对象5分钟失效
+//            session.setMaxInactiveInterval(5*60);
+            request.getSession().setAttribute(CommonConstant.CAPTCHA, certString);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
