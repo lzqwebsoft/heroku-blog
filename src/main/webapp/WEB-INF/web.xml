@@ -61,15 +61,15 @@
   </servlet-mapping>
   
   <!-- 验证码Servlet -->
-  <servlet>
-     <servlet-name>captchaServlet</servlet-name>
-     <servlet-class>com.herokuapp.lzqwebsoft.servlet.CaptchaServlet</servlet-class>
-  </servlet>
+<!--   <servlet> -->
+<!--      <servlet-name>captchaServlet</servlet-name> -->
+<!--      <servlet-class>com.herokuapp.lzqwebsoft.servlet.CaptchaServlet</servlet-class> -->
+<!--   </servlet> -->
   
-  <servlet-mapping>
-     <servlet-name>captchaServlet</servlet-name>
-     <url-pattern>captcha.jpg</url-pattern>
-  </servlet-mapping>
+<!--   <servlet-mapping> -->
+<!--      <servlet-name>captchaServlet</servlet-name> -->
+<!--      <url-pattern>captcha.jpg</url-pattern> -->
+<!--   </servlet-mapping> -->
   
   <!--这里使用listener的监听方式来初始化spring-database-context.xml中的bean-->
   <!-- 主要用来初始化数据库的连接 -->
@@ -101,14 +101,14 @@
     <error-code>503</error-code>
     <location>/error503.html</location>
   </error-page>
-
+  
   <session-config>
-    <session-timeout>720</session-timeout>
+<!--     <session-timeout>720</session-timeout> -->
     <cookie-config>
-        <name>PHPSESSION</name>
+<!--         <name>PHPSESSION</name> -->
         <path>/</path>
         <http-only>true</http-only>
-        <secure>true</secure>
+<!--         <secure>true</secure> -->
     </cookie-config>
-</session-config>
+  </session-config>
 </web-app>
