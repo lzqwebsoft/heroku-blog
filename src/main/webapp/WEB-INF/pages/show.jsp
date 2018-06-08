@@ -68,7 +68,9 @@
     border-right: 1px solid #563d7c;
     background-color: #EEEEEE;
 }
-
+#article_content img {
+    max-width: 100%;
+}
 /* All levels of nav */
 .bs-sidebar .nav li a {
     display: block;
@@ -234,20 +236,20 @@
                             <input type="hidden" name="root_comment_id" id="root_comment_id" />
                             <c:if test="${sessionScope.user==null}">
                             <div class="form-group">
-                                <div class="col-sm-5">
+                                <div class="col-sm-7">
                                     <form:input path="reviewer" cssClass="form-control" id="reviewer" placeholder="请输入昵称" />
                                 </div>
-                                <label for="reviewer" class="col-sm-1">昵称<font color='red'>*</font></label>
+                                <label for="reviewer" class="col-sm-5">昵称<font color='red'>*</font></label>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-5">
+                                <div class="col-sm-7">
                                     <form:input path="website" cssClass="form-control" id="website" placeholder="请输入个人网站" />
                                 </div>
-                                <label for="website" class="col-sm-1">个人网站</label>
+                                <label for="website" class="col-sm-5">个人网站</label>
                             </div>
                             </c:if>
                             <div class="form-group">
-                                <div class="col-sm-6">
+                                <div class="col-sm-7">
                                     <form:textarea id="comment_content" path="content" cssClass="form-control" rows="4" />
                                     <span id="wordcount" class="help-block pull-right">您还可输入<span id="str">120</span>个字</span>
                                 </div>
