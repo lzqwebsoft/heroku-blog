@@ -48,7 +48,7 @@ KindEditor.plugin('code', function(K) {
 						var type = K('.ke-code-type', dialog.div).val(),
 							code = textarea.val(),
 							cls = type === '' ? 'plain' : type,
-							html = '<pre class="brush: ' + cls + '">\n' + K.escape(code) + '</pre><br />';
+							html = '<pre class="brush: ' + cls + '">\n' + K.escape(code) + '</pre>';
 						if (K.trim(code) === '') {
 							alert(lang.pleaseInput);
 							textarea[0].focus();

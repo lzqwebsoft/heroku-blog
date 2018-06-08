@@ -45,7 +45,7 @@
 
 <!-- 回到页面顶点 -->
 <div class="goBackToTop">
-    <a id="gototop" href="#blog-header" title="回到顶端" style="display: none;">TOP</a>
+    <a id="gototop" href="javascript:void(0);" title="回到顶端" style="display: none;">TOP</a>
 </div>
 
 <!-- 关于对话框主体 -->

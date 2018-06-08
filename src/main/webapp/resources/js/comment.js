@@ -42,8 +42,14 @@ $(function(){
 	$(window).scroll(function(){
 		setLimitNumber();
 		if(getScrollPos().y > 300)
-	  	   document.getElementById("gototop").style.display="block";
+			$('#gototop').fadeIn();
 		else
-	 	   document.getElementById("gototop").style.display="none";
+			$('#gototop').fadeOut();
     });
+	$('#gototop').click(function () {
+		$("html, body").animate({
+			scrollTop: 0
+		}, 600);
+		return false;
+	});
 });
