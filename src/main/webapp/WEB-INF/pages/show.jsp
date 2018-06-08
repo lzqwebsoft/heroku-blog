@@ -9,8 +9,8 @@
     response.setHeader("Cache-Control", "no-cache");
     response.setDateHeader("Expires", 0);
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -191,13 +191,13 @@
             </ul>
         </div>
 
-        <div id="assume_you_like" class="panel panel-default active">
+        <div id="assume_you_like" class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-toggle="collapse" href="#collapseTwo">相关文章</a>
                 </h4>
             </div>
-            <div id="collapseTwo" class="list-group panel-collapse collapse">
+            <div id="collapseTwo" class="list-group panel-collapse collapse in">
                 <c:choose>
                     <c:when test="${associate5Articles!=null&&fn:length(associate5Articles)>0}">
                         <c:forEach items="${associate5Articles}" var="assArticles">
@@ -274,7 +274,7 @@
     </div>
 
     <%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
-    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.0.0"></script>
     <script type="text/javascript">
         $(function() {
             $("#update-captcha-link").click(function() {

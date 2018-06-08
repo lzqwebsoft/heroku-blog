@@ -36,6 +36,7 @@ SyntaxHighlighter.autoloader.apply(null, path(
 SyntaxHighlighter.defaults['toolbar'] = false;
 SyntaxHighlighter.defaults['gutter'] = false;
 SyntaxHighlighter.defaults['class-name'] = "my_pre";
+SyntaxHighlighter.defaults['quick-code'] = false;
 SyntaxHighlighter.all();
 
 // 添加文本编辑器

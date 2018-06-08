@@ -3,8 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page import="org.springframework.web.util.UrlPathHelper"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,7 +54,7 @@
     <%@ include file="/WEB-INF/pages/common/header.jsp"%>
 
     <!-- 主体内容 -->
-    <div id="blog-header" class="container" style="background-color: #FFF;">
+    <div id="blog-header" class="container">
         <div class="page-header">
             <c:if test="${requestScope.blogInfo!=null}">
                 <h1>
