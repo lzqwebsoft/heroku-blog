@@ -51,6 +51,7 @@
               <value>home-messages</value>
               <value>user-messages</value>
               <value>set-messages</value>
+              <value>qiniu-keys</value>
            </list>
        </property>
    </bean>

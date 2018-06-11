@@ -55,7 +55,7 @@ public class ArticleController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/show/{articleId}")
-    public String show(@PathVariable("articleId") String articleId, HttpSession session, ModelMap model) {
+    public String show(@PathVariable("articleId") String articleId, HttpSession session, ModelMap model, Locale locale) {
         Article article = articleService.get(articleId);
         if (article == null)
             return "redirect:/error404.html";
@@ -63,7 +63,6 @@ public class ArticleController {
         User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
         if (user == null && article.getStatus() == 0)
             return "redirect:/error404.html";
-        model.addAttribute("article", article);
 
         // 阅读计数, 只有是没有登录的用户才进行记数
         if (session.getAttribute(CommonConstant.LOGIN_USER) == null) {
@@ -87,7 +86,13 @@ public class ArticleController {
                     session.setAttribute(CommonConstant.VIEWED_ARTICLES, viewedArticles);
                 }
             }
+            // 用户未登录，则替换文章中内容使用的IMG标签SRC属性改为七牛云
+            String domain = messageSource.getMessage("qiniu.bucket.domain", null, locale);
+            String content = article.getContent();
+            content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).html", domain + "$1");
+            article.setContent(content);
         }
+        model.addAttribute("article", article);
 
         List<Comment> comments = commentService.getAllParentComment(articleId);
         model.addAttribute("comments", comments);
