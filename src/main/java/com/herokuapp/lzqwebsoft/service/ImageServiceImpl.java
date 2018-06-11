@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.herokuapp.lzqwebsoft.dao.ImageDAO;
 import com.herokuapp.lzqwebsoft.pojo.Image;
+import com.herokuapp.lzqwebsoft.util.QiniuUtil;
 import com.herokuapp.lzqwebsoft.util.SHA1Util;
 
 @Service("imageService")
@@ -33,6 +34,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             image.setContent(file.getBytes());
             
+            image = QiniuUtil.upload(image);
             imageDAO.save(image);
             return "images/show/"+ image.getId() +".html";
         } catch (IOException e) {
