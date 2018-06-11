@@ -171,14 +171,13 @@
         <div id="article_content" style="margin-top: 10px;">
             <c:out value="${article.content}" escapeXml="false" />
         </div>
-        <div class="bdsharebuttonbox" data-tag="share_1">
-            <a class="bds_mshare" data-cmd="mshare"></a>
-            <a class="bds_qzone" data-cmd="qzone" href="#"></a>
-            <a class="bds_tsina" data-cmd="tsina"></a>
-            <a class="bds_weixin" data-cmd="weixin"></a>
-            <a class="bds_fbook" data-cmd="fbook"></a>
-            <a class="bds_twi" data-cmd="twi"></a>
-            <a class="bds_more" data-cmd="more">更多</a>
+        <div class="bdsharebuttonbox">
+            <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+            <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+            <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+            <a href="#" class="bds_more" data-cmd="more"></a>
             <a class="bds_count" data-cmd="count"></a>
         </div>
 
@@ -287,14 +286,6 @@
             });
         });
     </script>
-    <script type="text/javascript" charset="utf-8">
-        window._bd_share_config = {
-            share : [{
-                "tag" : "share_1",
-                "bdSize" : 32
-            }]
-        }
-        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
-    </script>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 </body>
 </html>
