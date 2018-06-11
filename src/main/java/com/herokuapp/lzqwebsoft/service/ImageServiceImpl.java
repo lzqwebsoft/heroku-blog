@@ -33,7 +33,7 @@ public class ImageServiceImpl implements ImageService {
         image.setSize(file.getSize());
         try {
             image.setContent(file.getBytes());
-            
+            // 添加七牛云文件备份
             image = QiniuUtil.upload(image);
             imageDAO.save(image);
             return "images/show/"+ image.getId() +".html";
@@ -53,6 +53,8 @@ public class ImageServiceImpl implements ImageService {
     public void delete(String id) {
         Image image = imageDAO.getImageById(id);
         if(image!=null) {
+            // 添加七牛云删除文件
+            QiniuUtil.delete(image);
             imageDAO.delete(image);
         }
     }
