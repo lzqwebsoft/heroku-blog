@@ -8,20 +8,24 @@ import com.herokuapp.lzqwebsoft.pojo.Image;
 
 @Repository("imageDAO")
 public class ImageDAO extends BaseDAO {
-    
+
     public void save(Image image) {
         getHibernateTemple().save(image);
     }
-    
+
+    public void update(Image image) {
+        getHibernateTemple().update(image);
+    }
+
     @SuppressWarnings("unchecked")
     public List<Image> getAllImages() {
-        return (List<Image>)getHibernateTemple().find("from Image");
+        return (List<Image>) getHibernateTemple().find("from Image");
     }
-    
+
     public Image getImageById(String id) {
         return getHibernateTemple().get(Image.class, id);
     }
-    
+
     public void delete(Image image) {
         getHibernateTemple().delete(image);
     }

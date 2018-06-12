@@ -45,6 +45,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void update(Image image) {
+        imageDAO.update(image);
+    }
+
+    @Override
     public List<Image> getAllImages() {
         return imageDAO.getAllImages();
     }
