@@ -33,7 +33,7 @@ OS name: "windows vista", version: "6.1", arch: "x86", family: "windows"
 + 将M2_REPO加入到Eclipse的classpath中（这一步即是将Maven的仓库包导入为Eclipse的ClassPath），使用菜单：<br />
 Window > Preferences. Select the Java > Build Path > Classpath Variables page；<br />接着点击New，新建M2_REPO变量，路径设为Maven的仓库路径，默认为：(windows)C:\Documents and Settings\（当前用户）\.m2\repository,(Linux)~\.m2\repository。
 + 配置一个外部工具，来运行Jetty：<br />选择菜单Run->External Tools->External Tools Configurations...;在左边选择Program，再右击点New.命名为jetty。<br />配置Location为mvn的完整目录，Windows下：D:\Program Files\apache-maven-3.0.4\bin\mvn.bat，Linux下：使用选择无后辍的mvn文件。<br />选择Working Directory为本项目。<br />Arguments填写：`-Djetty.port=9000 jetty:run`<br />再点Enviroment选择卡：加入MAVEN_OPTS变量，值为：`-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n`<br />最后点点APPLY，再关闭本对话框。设置好后，点击Run->External Tools->Origanize favirites...加入
-+ 配置jetty调试: 选择菜单Run->Debug Configarutions....弹出对话框，在其中选择Remote Java Application，右击New，Name中输入heroku-blog，Project选择本应用，Host填localhost，port为9000。其实的默认，填好后Close。
++ 配置jetty调试: 选择菜单Run->Debug Configarutions....弹出对话框，在其中选择Remote Java Application，右击New，Name中输入heroku-blog，Project选择本应用，Host填localhost，port为4000，同时勾选Allow termination of remote VM，注意这里的port端口需与上一步中设置的`MAVEN_OPTS`变量端口一致;其他的默认，填好后Close。
 + 配置jetty stop: 选择菜单Run->External Tools->External Tools Configurations...，选择Program，右击New，Name为jetty-stop,Location为mvn.bat或mvn的完整路径，Working Directory为本项目。Arguments填写：`jetty:stop`。
 
 这样运行本应用将只需选择jetty就行了，调试是在jetty启动后，再选heroku-blog，停止jetty只需选择jetty-stop.
@@ -99,6 +99,7 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 </pre>
 从上面的配置可知控制程序自启动的Servlet类是`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`,它控制着登录本博客应用的初始帐号与密码，还有一些登录后的博客设置信息与管理的菜单。
 默认情况下提供登录本博客的初始帐户名是websoft,密码是通过SHA1加密的123456。
+
 ##### 4. 配置邮件服务
 本博客拥有博客新评论邮件提示与邮件验证找回密码的功能，也就是说当你博客有网友的新评论或进行找回密码时，会由你事先配置好的邮件服务器中发送一份邮件到你指定的邮箱中，予以提示。<br />
 控制新评论的邮箱是由`blog_infos`表中的邮件项控制，可到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
@@ -127,7 +128,34 @@ mail.address.password=
 mail.isDebug=false
 </pre>
 上面使用的配置邮件服务采用的是google的邮件服务，你可以根据个人的情况修改，可能对于你的邮箱，上面的有些项可能不是必须的，那么你可能还要修改`src/main/java/com/herokuapp/lzqwebsoft/util/MailUtil.java`文件中的邮件配置代码。
-##### 5. 修改pom.xml
+
+##### 5.配置七牛云服务器（可选）
+七牛云提供了免费的10G个人账户的云存储加速，对于开发者来说非常的友好，由于本博客部署在国外，服务器的性能很差劲，为了减轻服务器的负担，加速国内用户的访问，因此增加了对于七牛云服务的支持，作用是前台用户未登录时，显示给用户的图片链接地址替换成为七牛云的，同时在后台编辑博客上传新图片后也会同步上传到七牛云上，这样做的目地就是加速国内用户访问图片。
+
+使用七牛云的服务，只需要根据注册的七牛云API权限，配置`src/main/resources/qiniu-keys.properties`文件，如下：
+<pre>
+# 七牛云匹配置
+qiniu.bucket = 
+qiniu.bucket.domain = 
+qiniu.accessKey = 
+qiniu.secretKey = 
+# 华东: zone0 , 华北: zone1 , 华南: zone2, 北美: zoneNa0
+qiniu.zone = zone0
+</pre>
+对应的配置说明可以参见他的官网：[七牛云JAVA SDK开发文档](https://developer.qiniu.com/kodo/sdk/1239/java)
+
+这里为了方便旧的博客图片也同步到七牛云空间，提供了一个工具action,配置好七牛云的API权限只需要访问：`http://localhost:9000/tools/images_upload.html`，就可以一次性将原图片表中的图片上传同步到对应的七牛云空间。这里的操作是通过检测是否在七牛云返回的key来判断是否同步到七牛云，因此那些上传有返回qiniu_key的图片行是不会重复上传的。
+
+当然了你也可以选择不使用七牛云，只需将`src/main/java/com/herokuapp/lzqwebsoft/controller/ArticleController.java`中的替换七牛云图片的代码注释，大概在90行附近处：
+<pre>
+// 用户未登录，则替换文章中内容使用的IMG标签SRC属性改为七牛云
+String domain = messageSource.getMessage("qiniu.bucket.domain", null, locale);
+String content = article.getContent();
+content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).html", domain + "$1");
+article.setContent(content);
+</pre>
+
+##### 6. 修改pom.xml
 由于部署在本地时使用的是mysql数据库，而pushing上传到Heroku云端使用的是PostgreSQL数据库，因些需要修改项目依赖的驱动架包，即需要对pom.xml文件进行一定的更改，如下上传Heroku上时应该使用如下pom.xml文件:
 
 <pre>
@@ -292,6 +320,28 @@ mail.isDebug=false
                 &lt;/exclusion&gt;
             &lt;/exclusions&gt;
         &lt;/dependency&gt;
+
+        &lt;!-- 七牛云空间 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.qiniu&lt;/groupId&gt;
+            &lt;artifactId&gt;qiniu-java-sdk&lt;/artifactId&gt;
+            &lt;version&gt;7.2.11&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.squareup.okhttp3&lt;/groupId&gt;
+            &lt;artifactId&gt;okhttp&lt;/artifactId&gt;
+            &lt;version&gt;3.3.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+            &lt;artifactId&gt;gson&lt;/artifactId&gt;
+            &lt;version&gt;2.6.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.qiniu&lt;/groupId&gt;
+            &lt;artifactId&gt;happy-dns-java&lt;/artifactId&gt;
+            &lt;version&gt;0.1.4&lt;/version&gt;
+        &lt;/dependency&gt;
         
         &lt;!-- MYSQL驱动包 --&gt;
         &lt;!--&lt;dependency&gt;
@@ -348,7 +398,7 @@ mail.isDebug=false
 &lt;/project&gt;
 </pre>
 
-##### 6. 上传部署
+##### 7. 上传部署
 根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，在上传之前最好先在本地跑一下，看是否成功；
 关于使用Git部署上传Java应用可以参考翻译的官网博客：
 [http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606)<br />
