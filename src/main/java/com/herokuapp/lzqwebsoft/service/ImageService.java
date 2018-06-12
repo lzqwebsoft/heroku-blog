@@ -15,6 +15,12 @@ public interface ImageService {
      * @return 图片在服务器端的路径
      */
     public String save(MultipartFile file, Image image);
+    
+    /**
+     * 图片信息更新
+     * @param image 图片的描述信息对象
+     */
+    public void update(Image image);
 
     /**
      * 返回系统中保存的所有上传的图片
