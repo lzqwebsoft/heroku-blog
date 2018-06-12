@@ -115,6 +115,9 @@
     background-color: #FFF;
     padding-left: 4px;
 }
+code {
+    white-space: normal;
+}
 @media screen and (max-width: 767px) {
    body {
        font-size:16px;
@@ -173,7 +176,7 @@
         </div>
 
         <!-- 文章内容 -->
-        <div id="article_content" style="margin-top: 10px;">
+        <div id="article_content" style="margin-top: 10px; word-break:break-all;">
             <c:out value="${article.content}" escapeXml="false" />
         </div>
         <div class="bdsharebuttonbox">
