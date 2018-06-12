@@ -1,8 +1,23 @@
 body {
     padding-top: 70px;
     overflow-x: hidden;
+    letter-spacing: .024em;
 }
-
+h4.article-index-title span.label {
+    margin: 0 7px;
+    position:relative;
+}
+h4.article-index-title a {
+    line-height: 30px;
+}
+h3.article-show-title {
+    display: block;
+}
+h3.article-show-title span.label{
+    margin: 0 7px;
+    position: relative;
+    top: -3px;
+}
 .bs-header {
     padding: 30px 15px 40px;
     font-size: 16px;

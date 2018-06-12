@@ -13,7 +13,7 @@
 <html lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
 <title>${article.title}-<spring:message code="page.title" /></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 <c:choose>
@@ -115,6 +115,11 @@
     background-color: #FFF;
     padding-left: 4px;
 }
+@media screen and (max-width: 767px) {
+   body {
+       font-size:16px;
+   }
+}
 </style>
 </head>
 
@@ -136,7 +141,7 @@
             <li class="active">博客正文</li>
         </ol>
 
-        <h3 class="media-heading">
+        <h3 class="media-heading article-show-title">
             <c:out value="${article.patternTypeLabel}" escapeXml="false" />
             <c:out value="${article.title}" />
             <c:if test="${article.isTop}">
@@ -144,8 +149,8 @@
             </c:if>
         </h3>
         <div class="row">
-            <div class="col-xs-6">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />，已有${article.readedNum}次阅读</div>
-            <div class="col-xs-6 text-right">
+            <div class="col-xs-8" style="font-size:14px;">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />，已有${article.readedNum}次阅读</div>
+            <div class="col-xs-4 text-right">
                 <a class="btn btn-default btn-sm" role="button" href="#reply_comment">评论(${fn:length(comments)})</a>
                 <c:if test="${sessionScope.user!=null}">
                     <a class="btn btn-primary btn-sm" role="button" href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>
