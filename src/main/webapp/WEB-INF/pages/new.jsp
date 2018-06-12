@@ -10,7 +10,7 @@
 <html lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
 <title>编辑博客-<spring:message code="page.title"/></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />

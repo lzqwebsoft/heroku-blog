@@ -7,7 +7,7 @@
 <html lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
 <title><spring:message code="page.title" /></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 <style type="text/css">
@@ -16,6 +16,9 @@
  * --------------------------------------------------
  */
 @media screen and (max-width: 767px) {
+   body {
+       font-size:16px;
+   }
   .row-offcanvas {
     position: relative;
     -webkit-transition: all 0.25s ease-out;
@@ -23,13 +26,11 @@
     transition: all 0.25s ease-out;
   }
 
-  .row-offcanvas-right
-  .sidebar-offcanvas {
+  .row-offcanvas-right .sidebar-offcanvas {
     right: -50%; /* 6 columns */
   }
 
-  .row-offcanvas-left
-  .sidebar-offcanvas {
+  .row-offcanvas-left .sidebar-offcanvas {
     left: -50%; /* 6 columns */
   }
 
@@ -43,6 +44,7 @@
 
   .sidebar-offcanvas {
     position: absolute;
+    overflow-x: hidden;
     top: 0;
     width: 50%; /* 6 columns */
   }
@@ -54,7 +56,7 @@
     <%@ include file="/WEB-INF/pages/common/header.jsp"%>
 
     <!-- 主体内容 -->
-    <div id="blog-header" class="container">
+    <div id="blog-header" class="container" style="overflow-x: hidden;">
         <div class="page-header">
             <c:if test="${requestScope.blogInfo!=null}">
                 <h1>
@@ -73,7 +75,7 @@
                         <c:forEach items="${page.data}" var="article">
                             <div class="media">
                                 <div class="media-body">
-                                    <h4 class="media-heading">
+                                    <h4 class="media-heading article-index-title">
                                         <c:out value="${article.patternTypeLabel}" escapeXml="false" /> <a href="${pageContext.request.contextPath}/show/${article.id}.html"><c:out value="${article.title}" /></a>
                                         <c:if test="${article.isTop}">
                                             <span class="label label-danger">置顶</span>
