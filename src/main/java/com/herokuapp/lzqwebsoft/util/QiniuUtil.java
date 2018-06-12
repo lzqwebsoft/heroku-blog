@@ -47,11 +47,10 @@ public class QiniuUtil {
         // 默认不指定key的情况下，以文件内容的hash值作为文件名
         String key = image.getId();
         byte[] uploadBytes = image.getContent();
-        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(uploadBytes);
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
         try {
-            Response response = uploadManager.put(byteInputStream, key, upToken, null, null);
+            Response response = uploadManager.put(uploadBytes, key, upToken);
             // 解析上传成功的结果
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
             image.setQiniuHash(putRet.hash);
