@@ -57,13 +57,9 @@ public class QiniuUtil {
             image.setQiniuHash(putRet.hash);
             image.setQiniuKey(putRet.key);
         } catch (QiniuException ex) {
-            Response r = ex.response;
-            System.err.println(r.toString());
-            try {
-                System.err.println(r.bodyString());
-            } catch (QiniuException ex2) {
-                ex2.printStackTrace();
-            }
+            System.err.println(ex.code());
+            System.out.println(ex.error());
+            ex.printStackTrace();
         }
         return image;
     }
@@ -88,6 +84,7 @@ public class QiniuUtil {
             // 如果遇到异常，说明删除失败
             System.err.println(ex.code());
             System.err.println(ex.response.toString());
+            ex.printStackTrace();
         }
     }
 
