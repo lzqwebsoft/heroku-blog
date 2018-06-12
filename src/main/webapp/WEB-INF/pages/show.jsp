@@ -118,6 +118,9 @@
 code {
     white-space: normal;
 }
+.my_pre code {
+    white-space: nowrap;
+}
 @media screen and (max-width: 767px) {
    body {
        font-size:16px;
