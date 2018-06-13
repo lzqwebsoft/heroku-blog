@@ -8,18 +8,17 @@
     <div class="container">
         <!-- 左导航菜单 -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menus">
+                <span class="sr-only">菜单</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="<c:url value="/" />">飘痕の博客</a>
+            <p class="navbar-text">
+                <a class="navbar-link" id="about-button" href="<%=request.getContextPath()%>/about.html">关于</a>
+            </p>
         </div>
 
         <!-- 右导航菜单 -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="<%=request.getContextPath()%>/about.html" data-toggle="modal" data-target="#aboutDailog">关于</a></li>
-            </ul>
-
+        <div class="collapse navbar-collapse" id="navbar-menus">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">管理<span class="caret"></span></button>
@@ -38,6 +37,15 @@
                         </c:forEach>
                     </ul>
                 </li>
+                <c:if test="${sessionScope.user==null}">
+                    <li class="mobile-menu-item"><a href="<%=request.getContextPath()%>/signIn.html">登&nbsp;&nbsp;录</a></li>
+                </c:if>
+                <c:if test="${sessionScope.user!=null}">
+                    <li class="mobile-menu-item"><a href="<%=request.getContextPath()%>/logout.html">注&nbsp;&nbsp;销</a></li>
+                </c:if>
+                <c:forEach items="${requestScope.menus}" var="menu"  varStatus="s">
+                    <li class="mobile-menu-item"><a href="<%= request.getContextPath() %>/${menu.path}">${menu.label}</a></li>
+                </c:forEach>
             </ul>
         </div>
     </div>
