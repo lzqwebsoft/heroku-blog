@@ -2,6 +2,12 @@ Heroku Blog
 ===========
 一个博客WEB应用，基于Spring3 MVC与Hibernate3， 前台使用JQuery， 用于部署在Heroku上，项目运行预览：[http://lzqwebsoft.net](http://lzqwebsoft.net "我的空间")。
 
+<div style="text-align: center">
+    <p>使用支付宝，打赏一下作者，请他喝瓶饮料。</p>
+    <img src="https://user-images.githubusercontent.com/1137657/41339121-ad888ad8-6f26-11e8-92ab-eeba2cca8b49.jpg" />
+</div>
+
+
 #### 部署开发环境
 如果你想二次开发本应用，可以将其部署在Eclipse上（本应用使用Jetty作为容器运行）,如下：
 
