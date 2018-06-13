@@ -3,6 +3,9 @@ body {
     overflow-x: hidden;
     letter-spacing: .024em;
 }
+#about-button {
+    text-decoration: none;
+}
 h4.article-index-title span.label {
     margin: 0 7px;
     position:relative;
@@ -12,11 +15,22 @@ h4.article-index-title a {
 }
 h3.article-show-title {
     display: block;
+    line-height: 30px;
 }
 h3.article-show-title span.label{
     margin: 0 7px;
     position: relative;
     top: -3px;
+}
+@media screen and (min-width: 768px) {
+    .nav > li.mobile-menu-item {
+        display: none;
+    }
+}
+@media screen and (max-width: 767px) {
+    .nav > li.dropdown {
+        display: none;
+    }
 }
 .bs-header {
     padding: 30px 15px 40px;
@@ -56,6 +70,11 @@ h3.article-show-title span.label{
 .ke-icon-simpcode {
     background-image: url(../images/code.png)!important;
     background-position: -2px -2px;
+    width: 16px;
+    height: 16px;
+}
+.ke-icon-blockquote {
+    background-image: url(../images/blockquote.jpg)!important;
     width: 16px;
     height: 16px;
 }
