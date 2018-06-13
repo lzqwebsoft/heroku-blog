@@ -66,9 +66,9 @@
         </div>
         <div class="row row-offcanvas row-offcanvas-right">
             <p class="pull-right visible-xs">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">点击导航</button>
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">分类</button>
             </p>
-            <div class="col-xs-12 col-sm-9">
+            <div class="col-xs-12 col-sm-9 blog-list">
                 
                 <c:choose>
                     <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
@@ -81,15 +81,16 @@
                                             <span class="label label-danger">置顶</span>
                                         </c:if>
                                     </h4>
-                                    <p>发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
+                                    <p class="article_time">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
                                     <p style="text-indent: 2em;">
                                         <c:out value="${article.content}" escapeXml="false" />
                                     </p>
-                                    <p>
+                                    <p class="article-operate-zone">
+                                        
                                         <a class="btn btn-default" role="button" href="show/${article.id}.html">阅读(${article.readedNum})</span></a> <a class="btn btn-default" role="button" href="show/${article.id}.html#reply_comment">评论(${article.commentCount})</span></a>
                                         <c:if test="${sessionScope.user!=null}">
-                                            <a class="btn btn-primary" role="button" href="edit/${article.id}.html">编辑</a>
-                                            <a class="btn btn-danger" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
+                                            <a class="btn btn-danger pull-right" style="margin-right: 0;" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
+                                            <a class="btn btn-primary pull-right" role="button" href="edit/${article.id}.html">编辑</a>
                                         </c:if>
                                     </p>
                                 </div>
@@ -178,8 +179,9 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">联系我</div>
                     <div class="panel-body">
-                        <div class="list-group">
-                            <a href="mailto:lzqwebsoft@gmail.com" class="list-group-item glyphicon glyphicon-envelope"> lzqwebsoft@gmail.com</a> <a href="mailto:751939573@qq.com" class="list-group-item glyphicon glyphicon-envelope"> 751939573@qq.com</a>
+                        <div class="list-group" style="font-size: 14px;">
+                            <a href="mailto:lzqwebsoft@gmail.com" class="list-group-item glyphicon glyphicon-envelope"> lzqwebsoft@gmail.com</a>
+                            <a href="mailto:751939573@qq.com" class="list-group-item glyphicon glyphicon-envelope"> 751939573@qq.com</a>
                         </div>
                     </div>
                 </div>
