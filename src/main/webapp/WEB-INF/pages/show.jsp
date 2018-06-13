@@ -131,7 +131,7 @@ code {
         <div class="page-header">
             <c:if test="${requestScope.blogInfo!=null}">
                 <h1>
-                    ${requestScope.blogInfo.head} <small>${requestScope.blogInfo.descriptions}</small>
+                    ${requestScope.blogInfo.head}&nbsp;<small>${requestScope.blogInfo.descriptions}</small>
                 </h1>
             </c:if>
         </div>
