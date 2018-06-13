@@ -25,14 +25,24 @@ KindEditor.plugin('simpcode', function(K) {
 		self.cmd.wrap('<code></code>');
 	});
 });
+//自定义blockquote插件
+KindEditor.lang({
+	blockquote : '引用'
+});
+KindEditor.plugin('blockquote', function(K) {
+	var self = this, name = 'blockquote';
+	self.clickToolbar(name, function() {
+		self.cmd.wrap('<blockquote></blockquote>');
+	});
+});
 
 // 添加文本编辑器
 var editor;
 editor = KindEditor.ready(function(K) {
     editor = K.create('#article_content', {
         themeType : 'simple',
-        items:["source","|","undo","redo","|","preview","print","template", "simpcode","code","cut","copy","paste","plainpaste","wordpaste","|","justifyleft","justifycenter","justifyright","justifyfull","insertorderedlist","insertunorderedlist","indent","outdent","subscript","superscript","clearhtml","quickformat","selectall","|","fullscreen","/","formatblock",
-               "fontname","fontsize","|","forecolor","hilitecolor","bold","italic","underline","strikethrough","lineheight","removeformat","|","image","multiimage","flash","media","insertfile","table","hr","emoticons","baidumap","pagebreak","anchor","link","unlink","|","about"],
+        items:["source","|","undo","redo","|","preview","print","simpcode","code","cut","copy","paste","plainpaste","wordpaste","|","justifyleft","justifycenter","justifyright","justifyfull","insertorderedlist","insertunorderedlist","indent","outdent","subscript","superscript","clearhtml","quickformat","selectall","|","fullscreen","/","formatblock",
+               "fontname","fontsize","|","forecolor","hilitecolor","bold","italic","underline", "blockquote","strikethrough","lineheight","removeformat","|","image","multiimage","flash","media","insertfile","table","hr","emoticons","baidumap","pagebreak","anchor","link","unlink","|","about"],
         width : "100%", //编辑器的宽度为70%
         height : "400px", //编辑器的高度为100px
         filterMode : false, //不会过滤HTML代码

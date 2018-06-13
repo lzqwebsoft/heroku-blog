@@ -1,47 +1,41 @@
-//得到文档对象
-function getDocumentElement(doc) {
-	doc = doc || document;
-	return (doc.compatMode != "CSS1Compat") ? doc.body : doc.documentElement;
-}
-
-//判断浏览器
-function browser() {
-	var ua = navigator.userAgent.toLowerCase();
+// 判断浏览器
+function browserVersions(){   
+	var u = navigator.userAgent, app = navigator.appVersion;
 	return {
-		VERSION: ua.match(/(msie|rv|firefox|webkit|opera)[\/:\s](\d+)/) ? RegExp.$2 : '0',
-		IE: ((ua.indexOf('msie') > -1 && ua.indexOf('opera') == -1) || ua.match(/rv:([\d.]+)\) like gecko/)),
-		GECKO: (ua.indexOf('gecko') > -1 && ua.indexOf('khtml') == -1),
-		WEBKIT: (ua.indexOf('applewebkit') > -1),
-		OPERA: (ua.indexOf('opera') > -1)
-	};
-}
-
-var minTop, minLeft;   //窗体的滑动条的偏移位置
-function setLimitNumber() {
-	var docEl = getDocumentElement();
-	var pos = getScrollPos();
-	minTop = pos.y;
-	minLeft = pos.x;
-}
-
-//得到滑动条滑动的x和y的偏移量
-function getScrollPos() {
-	var x, y;
-	if (browser().IE || browser().OPERA) {
-		var el = this.getDocumentElement();
-		x = el.scrollLeft;
-		y = el.scrollTop;
-	} else {
-		x = window.scrollX || 0; 
-		y = window.scrollY || 0;
-	}
-	return {x : x, y : y};
+		trident : u.indexOf('Trident') > -1, // IE内核
+		presto : u.indexOf('Presto') > -1, // opera内核
+		webKit : u.indexOf('AppleWebKit') > -1, // 苹果、谷歌内核
+		gecko : u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, // 火狐内核
+		mobile : !!u.match(/AppleWebKit.*Mobile.*/), // 是否为移动终端 
+		ios : !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), // ios终端
+		android : u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, // android终端或者uc浏览器
+		iPhone : u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, // 是否为iPhone或者QQHD浏览器
+		iPad: u.indexOf('iPad') > -1, // 是否iPad
+		webApp : u.indexOf('Safari') == -1,// 是否web应该程序，没有头部与底部
+		google:u.indexOf('Chrome')>-1
+    };
 }
 
 $(function(){
+	// 关于页面
+	$("#about-button").click(function(event) {
+		event.preventDefault();
+		if($('#aboutDailog').find(".modal-dialog").length > 0) {
+			$('#aboutDailog').modal('show');
+		} else {
+			$('#aboutDailog').load($(this).attr("href"), function() {
+				$('#aboutDailog').modal('show');
+			});
+		}
+	});
+	// PC端添加背景
+	var browser = browserVersions();
+	if(!browser.mobile && !browser.android && !browser.iPhone && !browser.iPad) {
+		$('body').append('<script type="text/javascript" color="249,145,87" opacity="0.7" zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>');
+	}
+	// 回到顶端
 	$(window).scroll(function(){
-		setLimitNumber();
-		if(getScrollPos().y > 300)
+		if($(this).scrollTop() > 300)
 			$('#gototop').fadeIn();
 		else
 			$('#gototop').fadeOut();
@@ -50,6 +44,5 @@ $(function(){
 		$("html, body").animate({
 			scrollTop: 0
 		}, 600);
-		return false;
 	});
 });
