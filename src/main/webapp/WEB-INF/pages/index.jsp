@@ -87,7 +87,7 @@
                                     </p>
                                     <p class="article-operate-zone">
                                         
-                                        <a class="btn btn-default" role="button" href="show/${article.id}.html">阅读(${article.readedNum})</span></a> <a class="btn btn-default" role="button" href="show/${article.id}.html#reply_comment">评论(${article.commentCount})</span></a>
+                                        <a class="btn btn-default" role="button" href="show/${article.id}.html">阅读(${article.readCountLabel})</span></a> <a class="btn btn-default" role="button" href="show/${article.id}.html#reply_comment">评论(${article.commentCount})</span></a>
                                         <c:if test="${sessionScope.user!=null}">
                                             <a class="btn btn-danger pull-right" style="margin-right: 0;" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
                                             <a class="btn btn-primary pull-right" role="button" href="edit/${article.id}.html">编辑</a>
@@ -153,7 +153,7 @@
                         <c:when test="${top10Articles!=null&&fn:length(top10Articles)>0}">
                             <div class="list-group">
                                 <c:forEach items="${top10Articles}" var="top10">
-                                    <a href="<%=request.getContextPath()%>/show/${top10.id}.html" title="${top10.title}" class="list-group-item" style="overflow: hidden;">${top10.title}<span class="badge pull-right">${top10.readedNum}</span></a>
+                                    <a href="<%=request.getContextPath()%>/show/${top10.id}.html" title="${top10.title}" class="list-group-item" style="overflow: hidden;">${top10.title}<span class="badge pull-right">${top10.readCountLabel}</span></a>
                                 </c:forEach>
                             </div>
                         </c:when>
