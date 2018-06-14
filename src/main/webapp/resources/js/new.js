@@ -42,11 +42,12 @@ editor = KindEditor.ready(function(K) {
     editor = K.create('#article_content', {
         themeType : 'simple',
         items:["source","|","undo","redo","|","preview","print","simpcode","code","cut","copy","paste","plainpaste","wordpaste","|","justifyleft","justifycenter","justifyright","justifyfull","insertorderedlist","insertunorderedlist","indent","outdent","subscript","superscript","clearhtml","quickformat","selectall","|","fullscreen","/","formatblock",
-               "fontname","fontsize","|","forecolor","hilitecolor","bold","italic","underline", "blockquote","strikethrough","lineheight","removeformat","|","image","multiimage","flash","media","insertfile","table","hr","emoticons","baidumap","pagebreak","anchor","link","unlink","|","about"],
+               "fontname","fontsize","|","forecolor","hilitecolor","bold","italic","underline", "blockquote","strikethrough","lineheight","removeformat","|","image", "flash","media","insertfile","table","hr","emoticons","baidumap","pagebreak","anchor","link","unlink","|","about"],
         width : "100%", //编辑器的宽度为70%
         height : "400px", //编辑器的高度为100px
         filterMode : false, //不会过滤HTML代码
         resizeType : 1, //编辑器只能调整高度
+//        wellFormatMode: false, // 美化HTML关闭
         uploadJson : $("#context-path").text()+"/images/upload.html",
         fileManagerJson : $("#context-path").text()+"/images/list.html",
         allowFileManager : true,
