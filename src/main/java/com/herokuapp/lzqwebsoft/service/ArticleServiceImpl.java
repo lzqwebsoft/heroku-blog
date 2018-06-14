@@ -133,7 +133,11 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = new ArrayList<Article>();
         for (Article article : list) {
             String content = article.getContent();
+            // 去除HTML中的特别不显示的标签内容，去除HTML标签，转化其他字符为空格，并去除多余的空格
+            content = content.replaceAll("(?i)<style([\\s\\S]+?)</style>|(?i)<script([\\s\\S]+?)</script>", "");
             content = content.replaceAll("<.*?>", "");
+            content = content.replaceAll("(\\s)", " ");
+            content = content.replaceAll("(\\s)+", "$1");
             // 用于省略文章的内容
             if (content.length() > 400) {
                 content = content.substring(0, 400);
