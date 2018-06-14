@@ -31,8 +31,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/shl/scripts/shAutoloader.js"></script>
 
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />
-<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js"></script>
-<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh_CN.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js?_v=4.0.0"></script>
+<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh-CN.js"></script>
 
 <style type="text/css">
 /* 代码块CSS */

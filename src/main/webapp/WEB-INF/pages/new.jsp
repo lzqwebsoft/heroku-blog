@@ -14,8 +14,8 @@
 <title>编辑博客-<spring:message code="page.title"/></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />
-<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js"></script>
-<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh_CN.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js?_v4.0.0"></script>
+<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh-CN.js"></script>
 </head>
 
 <body>
@@ -94,6 +94,6 @@
 
 
     <%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/new.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/new.js?_v=1.0.1"></script>
 </body>
 </html>
