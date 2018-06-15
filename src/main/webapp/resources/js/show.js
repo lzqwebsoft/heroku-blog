@@ -1,44 +1,3 @@
-// 自动高亮文章中的代码块
-function path() {
-    var args = arguments,result = [];
-           
-    for(var i = 0; i < args.length; i++)
-        result.push(args[i].replace('@', '../resources/js/shl/scripts/'));
-    return result;
-};
- 
-SyntaxHighlighter.autoloader.apply(null, path(
-    'applescript            @shBrushAppleScript.js',
-    'actionscript3 as3      @shBrushAS3.js',
-    'bash shell             @shBrushBash.js',
-    'coldfusion cf          @shBrushColdFusion.js',
-    'cpp c                  @shBrushCpp.js',
-    'c# c-sharp csharp      @shBrushCSharp.js',
-    'css                    @shBrushCss.js',
-    'delphi pascal          @shBrushDelphi.js',
-    'diff patch pas         @shBrushDiff.js',
-    'erl erlang             @shBrushErlang.js',
-    'groovy                 @shBrushGroovy.js',
-    'java                   @shBrushJava.js',
-    'jfx javafx             @shBrushJavaFX.js',
-    'js jscript javascript  @shBrushJScript.js',
-    'perl pl                @shBrushPerl.js',
-    'php                    @shBrushPhp.js',
-    'text plain             @shBrushPlain.js',
-    'py python              @shBrushPython.js',
-    'ruby rails ror rb      @shBrushRuby.js',
-    'sass scss              @shBrushSass.js',
-    'scala                  @shBrushScala.js',
-    'sql                    @shBrushSql.js',
-    'vb vbnet               @shBrushVb.js',
-    'xml xhtml xslt html    @shBrushXml.js'
-));
-SyntaxHighlighter.defaults['toolbar'] = false;
-SyntaxHighlighter.defaults['gutter'] = false;
-SyntaxHighlighter.defaults['class-name'] = "my_pre";
-SyntaxHighlighter.defaults['quick-code'] = false;
-SyntaxHighlighter.all();
-
 // 添加文本编辑器
 var editor;
 KindEditor.ready(function(K) {
@@ -221,5 +180,17 @@ $(function() {
             $("#reviewer").parent().removeClass("has-error");
             info_node.removeClass("show").addClass("hidden");
         }
+    });
+    
+    // prism.js代码高亮显示
+    var doc_pre = $("#article_content pre");
+    doc_pre.each(function(){
+        var class_val = $(this).attr('class');
+        var class_arr = new Array();
+        class_arr = class_val.split(';');
+        class_arr = class_arr['0'].split(':');
+        var lan_class = 'language-'+ $.trim(class_arr['1']);
+        var pre_content = '<code class="'+lan_class+'">'+$(this).html()+'</code>';
+        $(this).html(pre_content).addClass("my_pre");
     });
 });
