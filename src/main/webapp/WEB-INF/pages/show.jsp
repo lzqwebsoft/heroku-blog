@@ -16,19 +16,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
 <title>${article.title}-<spring:message code="page.title" /></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
-<c:choose>
-    <c:when test="${article.codeTheme==null}">
-        <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/shl/styles/shCoreDefault.css" />
-        <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/shl/styles/shThemeDefault.css" />
-    </c:when>
-    <c:otherwise>
-        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/js/shl/styles/shCore${article.codeTheme}.css" />
-        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/resources/js/shl/styles/shTheme${article.codeTheme}.css" />
-    </c:otherwise>
-</c:choose>
-<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/shl/styles/shCore.css" />
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/shl/scripts/shCore.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/shl/scripts/shAutoloader.js"></script>
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/prism.css" />
 
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />
 <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js?_v=4.0.0"></script>
@@ -36,16 +24,8 @@
 
 <style type="text/css">
 /* 代码块CSS */
-.my_pre {
-    display: block;
-    border: 1px solid #CCCCCC;
-    border-radius: 4px;
-    line-height: 1.42857;
-    font-size: 13px;
-    margin: 0 0 10px;
-    padding: 9.5px;
-    word-break: break-all;
-    word-wrap: break-word;
+pre.my_pre {
+   /* 可以自行添加 */
 }
 /* 文章目录CSS */
 .bs-sidebar {
@@ -118,8 +98,8 @@
 code {
     white-space: normal;
 }
-.my_pre code {
-    white-space: nowrap;
+#article_content p {
+    margin: 0 0 5px
 }
 </style>
 </head>
@@ -281,7 +261,8 @@ code {
     </div>
 
     <%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
-    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.0.0"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/prism.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.0.1"></script>
     <script type="text/javascript">
         $(function() {
             $("#update-captcha-link").click(function() {

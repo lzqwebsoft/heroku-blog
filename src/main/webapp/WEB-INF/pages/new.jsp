@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display:none;">
                 <label for="codeTheme">代码主题</label>
                 <div class="row">
                     <div class="col-sm-3">
