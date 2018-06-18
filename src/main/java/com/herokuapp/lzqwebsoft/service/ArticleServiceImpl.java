@@ -133,16 +133,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = new ArrayList<Article>();
         for (Article article : list) {
             String content = article.getContent();
-            // 去除HTML中的特别不显示的标签内容，去除HTML标签，转化其他字符为空格，并去除多余的空格
-            content = content.replaceAll("(?i)<style([\\s\\S]+?)</style>|(?i)<script([\\s\\S]+?)</script>", "");
-            content = content.replaceAll("<.*?>", "");
-            content = content.replaceAll("(\\s)", " ");
-            content = content.replaceAll("(\\s)+", "$1");
-            // 用于省略文章的内容
-            if (content.length() > 400) {
-                content = content.substring(0, 400);
-                content += "...";
-            }
+            content = decodeContent(content);
             article.setContent(content);
             articles.add(article);
         }
@@ -185,12 +176,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = new ArrayList<Article>();
         for (Article article : list) {
             String content = article.getContent();
-            content = content.replaceAll("<.*?>", "");
-            // 用于省略文章的内容
-            if (content.length() > 250) {
-                content = content.substring(0, 250);
-                content += "...";
-            }
+            content = decodeContent(content);
             article.setContent(content);
             articles.add(article);
         }
@@ -212,5 +198,19 @@ public class ArticleServiceImpl implements ArticleService {
 
     public Article getPreviousArticle(Article article) {
         return articleDAO.getPreviousArticle(article);
+    }
+    
+    // 转化文章内容去HTML，并省略为400字
+    private String decodeContent(String content) {
+        content = content.replaceAll("(?i)<style([\\s\\S]+?)</style>|(?i)<script([\\s\\S]+?)</script>", "");
+        content = content.replaceAll("<.*?>", "");
+        content = content.replaceAll("(\\s)", " ");
+        content = content.replaceAll("(\\s)+", "$1");
+        // 用于省略文章的内容
+        if (content.length() > 400) {
+            content = content.substring(0, 400);
+            content += "...";
+        }
+        return content;
     }
 }
