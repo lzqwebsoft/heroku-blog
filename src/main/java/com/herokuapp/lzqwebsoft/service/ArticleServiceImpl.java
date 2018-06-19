@@ -204,8 +204,7 @@ public class ArticleServiceImpl implements ArticleService {
     private String decodeContent(String content) {
         content = content.replaceAll("(?i)<style([\\s\\S]+?)</style>|(?i)<script([\\s\\S]+?)</script>", "");
         content = content.replaceAll("<.*?>", "");
-        content = content.replaceAll("(\\s)", " ");
-        content = content.replaceAll("(\\s)+", "$1");
+        content = content.replaceAll("(\\s)+", " ");
         // 用于省略文章的内容
         if (content.length() > 400) {
             content = content.substring(0, 400);
