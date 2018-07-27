@@ -207,6 +207,13 @@
             <artifactId>happy-dns-java</artifactId>
             <version>0.1.4</version>
         </dependency>
+        
+        <!-- flexmark-java Markdown parser -->
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.34.12</version>
+        </dependency>
 
         <!-- PostgreSQL驱动包 -->
         <!-- <dependency> -->

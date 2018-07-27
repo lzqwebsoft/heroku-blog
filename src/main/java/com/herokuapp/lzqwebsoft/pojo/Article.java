@@ -18,7 +18,9 @@ public class Article {
     private boolean allowComment;
     private String codeTheme; // 代码的主题
     private boolean isTop;
-    private String content;
+    private String content; // HTML内容
+    private String contentMD; // Markdown内容
+    private int contentType; // 源始内容格式，0: html格式，1：markdown格式
     private int status;
     private long readedNum;
     private Date createAt;
@@ -96,6 +98,22 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getContentMD() {
+        return contentMD;
+    }
+
+    public void setContentMD(String contentMD) {
+        this.contentMD = contentMD;
+    }
+
+    public int getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(int contentType) {
+        this.contentType = contentType;
     }
 
     public int getStatus() {
