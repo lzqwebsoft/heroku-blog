@@ -1,0 +1,31 @@
+.editor-toolbar.fullscreen {
+	z-index: 1030;
+}
+.CodeMirror-fullscreen {
+    z-index: 1030;
+}
+.editor-statusbar {
+    padding: 8px 10px 0 10px;
+}
+.CodeMirror, .CodeMirror-scroll {
+	min-height: 500px;
+}
+@media (min-width: 768px) {
+    .form-inline .form-control {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+    }
+    #image-upload-dialog .form-inline label {
+        font-weight: normal;
+    }
+    #image-upload-dialog .form-inline #image-url {
+        width: 300px;
+    }
+    #image-upload-dialog .modal-dialog {
+        width: 500px;
+    }
+}
+#file-upload {
+    display: none;
+}
