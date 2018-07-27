@@ -5,7 +5,7 @@
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
    <class name="Article" table="articles">
        <id name="id" type="string">
-		   <generator class="assigned" />
+           <generator class="assigned" />
        </id>
        <many-to-one name="author" class="User" foreign-key="fk_author"
                column="author_id" cascade="save-update" >
@@ -19,6 +19,10 @@
        <property name="codeTheme" length="100" column="code_theme" />
        <property name="isTop" column="is_top" />
        <property name="content" type="text" not-null="true" column="content"/>
+       <property name="contentMD" type="text" not-null="true" column="content_md"/>
+       <property name="contentType" type="int">
+           <column name="content_type" not-null="true" default="0" />
+       </property>
        <property name="status" column="status" />
        <property name="readedNum" type="long" column="readed_num" />
        <property name="createAt" column="create_at" update="false"/>

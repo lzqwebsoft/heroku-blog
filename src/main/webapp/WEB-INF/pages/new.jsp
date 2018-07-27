@@ -16,6 +16,13 @@
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />
 <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js?_v4.0.0"></script>
 <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh-CN.js"></script>
+<style type="text/css">
+.change-to {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 10px;
+}
+</style>
 </head>
 
 <body>
@@ -23,7 +30,7 @@
 
     <!-- 主体内容 -->
     <div id="blog-header" class="container">
-        <h2>撰写博客</h2>
+        <h2>撰写博客<small class="change-to"><a href="${pageContext.request.contextPath}/article/newmd.html">切换至Markdown编辑器</a></small></h2>
 
         <div id="prompt_info" class="alert alert-danger hidden"></div>
         <div id="auto_prompt_info"></div>
@@ -75,13 +82,14 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-sm-2">
-                        <form:radiobutton path="allowComment" value="true" />允许评论
+                        <form:radiobutton path="allowComment" value="true" /> 允许评论
                     </div>
                     <div class="col-sm-2">
                         <form:radiobutton path="allowComment" value="false" /> 禁止评论
                     </div>
                     <form:hidden path="isTop" />
                     <form:hidden path="readedNum" />
+                    <form:hidden path="contentType" />
                 </div>
             </div>
             <input type="hidden" id="editOrCreate" name="editOrCreate" value="${editOrCreate}" />

@@ -33,6 +33,7 @@ import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.CommentService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
+import com.herokuapp.lzqwebsoft.util.MarkdownUtil;
 
 @Controller
 public class ArticleController {
@@ -105,7 +106,7 @@ public class ArticleController {
         model.addAttribute("nextArticle", nextArticle);
         // 5篇关联的文章
         List<Article> ass_articles = new ArrayList<Article>();
-        if(article.getType()!=null && article.getType().getId()!=0) {
+        if (article.getType() != null && article.getType().getId() != 0) {
             ass_articles = articleService.getAssociate5Articles(article);
         }
         model.addAttribute("associate5Articles", ass_articles);
@@ -120,6 +121,7 @@ public class ArticleController {
     public String create(ModelMap model) {
         Article article = new Article();
         article.setAllowComment(true);
+        article.setContentType(0); // HTML
         model.addAttribute("article", article);
 
         model.addAttribute("patterns", patterns);
@@ -132,6 +134,23 @@ public class ArticleController {
         return "new";
     }
 
+    @RequestMapping("/article/newmd")
+    public String createMD(ModelMap model) {
+        Article article = new Article();
+        article.setAllowComment(true);
+        article.setContentType(1); // markdown
+        model.addAttribute("article", article);
+
+        model.addAttribute("patterns", patterns);
+        model.addAttribute("codeThemes", themes);
+
+        model.addAttribute("editOrCreate", "CREATE");
+
+        List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
+        model.addAttribute("articleTypes", articleTypes);
+        return "new-md";
+    }
+
     @RequestMapping("/article/publish")
     public String publish(@ModelAttribute("article") Article article, Errors errors, String type_model, String new_type, ModelMap model, HttpServletRequest request, HttpSession session,
             String publish, String save, String editOrCreate, Locale locale) {
@@ -139,7 +158,13 @@ public class ArticleController {
         String articleContentLabel = messageSource.getMessage("page.label.article.content", null, locale);
         String articleTitleLabel = messageSource.getMessage("page.label.title", null, locale);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "info.required", new Object[] { articleTitleLabel });
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "info.required", new Object[] { articleContentLabel });
+        if (article.getContentType() == 1) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contentMD", "info.required", new Object[] { articleContentLabel });
+            article.setContent(MarkdownUtil.parseMarkdownToHtml(article.getContentMD()));
+        } else {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "info.required", new Object[] { articleContentLabel });
+            article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(article.getContent()));
+        }
         int patternTypeId = article.getPatternTypeId();
         if (patternTypeId == 0) {
             String patternLabel = messageSource.getMessage("page.label.pattern", null, locale);
@@ -221,6 +246,12 @@ public class ArticleController {
             if (patternTypeId == 0) {
                 article.setPatternTypeId(1);
             }
+            // 转化内容
+            if (article.getContentType() == 1) {
+                article.setContent(MarkdownUtil.parseMarkdownToHtml(article.getContentMD()));
+            } else if (article.getContentType() == 0) {
+                article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(article.getContent()));
+            }
             // 设置文章类型默认为空
             article.setType(null);
             // 添加作者
@@ -267,7 +298,26 @@ public class ArticleController {
         List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
         model.addAttribute("articleTypes", articleTypes);
 
-        return "new";
+        if (article.getContentType() == 0) {
+            return "new";
+        } else {
+            return "new-md";
+        }
+    }
+
+    @RequestMapping("/article/convert/{articleId}")
+    public String convertContent(@PathVariable("articleId") String articleId, HttpServletRequest request) {
+        Article article = articleService.get(articleId);
+        // 转化内容
+        if (article.getContentType() == 1) {
+            article.setContent(MarkdownUtil.parseMarkdownToHtml(article.getContentMD()));
+            article.setContentType(0);
+        } else if (article.getContentType() == 0) {
+            article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(article.getContent()));
+            article.setContentType(1);
+        }
+        articleService.autoSave(article, true);
+        return "redirect:/edit/" + articleId + ".html";
     }
 
     @RequestMapping("/delete/{articleId}")
