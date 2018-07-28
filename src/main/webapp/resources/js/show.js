@@ -67,7 +67,7 @@ $(function() {
         current_elm.attr('id', 'st'+idx)
         var tagName = current_elm.get(0).tagName;
         var num = Number(tagName.substr(tagName.length-1));
-        var new_node = $('<li><a href="#st'+idx+'">'+ current_elm.text() +'</a></li>');
+        var new_node = $('<li><a href="#st'+idx+'">'+ current_elm.html() +'</a></li>');
         if(last_num==-1) {
             $("#auto_contents").append(new_node);
             last_heads.push([num, new_node]);
