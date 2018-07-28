@@ -23,7 +23,7 @@
 
     <!-- 主体内容 -->
     <div id="blog-header" class="container">
-        <h2>撰写博客<small class="change-to"><a href="${pageContext.request.contextPath}/article/new.html">切换至HTML编辑器</a></small></h2>
+        <h2>撰写博客<small class="change-to"><a id="convert-button" href="javascript:void(0);">切换至HTML编辑器</a></small></h2>
 
         <div id="prompt_info" class="alert alert-danger hidden"></div>
         <div id="auto_prompt_info"></div>

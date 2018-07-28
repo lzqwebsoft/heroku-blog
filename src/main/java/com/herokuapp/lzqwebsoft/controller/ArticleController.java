@@ -121,23 +121,6 @@ public class ArticleController {
     public String create(ModelMap model) {
         Article article = new Article();
         article.setAllowComment(true);
-        article.setContentType(0); // HTML
-        model.addAttribute("article", article);
-
-        model.addAttribute("patterns", patterns);
-        model.addAttribute("codeThemes", themes);
-
-        model.addAttribute("editOrCreate", "CREATE");
-
-        List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
-        model.addAttribute("articleTypes", articleTypes);
-        return "new";
-    }
-
-    @RequestMapping("/article/newmd")
-    public String createMD(ModelMap model) {
-        Article article = new Article();
-        article.setAllowComment(true);
         article.setContentType(1); // markdown
         model.addAttribute("article", article);
 
@@ -151,6 +134,23 @@ public class ArticleController {
         return "new-md";
     }
 
+    @RequestMapping("/article/newhtml")
+    public String createMD(ModelMap model) {
+        Article article = new Article();
+        article.setAllowComment(true);
+        article.setContentType(0); // HTML
+        model.addAttribute("article", article);
+
+        model.addAttribute("patterns", patterns);
+        model.addAttribute("codeThemes", themes);
+
+        model.addAttribute("editOrCreate", "CREATE");
+
+        List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
+        model.addAttribute("articleTypes", articleTypes);
+        return "new";
+    }
+
     @RequestMapping("/article/publish")
     public String publish(@ModelAttribute("article") Article article, Errors errors, String type_model, String new_type, ModelMap model, HttpServletRequest request, HttpSession session,
             String publish, String save, String editOrCreate, Locale locale) {
@@ -158,12 +158,20 @@ public class ArticleController {
         String articleContentLabel = messageSource.getMessage("page.label.article.content", null, locale);
         String articleTitleLabel = messageSource.getMessage("page.label.title", null, locale);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "info.required", new Object[] { articleTitleLabel });
+        boolean isConvert = false;   // 判断是否为转化内容
+        if (save != null && save.trim().equals("2")) {
+            isConvert = true;
+        }
         if (article.getContentType() == 1) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contentMD", "info.required", new Object[] { articleContentLabel });
             article.setContent(MarkdownUtil.parseMarkdownToHtml(article.getContentMD()));
+            if(isConvert)
+                article.setContentType(0);
         } else {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "info.required", new Object[] { articleContentLabel });
             article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(article.getContent()));
+            if(isConvert)
+                article.setContentType(1);
         }
         int patternTypeId = article.getPatternTypeId();
         if (patternTypeId == 0) {
@@ -231,7 +239,11 @@ public class ArticleController {
                 articleService.save(article, new_type, modelNew, isDraft);
             }
 
-            return "redirect:/show/" + article.getId() + ".html";
+            if(isConvert) {
+                return "redirect:/edit/" + article.getId() + ".html";
+            } else {
+                return "redirect:/show/" + article.getId() + ".html";
+            }
         }
     }
 
@@ -303,21 +315,6 @@ public class ArticleController {
         } else {
             return "new-md";
         }
-    }
-
-    @RequestMapping("/article/convert/{articleId}")
-    public String convertContent(@PathVariable("articleId") String articleId, HttpServletRequest request) {
-        Article article = articleService.get(articleId);
-        // 转化内容
-        if (article.getContentType() == 1) {
-            article.setContent(MarkdownUtil.parseMarkdownToHtml(article.getContentMD()));
-            article.setContentType(0);
-        } else if (article.getContentType() == 0) {
-            article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(article.getContent()));
-            article.setContentType(1);
-        }
-        articleService.autoSave(article, true);
-        return "redirect:/edit/" + articleId + ".html";
     }
 
     @RequestMapping("/delete/{articleId}")

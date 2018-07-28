@@ -202,10 +202,23 @@ $(function () {
         $('#image-upload-dialog').modal('hide');
         var cm = editor.codemirror;
         var stat = editor.getState();
-        console.log(stat.image);
         var options = editor.options;
         var url = $("#image-url").val() || "http://";
         _replaceSelection(cm, stat.image, options.insertTexts.image, url);
+    });
+    
+    // 切换编辑器
+    $("body").on("click", "#convert-button", function() {
+        var content = editor.value();
+        if ($("#id").length > 0 && $("#id").val() != '' || content != "") {
+            // 是编辑，则切换时提醒用户HTML转markdown信息的丢失
+            if (window.confirm("确定转换HTML编辑器吗?")) {
+                var form = $("#article");
+                form.find("button[name='save']").val(2).trigger("click");
+            }
+        } else {
+            window.location.href = $("#context-path").text() + "/article/newhtml.html";
+        }
     });
 });
 
@@ -279,7 +292,10 @@ function _replaceSelection(cm, active, startEnd, url) {
 // 定时循还执行文章保存,每5分钟执行一次
 var timeid = window.setInterval(autoSaveArticle, 300000);
 function autoSaveArticle() {
-	editor.sync();
+    var content = editor.value();
+    if(content == '' || $.trim(content).length <= 0) {
+        return;
+    }
     var formData = $("#article").serialize();
     $.ajax({
         url: $("#context-path").text()+"/article/autoSave.html",
@@ -299,7 +315,7 @@ function autoSaveArticle() {
             }
         },
         error: function(xhr, strError, errorObj) {
-        	$("#auto_prompt_info").css({color: "red"}).html(errorObj);
+            $("#auto_prompt_info").css({color: "red"}).html(errorObj);
         }
     });
 }
