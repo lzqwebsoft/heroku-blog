@@ -25,6 +25,11 @@
 #article button[name=publish] {
     margin-right: 10px;
 }
+@media only screen and (max-width : 767px) {
+    #patternTypeId {
+        margin-bottom: 10px;
+    }
+}
 </style>
 </head>
 
