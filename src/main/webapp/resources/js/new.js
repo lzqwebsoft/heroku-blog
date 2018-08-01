@@ -56,6 +56,7 @@ editor = KindEditor.ready(function(K) {
 		width : "100%", // 编辑器的宽度为70%
 		height : "400px", // 编辑器的高度为100px
 		filterMode : false, // 不会过滤HTML代码
+		designMode: true,   // 编辑模式
 		resizeType : 1, // 编辑器只能调整高度
 		// wellFormatMode: false, // 美化HTML关闭
 		uploadJson : $("#context-path").text() + "/images/upload.html",
