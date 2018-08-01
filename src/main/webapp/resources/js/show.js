@@ -6,6 +6,7 @@ KindEditor.ready(function(K) {
         width : "100%", //编辑器的宽度为70%
         height : "120px", //编辑器的高度为100px
         filterMode : false, //不会过滤HTML代码
+        designMode: true,   // 编辑模式
         resizeType : 0, //编辑器只能调整高度
         items: ['emoticons', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
                 'italic', 'underline', 'strikethrough', 'removeformat', '|', 'about'],

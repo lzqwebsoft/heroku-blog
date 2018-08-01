@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ViewResolver;
 
 import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.Comment;
@@ -23,6 +24,7 @@ import com.herokuapp.lzqwebsoft.pojo.User;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.CommentService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
+import com.herokuapp.lzqwebsoft.util.StringUtil;
 
 @Controller
 public class CommentController {
@@ -34,6 +36,9 @@ public class CommentController {
 
     @Autowired
     private MessageSource messageSource;
+    
+    @Autowired(required=true)
+    private ViewResolver viewResolver;
 
     @RequestMapping("/comment/add")
     public String add(Comment comment, String parent_comment_id, String root_comment_id, String validateCode,
@@ -108,11 +113,11 @@ public class CommentController {
                 return null;
             } catch (IOException e) {
                 e.printStackTrace();
-                if (out != null) {
-                    out.close();
-                }
             }
         }
+        // 评论内容去XSS
+        String content = comment.getContent();
+        comment.setContent(StringUtil.xssCharEncode(content, request.getContextPath()));
 
         // 判断是否是子评论
         if (parent_comment_id != null && parent_comment_id.trim().length() > 0) {
