@@ -22,6 +22,10 @@ public class StringUtil {
             // Avoid anything between style tags
             Pattern stylePattern = Pattern.compile("<style(.*?)/style>", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
             cleanValue = stylePattern.matcher(cleanValue).replaceAll("");
+            
+            // Avoid anything in css background url('') type of expression
+            scriptPattern = Pattern.compile("url\\((['\"]?)(.*?)\\1\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+            cleanValue = scriptPattern.matcher(cleanValue).replaceAll("");
 
             // Avoid anything between a tags
             cleanValue = cleanValue.replaceAll("(?im)<a.*>(.*?)</a>", "$1");
