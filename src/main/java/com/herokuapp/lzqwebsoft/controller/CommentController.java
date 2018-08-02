@@ -2,8 +2,6 @@ package com.herokuapp.lzqwebsoft.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ViewResolver;
 
 import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.Comment;
@@ -38,9 +35,6 @@ public class CommentController {
 
     @Autowired
     private MessageSource messageSource;
-
-    @Autowired(required = true)
-    private ViewResolver viewResolver;
 
     @RequestMapping("/comment/add")
     public String add(Comment comment, String parent_comment_id, String root_comment_id, String validateCode, ModelMap model, HttpServletRequest request, HttpSession session,
@@ -119,12 +113,7 @@ public class CommentController {
         }
         // 评论内容去XSS
         String content = comment.getContent();
-        String baseUrl = "";
-        try {
-            baseUrl = getURLBase(request);
-        } catch (MalformedURLException e) {
-        }
-        comment.setContent(StringUtil.xssCharClear(content, baseUrl));
+        comment.setContent(StringUtil.xssCharClear(content, request));
 
         // 判断是否是子评论
         if (parent_comment_id != null && parent_comment_id.trim().length() > 0) {
@@ -162,12 +151,5 @@ public class CommentController {
         Comment comment = new Comment();
         model.addAttribute("comment", comment);
         return "_article_comments";
-    }
-
-    private String getURLBase(HttpServletRequest request) throws MalformedURLException {
-        URL requestURL = new URL(request.getRequestURL().toString());
-        String port = requestURL.getPort() == -1 ? "" : ":" + requestURL.getPort();
-        return requestURL.getProtocol() + "://" + requestURL.getHost() + port + request.getContextPath();
-
     }
 }
