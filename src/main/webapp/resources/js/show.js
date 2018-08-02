@@ -114,19 +114,19 @@ $(function() {
         if($("#reviewer").length > 0 && $.trim(nickname)=="") {
             $("#reviewer").parent().addClass("has-error");
             $("#reviewer").focus();
-            info_node.removeClass("alert-success hidden").addClass("alert-danger show");
+            info_node.removeClass("alert-success").removeClass("hidden").addClass("alert-danger show");
             info_node.attr('type', '1').html("<p><strong>错误：</strong>昵称不能为空！</p>");
             return false; 
         }
         var count = editor.count('text');
         if(count>120){
             editor.focus();
-            info_node.removeClass("alert-success hidden").addClass("alert-danger show");
+            info_node.removeClass("alert-success").removeClass("hidden").addClass("alert-danger show");
             info_node.attr('type', "2").html("<p><strong>错误：</strong>评论内容不能超过120个字符！</p>");
             return false;
         } else if(count==0) {
             editor.focus();
-            info_node.removeClass("alert-success hidden").addClass("alert-danger show");
+            info_node.removeClass("alert-success").removeClass("hidden").addClass("alert-danger show");
             info_node.attr('type', "2").html("<p><strong>错误：</strong>评论内容不能为空！</p>");
             return false;
         }
@@ -135,7 +135,7 @@ $(function() {
         if($("#validateCode").length > 0 && $.trim(validateCode)=="") {
             $("#validateCode").parent().addClass("has-error");
             $("#validateCode").focus();
-            info_node.removeClass("alert-success hidden").addClass("alert-danger show");
+            info_node.removeClass("alert-success").removeClass("hidden").addClass("alert-danger show");
             info_node.attr('type', '3').html("<p><strong>错误：</strong>请输入图片验证码！</p>");
             return false;
         }
@@ -154,10 +154,10 @@ $(function() {
                         info_context += "<li>" + element + "</li>";
                     });
                     info_context += "</ul>";
-                    messages_div.removeClass("hidden").html(info_context);
+                    messages_div.removeClass("alert-success").removeClass("hidden").addClass("alert-danger show").html(info_context);
                 } else {
                     // 当评论后台验证成功
-                    messages_div.removeClass("alert-danger hidden").addClass("alert-success show").html("评论成功！");
+                    messages_div.removeClass("alert-danger").removeClass("hidden").addClass("alert-success show").html("评论成功！");
                     $("#article_comment").html(data);
                     $("#reply_comment :text").val("");
                     $("#prompt_replay_info").hide();

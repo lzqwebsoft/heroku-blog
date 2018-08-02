@@ -2,6 +2,8 @@ package com.herokuapp.lzqwebsoft.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,13 +38,13 @@ public class CommentController {
 
     @Autowired
     private MessageSource messageSource;
-    
-    @Autowired(required=true)
+
+    @Autowired(required = true)
     private ViewResolver viewResolver;
 
     @RequestMapping("/comment/add")
-    public String add(Comment comment, String parent_comment_id, String root_comment_id, String validateCode,
-            ModelMap model, HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+    public String add(Comment comment, String parent_comment_id, String root_comment_id, String validateCode, ModelMap model, HttpServletRequest request, HttpSession session,
+            HttpServletResponse response) {
         // 判断用户是否登录,则博主不用输入昵称与网址
         User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
         if (user != null) {
@@ -82,7 +84,7 @@ public class CommentController {
                 errors.add(messageSource.getMessage("info.length.long", new Object[] { contentLabel, 120 }, locale));
             }
         }
-        String captcha = (String)session.getAttribute(CommonConstant.CAPTCHA);
+        String captcha = (String) session.getAttribute(CommonConstant.CAPTCHA);
         if (!validateCode.equalsIgnoreCase(captcha)) {
             errors.add(messageSource.getMessage("info.invalid.captcha", null, locale));
         }
@@ -117,7 +119,12 @@ public class CommentController {
         }
         // 评论内容去XSS
         String content = comment.getContent();
-        comment.setContent(StringUtil.xssCharEncode(content, request.getContextPath()));
+        String baseUrl = "";
+        try {
+            baseUrl = getURLBase(request);
+        } catch (MalformedURLException e) {
+        }
+        comment.setContent(StringUtil.xssCharClear(content, baseUrl));
 
         // 判断是否是子评论
         if (parent_comment_id != null && parent_comment_id.trim().length() > 0) {
@@ -155,5 +162,12 @@ public class CommentController {
         Comment comment = new Comment();
         model.addAttribute("comment", comment);
         return "_article_comments";
+    }
+
+    private String getURLBase(HttpServletRequest request) throws MalformedURLException {
+        URL requestURL = new URL(request.getRequestURL().toString());
+        String port = requestURL.getPort() == -1 ? "" : ":" + requestURL.getPort();
+        return requestURL.getProtocol() + "://" + requestURL.getHost() + port + request.getContextPath();
+
     }
 }
