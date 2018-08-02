@@ -187,11 +187,13 @@ $(function() {
     var doc_pre = $("#article_content pre");
     doc_pre.each(function(){
         var class_val = $(this).attr('class');
-        var class_arr = new Array();
-        class_arr = class_val.split(';');
-        class_arr = class_arr['0'].split(':');
-        var lan_class = 'language-'+ $.trim(class_arr['1']);
-        var pre_content = '<code class="'+lan_class+'">'+$(this).html()+'</code>';
-        $(this).html(pre_content).addClass("my_pre");
+        if(class_val && class_val!="") {
+            var class_arr = new Array();
+            class_arr = class_val.split(';');
+            class_arr = class_arr['0'].split(':');
+            var lan_class = 'language-'+ $.trim(class_arr['1']);
+            var pre_content = '<code class="'+lan_class+'">'+$(this).html()+'</code>';
+            $(this).html(pre_content).addClass("my_pre");
+        }
     });
 });
