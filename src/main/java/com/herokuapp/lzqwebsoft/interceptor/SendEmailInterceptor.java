@@ -16,82 +16,79 @@ import com.herokuapp.lzqwebsoft.service.BlogInfoService;
 import com.herokuapp.lzqwebsoft.service.UserService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
 import com.herokuapp.lzqwebsoft.util.MailUtil;
+import com.herokuapp.lzqwebsoft.util.StringUtil;
 
 /**
  * 当有网友评论博客时，发送邮件给博主
+ * 
  * @author zqluo
  *
  */
 public class SendEmailInterceptor implements HandlerInterceptor {
-	
-	@Autowired
-	private MessageSource messageSource;
-	
-	@Autowired
-	private BlogInfoService blogInfoService;
-	
-	@Autowired
-	private UserService userService;
-	
-	// 用于指示是否评论成功
-	private boolean isSuccessed;
 
-	@Override
-	public void afterCompletion(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception exception)
-			throws Exception {
-		User user = (User)request.getSession().getAttribute(CommonConstant.LOGIN_USER);
-		// 当用于为空，并添加评论成功，说明是外人的评论，则要求发送邮件给予通知
-		if(user==null&&isSuccessed) {
-		    // 发送邮件给博言主，通知有新评论
-		    user = userService.getBlogOwner();
-		    BlogInfo blogInfo = blogInfoService.getSystemBlogInfo();
-		    // 使用的邮件为博客关联邮箱
-		    String email = blogInfo.getEmail();
-            if(email!=null&&email.trim().length()>0){
-            	Locale locale = request.getLocale();
-            	
+    @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
+    private BlogInfoService blogInfoService;
+
+    @Autowired
+    private UserService userService;
+
+    // 用于指示是否评论成功
+    private boolean isSuccessed;
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
+        User user = (User) request.getSession().getAttribute(CommonConstant.LOGIN_USER);
+        // 当用于为空，并添加评论成功，说明是外人的评论，则要求发送邮件给予通知
+        if (user == null && isSuccessed) {
+            // 发送邮件给博言主，通知有新评论
+            user = userService.getBlogOwner();
+            BlogInfo blogInfo = blogInfoService.getSystemBlogInfo();
+            // 使用的邮件为博客关联邮箱
+            String email = blogInfo.getEmail();
+            if (email != null && email.trim().length() > 0) {
+                Locale locale = request.getLocale();
+
                 StringBuffer link = new StringBuffer("http://").append(request.getServerName());
-                
+
                 String articleId = request.getParameter("article.id");
                 String articleTitile = request.getParameter("article.title");
                 String commentContent = request.getParameter("content");
+                commentContent = StringUtil.xssCharClear(commentContent, request); // 内容清理XSS
                 int port = request.getServerPort();
-                if(port!=80)
+                if (port != 80 && port != 443)
                     link.append(":").append(port);
-                link.append("").append(request.getContextPath())
-                    .append("/show/").append(articleId).append(".html").toString();
-                String content = messageSource.getMessage("email.addComment.content", new Object[]{user.getUserName(), 
-                		articleTitile, commentContent, link.toString()}, locale);
+                link.append("").append(request.getContextPath()).append("/show/").append(articleId).append(".html").toString();
+                String content = messageSource.getMessage("email.addComment.content", new Object[] { user.getUserName(), articleTitile, commentContent, link.toString() }, locale);
                 String title = messageSource.getMessage("email.addComment.title", null, locale);
                 String to = email;
                 // 发送邮件
                 MailUtil.sendEMail(to, title, content);
-                
+
                 isSuccessed = false;
             }
-		}
-	}
+        }
+    }
 
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler, ModelAndView view) throws Exception {
-	    if(view!=null) {
-	        String viewName = view.getViewName();
-	        if(viewName!=null&&viewName.equalsIgnoreCase("_article_comments"))
-	            isSuccessed = true;
-	        else
-	            isSuccessed = false;
-	    } else {
-	        isSuccessed = false;
-	    }
-	    
-	}
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView view) throws Exception {
+        if (view != null) {
+            String viewName = view.getViewName();
+            if (viewName != null && viewName.equalsIgnoreCase("_article_comments"))
+                isSuccessed = true;
+            else
+                isSuccessed = false;
+        } else {
+            isSuccessed = false;
+        }
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler) throws Exception {
-		return true;
-	}
+    }
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        return true;
+    }
 
 }
