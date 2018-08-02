@@ -21,14 +21,14 @@ Heroku Blog
 `$mvn --version`
 
 查看是否输出如下信息：
-<pre>
+```
 Apache Maven 3.0.4 (r1232337; 2012-01-17 16:44:56+0800)
 Maven home: D:\Program Files\apache-maven-3.0.4\bin\..
 Java version: 1.6.0_10-rc2, vendor: Sun Microsystems Inc.
 Java home: C:\Program Files\Java\jdk1.6.0_10\jre
 Default locale: en_US, platform encoding: Cp1252
 OS name: "windows vista", version: "6.1", arch: "x86", family: "windows"
-</pre>
+```
 如果提示的是找不到mvn命令，说明你还没有安装maven，或没有安装成功。
 
 请到[http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)下载maven，然后将maven的bin目录加入到系统的环境变量中。
@@ -46,21 +46,21 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 运行成功后在浏览器中输入:[http://localhost:9000/heroku-blog](http://localhost:9000/heroku-blog)启动本程序。
 
 **注意**，在项目下的pom.xml文件中检查是否存在，如下配置：
-<pre>
-&lt;build>
-    &lt;plugins&gt;
-        &lt;plugin&gt;
-            &lt;groupId>org.mortbay.jetty&lt;/groupId&gt;
-            &lt;artifactId>maven-jetty-plugin&lt;/artifactId&gt;
-            &lt;configuration&gt;
-              &lt;!-- 停止jetty --&gt;
-              &lt;stopPort>9966&lt;/stopPort&gt;
-              &lt;stopKey>foo&lt;/stopKey&gt;
-          &lt;/configuration&gt;
-        &lt;/plugin&gt;
-    &lt;/plugins&gt;
-&lt;/build>
-</pre>
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>maven-jetty-plugin</artifactId>
+            <configuration>
+              <!-- 停止jetty -->
+              <stopPort>9966</stopPort>
+              <stopKey>foo</stopKey>
+          </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
 
 在使用本程序时还要注意配置数据库的连接信息（本地运行使用MySQL），根据个人情况配置：`src\main\resources\database.properties`文件。同时在运行前，需要先在SQL环境中执行databaseDesign目录中的几个sql脚本程序，来导入程序运行时的初始化数据。
 更多关于Maven与Jetty在Eclipse中的开发配置，可以参考下列博客：<br>
@@ -75,33 +75,33 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 
 ##### 2. 配置数据库信息
 由于heroku提供的免费的数据库是PostgreSQL，因此需要修改数据库配置文件：`src/main/resources/spring-database-context.xml`，关于数据源的配署如下：
-<pre>
-&lt;bean id="dbUrl" class="java.net.URI"&gt;
-    &lt;constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/&gt;
-&lt;/bean&gt;
-&lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
-    &lt;property name="driverClassName" value="org.postgresql.Driver"/&gt;
-    &lt;property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + @dbUrl.getPath() }"/&gt;
-    &lt;property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/&gt;
-    &lt;property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/&gt;
-&lt;/bean&gt;
-</pre>
+```xml
+<bean id="dbUrl" class="java.net.URI">
+    <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
+</bean>
+<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="org.postgresql.Driver"/>
+    <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + @dbUrl.getPath() }"/>
+    <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+    <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
+</bean>
+```
 再更改数据的驱动类为`org.hibernate.dialect.PostgreSQLDialect`，并关闭hibernate的SQL显示，如下：
-<pre>
-&lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.PostgreSQLDialect&lt;/prop&gt;
-&lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;
-</pre>
+```xml
+<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+<prop key="hibernate.show_sql">false</prop>
+```
 当然了部署到heroku上的数据库是可以通过Add-ons功能更改的，也不一定要更改为PostgreSQL，这都要根据你为heroku上的应用添加的数据库来决定，详情可以参考heroku的帮助文档，这里个人还是比较推荐使用PostgreSQL数据库。
 
 ##### 3. 配置程序自启动Servlet类
 由于本程序在启动时，需要一些初始化的数据，因此需要一种方法，确保程序在第一次初始化时，将一些必要的数据导入数据库，这就是编写自启动Servlet类的目地；默认情况下自启动Servlet类的配置是关闭的，需要到`src/main/webapp/WEB-INF/web.xml`文件中将其打开，如下：
-<pre>
-&lt;servlet&gt;
-    &lt;servlet-name>AutoRunServlet&lt;/servlet-name&gt; 
-    &lt;servlet-class&gt;com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet&lt;/servlet-class&gt;
-    &lt;load-on-startup&gt;2&lt;/load-on-startup&gt; 
-&lt;/servlet&gt;
-</pre>
+```xml
+<servlet>
+    <servlet-name>AutoRunServlet</servlet-name> 
+    <servlet-class>com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet</servlet-class>
+    <load-on-startup>2</load-on-startup> 
+</servlet>
+```
 从上面的配置可知控制程序自启动的Servlet类是`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`,它控制着登录本博客应用的初始帐号与密码，还有一些登录后的博客设置信息与管理的菜单。
 默认情况下提供登录本博客的初始帐户名是websoft,密码是通过SHA1加密的123456。
 
@@ -113,13 +113,13 @@ stmt.executeUpdate("INSERT INTO blog_infos VALUES ('1', '飘痕', '心诚则灵'
 </pre>
 即当有新评论时，`lzqwebsoft@gmail.com`邮箱会收到提示。<br />
 控制用户帐户的变更是由`users`表的邮件项控制，同样需要到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
-<pre>
-stmt.executeUpdate("INSERT INTO users VALUES ('1', 'websoft', '31bde66d9873701bed3e0d0ffd626f9d235583', '751939573@qq.com', '8e04ee997d285749ecfcd280a3e1e9', '', '0','2012-12-17 16:02:26', '2012-12-13 16:43:03', '2012-12-17 16:02:06');");
-</pre>
+```java
+stmt.executeUpdate("INSERT INTO blog_infos VALUES ('1', '飘痕', '心诚则灵', '关于内容', 'lzqwebsoft@gmail.com', '0', '2012-12-19 17:26:32');");
+```
 即当用户有找回密码的操作时，邮件`751939573@qq.com`会收到提示。
 
 下面最为重要的就是配置邮件服务，就是使用什么邮件来向上面两个邮箱发送邮件，关于服务器端的邮件配置，在`src/main/resources/mail-config.properties`文件中，如下：
-<pre>
+```
 mail.smtp.host=smtp.gmail.com
 mail.smtp.auth=true
 mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
@@ -131,14 +131,14 @@ mail.address.from=lzqwebsoft@gmail.com
 mail.address.username=
 mail.address.password=
 mail.isDebug=false
-</pre>
+```
 上面使用的配置邮件服务采用的是google的邮件服务，你可以根据个人的情况修改，可能对于你的邮箱，上面的有些项可能不是必须的，那么你可能还要修改`src/main/java/com/herokuapp/lzqwebsoft/util/MailUtil.java`文件中的邮件配置代码。
 
 ##### 5.配置七牛云服务器（可选）
 七牛云提供了免费的10G个人账户的云存储加速，对于开发者来说非常的友好，由于本博客部署在国外，服务器的性能很差劲，为了减轻服务器的负担，加速国内用户的访问，因此增加了对于七牛云服务的支持，作用是前台用户未登录时，显示给用户的图片链接地址替换成为七牛云的，同时在后台编辑博客上传新图片后也会同步上传到七牛云上，这样做的目地就是加速国内用户访问图片。
 
 使用七牛云的服务，只需要根据注册的七牛云API权限，配置`src/main/resources/qiniu-keys.properties`文件，如下：
-<pre>
+```
 # 七牛云匹配置
 qiniu.bucket = 
 qiniu.bucket.domain = 
@@ -146,262 +146,262 @@ qiniu.accessKey =
 qiniu.secretKey = 
 # 华东: zone0 , 华北: zone1 , 华南: zone2, 北美: zoneNa0
 qiniu.zone = zone0
-</pre>
+```
 对应的配置说明可以参见他的官网：[七牛云JAVA SDK开发文档](https://developer.qiniu.com/kodo/sdk/1239/java)
 
 这里为了方便旧的博客图片也同步到七牛云空间，提供了一个工具action,配置好七牛云的API权限只需要访问：`http://localhost:9000/tools/images_upload.html`，就可以一次性将原图片表中的图片上传同步到对应的七牛云空间。这里的操作是通过检测是否在七牛云返回的key来判断是否同步到七牛云，因此那些上传有返回qiniu_key的图片行是不会重复上传的。
 
 当然了你也可以选择不使用七牛云，只需将`src/main/java/com/herokuapp/lzqwebsoft/controller/ArticleController.java`中的替换七牛云图片的代码注释，大概在90行附近处：
-<pre>
+```java
 // 用户未登录，则替换文章中内容使用的IMG标签SRC属性改为七牛云
 String domain = messageSource.getMessage("qiniu.bucket.domain", null, locale);
 String content = article.getContent();
 content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).html", domain + "$1");
 article.setContent(content);
-</pre>
+```
 
 ##### 6. 修改pom.xml
 由于部署在本地时使用的是mysql数据库，而pushing上传到Heroku云端使用的是PostgreSQL数据库，因些需要修改项目依赖的驱动架包，即需要对pom.xml文件进行一定的更改，如下上传Heroku上时应该使用如下pom.xml文件:
 
-<pre>
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-    &lt;groupId&gt;org.herokuapp.lzqwebsoft&lt;/groupId&gt;
-    &lt;version&gt;1.0.1&lt;/version&gt;
-    &lt;artifactId&gt;heroku-blog&lt;/artifactId&gt;
-    &lt;packaging&gt;war&lt;/packaging&gt;
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.herokuapp.lzqwebsoft</groupId>
+    <version>1.0.1</version>
+    <artifactId>heroku-blog</artifactId>
+    <packaging>war</packaging>
     
-    &lt;properties&gt;
-        &lt;spring.version&gt;3.1.3.RELEASE&lt;/spring.version&gt;
-    &lt;/properties&gt;
+    <properties>
+        <spring.version>3.1.3.RELEASE</spring.version>
+    </properties>
     
-    &lt;dependencies&gt;
-        &lt;dependency&gt;
-            &lt;!-- Logs --&gt;
-            &lt;groupId&gt;log4j&lt;/groupId&gt;
-            &lt;artifactId&gt;log4j&lt;/artifactId&gt;
-            &lt;version&gt;1.2.17&lt;/version&gt;
-            &lt;scope&gt;runtime&lt;/scope&gt;
-        &lt;/dependency&gt;
-        &lt;!-- Servlet --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
-            &lt;artifactId&gt;jetty-servlet&lt;/artifactId&gt;
-            &lt;version&gt;7.6.0.v20120127&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
-            &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
-            &lt;version&gt;2.5&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;!-- JSTL标签库 --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
-            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
-            &lt;version&gt;1.1.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;taglibs&lt;/groupId&gt;
-            &lt;artifactId&gt;standard&lt;/artifactId&gt;
-            &lt;version&gt;1.1.2&lt;/version&gt;
-        &lt;/dependency&gt;
+    <dependencies>
+        <dependency>
+            <!-- Logs -->
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Servlet -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>7.6.0.v20120127</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <!-- JSTL标签库 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
     
-        &lt;!-- Jakarta Commons FileUplolad及Jakarta Commons io的类包，实现文件上传 --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;commons-fileupload&lt;/groupId&gt;
-            &lt;artifactId&gt;commons-fileupload&lt;/artifactId&gt;
-            &lt;version&gt;1.2.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;commons-io&lt;/groupId&gt;
-            &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
-            &lt;version&gt;2.4&lt;/version&gt;
-        &lt;/dependency&gt;
+        <!-- Jakarta Commons FileUplolad及Jakarta Commons io的类包，实现文件上传 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
         
-        &lt;!--Java邮件支持--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.sun.mail&lt;/groupId&gt;
-            &lt;artifactId&gt;javax.mail&lt;/artifactId&gt;
-            &lt;version&gt;1.4.5&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;javax.activation&lt;/groupId&gt;
-            &lt;artifactId&gt;activation&lt;/artifactId&gt;
-            &lt;version&gt;1.1.1&lt;/version&gt;
-        &lt;/dependency&gt;
+        <!--Java邮件支持-->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
         
-        &lt;!-- Spring3 框架 --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-        &lt;/dependency&gt;
+        <!-- Spring3 框架 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-        &lt;/dependency&gt;
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-        &lt;/dependency&gt;
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
  
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-        &lt;/dependency&gt;
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
  
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-        &lt;/dependency&gt;
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         
-        &lt;!--使用Spring框架的orm进行sessionFactory的管理--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-            &lt;classifier/&gt;
-        &lt;/dependency&gt;
+        <!--使用Spring框架的orm进行sessionFactory的管理-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+            <classifier/>
+        </dependency>
         
-        &lt;!--添加Hibernate支持--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
-            &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
-            &lt;version&gt;3.6.4.Final&lt;/version&gt;
-        &lt;/dependency&gt;
+        <!--添加Hibernate支持-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.6.4.Final</version>
+        </dependency>
         
-        &lt;!-- 使用的数据库连接池包 --&gt;
-        &lt;!-- Hibernate gives you a choice of bytecode providers between cglib and javassist --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;javassist&lt;/groupId&gt;
-            &lt;artifactId&gt;javassist&lt;/artifactId&gt;
-            &lt;version&gt;3.9.0.GA&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;commons-pool&lt;/groupId&gt;
-            &lt;artifactId&gt;commons-pool&lt;/artifactId&gt;
-            &lt;version&gt;1.5.4&lt;/version&gt;
-            &lt;classifier/&gt;
-            &lt;exclusions&gt;
-                &lt;exclusion&gt;
-                    &lt;groupId&gt;commons-logging&lt;/groupId&gt;
-                    &lt;artifactId&gt;commons-logging&lt;/artifactId&gt;
-                &lt;/exclusion&gt;
-            &lt;/exclusions&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;commons-dbcp&lt;/groupId&gt;
-            &lt;artifactId&gt;commons-dbcp&lt;/artifactId&gt;
-            &lt;version&gt;1.3&lt;/version&gt;
-            &lt;classifier/&gt;
-            &lt;exclusions&gt;
-                &lt;exclusion&gt;
-                    &lt;groupId&gt;commons-logging&lt;/groupId&gt;
-                    &lt;artifactId&gt;commons-logging&lt;/artifactId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;groupId&gt;commons-pool&lt;/groupId&gt;
-                    &lt;artifactId&gt;commons-pool&lt;/artifactId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;groupId&gt;xerces&lt;/groupId&gt;
-                    &lt;artifactId&gt;xerces&lt;/artifactId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;groupId&gt;xerces&lt;/groupId&gt;
-                    &lt;artifactId&gt;xercesImpl&lt;/artifactId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;groupId&gt;xml-apis&lt;/groupId&gt;
-                    &lt;artifactId&gt;xml-apis&lt;/artifactId&gt;
-                &lt;/exclusion&gt;
-            &lt;/exclusions&gt;
-        &lt;/dependency&gt;
+        <!-- 使用的数据库连接池包 -->
+        <!-- Hibernate gives you a choice of bytecode providers between cglib and javassist -->
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.9.0.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.5.4</version>
+            <classifier/>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.3</version>
+            <classifier/>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-pool</groupId>
+                    <artifactId>commons-pool</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xerces</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-        &lt;!-- 七牛云空间 --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.qiniu&lt;/groupId&gt;
-            &lt;artifactId&gt;qiniu-java-sdk&lt;/artifactId&gt;
-            &lt;version&gt;7.2.11&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.squareup.okhttp3&lt;/groupId&gt;
-            &lt;artifactId&gt;okhttp&lt;/artifactId&gt;
-            &lt;version&gt;3.3.1&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
-            &lt;artifactId&gt;gson&lt;/artifactId&gt;
-            &lt;version&gt;2.6.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.qiniu&lt;/groupId&gt;
-            &lt;artifactId&gt;happy-dns-java&lt;/artifactId&gt;
-            &lt;version&gt;0.1.4&lt;/version&gt;
-        &lt;/dependency&gt;
+        <!-- 七牛云空间 -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>7.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>happy-dns-java</artifactId>
+            <version>0.1.4</version>
+        </dependency>
         
-        &lt;!-- MYSQL驱动包 --&gt;
-        &lt;!--&lt;dependency&gt;
-            &lt;groupId&gt;mysql&lt;/groupId&gt;
-            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
-            &lt;version&gt;5.1.9&lt;/version&gt;
-        &lt;/dependency&gt;--&gt;
+        <!-- MYSQL驱动包 -->
+        <!--<dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.9</version>
+        </dependency>-->
         
-        &lt;!-- PostgreSQL驱动包 --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;postgresql&lt;/groupId&gt;
-            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
-            &lt;version&gt;9.0-801.jdbc4&lt;/version&gt;
-        &lt;/dependency&gt;
+        <!-- PostgreSQL驱动包 -->
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.0-801.jdbc4</version>
+        </dependency>
 
-    &lt;/dependencies&gt;
+    </dependencies>
 
-    &lt;build&gt;
-        &lt;plugins&gt;
-            &lt;!--&lt;plugin&gt;
-                &lt;groupId&gt;org.mortbay.jetty&lt;/groupId&gt;
-                &lt;artifactId&gt;maven-jetty-plugin&lt;/artifactId&gt;
-                &lt;configuration&gt;
-                  停止jetty --&gt;
-                  &lt;!--&lt;stopPort&gt;9966&lt;/stopPort&gt;
-                  &lt;stopKey&gt;foo&lt;/stopKey&gt;
-              &lt;/configuration&gt;
-            &lt;/plugin&gt;--&gt;
-            &lt;plugin&gt;
-                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-                &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
-                &lt;version&gt;2.3&lt;/version&gt;
-                &lt;executions&gt;
-                    &lt;execution&gt;
-                        &lt;phase&gt;package&lt;/phase&gt;
-                        &lt;goals&gt;
-                            &lt;goal&gt;copy&lt;/goal&gt;
-                        &lt;/goals&gt;
-                        &lt;configuration&gt;
-                            &lt;artifactItems&gt;
-                                &lt;artifactItem&gt;
-                                    &lt;groupId&gt;org.mortbay.jetty&lt;/groupId&gt;
-                                    &lt;artifactId&gt;jetty-runner&lt;/artifactId&gt;
-                                    &lt;version&gt;7.4.5.v20110725&lt;/version&gt;
-                                    &lt;destFileName&gt;jetty-runner.jar&lt;/destFileName&gt;
-                                &lt;/artifactItem&gt;
-                            &lt;/artifactItems&gt;
-                        &lt;/configuration&gt;
-                    &lt;/execution&gt;
-                &lt;/executions&gt;
-            &lt;/plugin&gt;
-        &lt;/plugins&gt;
-    &lt;/build&gt;
-&lt;/project&gt;
-</pre>
+    <build>
+        <plugins>
+            <!--<plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <configuration>
+                  停止jetty -->
+                  <!--<stopPort>9966</stopPort>
+                  <stopKey>foo</stopKey>
+              </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.mortbay.jetty</groupId>
+                                    <artifactId>jetty-runner</artifactId>
+                                    <version>7.4.5.v20110725</version>
+                                    <destFileName>jetty-runner.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
 
 ##### 7. 上传部署
 根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，在上传之前最好先在本地跑一下，看是否成功；
