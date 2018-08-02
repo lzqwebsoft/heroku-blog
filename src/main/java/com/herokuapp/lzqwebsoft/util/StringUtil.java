@@ -14,6 +14,7 @@ public class StringUtil {
         String baseUrl = "";
         try {
             baseUrl = StringUtil.getBaseUrl(request);
+            baseUrl = baseUrl.replaceAll("^(?i)http[s]?://", "http[s]?://");
         } catch (MalformedURLException e) {
         }
         return StringUtil.xssCharClear(html, baseUrl);
@@ -97,7 +98,7 @@ public class StringUtil {
         URL requestURL = new URL(request.getRequestURL().toString());
         int iPort = requestURL.getPort();
         String port = iPort == -1 || iPort == 80 || iPort == 443 ? "" : ":" + iPort;
-        String protocol = request.getScheme() + "://";
+        String protocol = iPort == 443 ? "https://" : "http://";
         return protocol + requestURL.getHost() + port + request.getContextPath();
     }
 }
