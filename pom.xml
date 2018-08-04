@@ -10,6 +10,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.2.14.RELEASE</spring.version>
+        <jetty.version>9.3.6.v20151106</jetty.version>
     </properties>
 
     <dependencies>
@@ -20,16 +21,26 @@
             <version>1.2.17</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+       </dependency>
         <!-- Servlet -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
-            <version>7.6.0.v20120127</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlets</artifactId>
-            <version>7.6.0.v20120127</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -230,7 +241,7 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.3.6.v20151106</version>
+                <version>${jetty.version}</version>
                 <configuration>
                     <systemProperties>
                         <systemProperty>
