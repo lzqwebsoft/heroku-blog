@@ -8,6 +8,8 @@
     <packaging>war</packaging>
 
     <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.2.14.RELEASE</spring.version>
         <jetty.version>9.3.6.v20151106</jetty.version>
