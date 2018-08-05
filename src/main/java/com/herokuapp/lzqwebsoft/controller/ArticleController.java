@@ -251,8 +251,10 @@ public class ArticleController {
     @RequestMapping("/article/autoSave")
     public void autoSave(@ModelAttribute("article") Article article, HttpServletResponse response, HttpSession session, String editOrCreate, Locale locale) {
         String content = article.getContent();
+        String contentMD = article.getContentMD();
         boolean status = false;
-        if (content != null && content.trim().length() > 0) {
+        if ((article.getContentType() == 0 && content != null && content.trim().length() > 0) ||
+                (article.getContentType() == 1 && contentMD != null && contentMD.trim().length() > 0)) {
             // 设置文章默认为原创
             int patternTypeId = article.getPatternTypeId();
             if (patternTypeId == 0) {
@@ -260,9 +262,9 @@ public class ArticleController {
             }
             // 转化内容
             if (article.getContentType() == 1) {
-                article.setContent(MarkdownUtil.parseMarkdownToHtml(article.getContentMD()));
+                article.setContent(MarkdownUtil.parseMarkdownToHtml(contentMD));
             } else if (article.getContentType() == 0) {
-                article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(article.getContent()));
+                article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(content));
             }
             // 设置文章类型默认为空
             article.setType(null);
