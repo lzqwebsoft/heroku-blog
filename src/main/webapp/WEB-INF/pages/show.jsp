@@ -135,6 +135,16 @@ code {
     direction: rtl;
     text-align: left;
 }
+@media screen and (min-width: 768px) {
+    #validateCodeZone span {
+        padding-left: 0;
+    }
+}
+@media screen and (max-width: 767px) {
+    #validateCodeZone span{
+        margin-top: 10px;
+    }
+}
 </style>
 </head>
 
