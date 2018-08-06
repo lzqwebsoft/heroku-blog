@@ -172,8 +172,11 @@ $(function () {
     });
     $("body").on("change", "#file-upload", function () {
         var current = $(this)[0];
-        console.log(current.value);
         if (current.value != '') {
+            var img = $("<img src='"+$("#context-path").text()+"/resources/images/loading.gif'/>");
+            img.css({"position": "absolute", "top": "45%", "left": "50%"});
+            var loading = $("<div id='loading'></div>");
+            loading.css({"position": "absolute", "top": "0", "left": "0", "width": "100%", "height": "100%", "background-color": "#FFF", "opacity": "0.4"}).append(img).appendTo($("#image-upload-dialog .modal-content"));
             var formData = new FormData();
             formData.append("imgFile", current.files[0]);
             $.ajax({
@@ -186,13 +189,16 @@ $(function () {
                     try {
                         if(responseStr.url != null && responseStr.error == 0) {
                             $("#image-url").val(responseStr.url);
+                            loading.remove();
                             return;
                         }
                     } catch(e){}
                     alert('上传文件失败');
+                    loading.remove();
                 },
                 error: function (responseStr) {
                     alert("失败:" + JSON.stringify(responseStr));// 将json对象转成json字符串。
+                    loading.remove();
                 }
             });
         }
