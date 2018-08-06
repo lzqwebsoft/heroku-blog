@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.2.14.RELEASE</spring.version>
         <jetty.version>9.3.6.v20151106</jetty.version>
+        <flexmark.version>0.34.12</flexmark.version>
     </properties>
 
     <dependencies>
@@ -224,10 +225,19 @@
         <!-- flexmark-java Markdown parser -->
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
-            <artifactId>flexmark-all</artifactId>
-            <version>0.34.12</version>
+            <artifactId>flexmark</artifactId>
+            <version>${flexmark.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-util</artifactId>
+            <version>${flexmark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-html-parser</artifactId>
+            <version>${flexmark.version}</version>
+        </dependency>
         <!-- PostgreSQL驱动包 -->
         <!-- <dependency> -->
         <!-- <groupId>postgresql</groupId> -->
