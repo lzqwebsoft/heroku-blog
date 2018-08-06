@@ -101,6 +101,40 @@ code {
 #article_content p {
     margin: 0 0 5px
 }
+#article_content blockquote {
+    padding: 10px 15px;
+    margin: 10px 0 10px;
+    font-size: inherit;
+    color: #666;
+}
+#article_content h1 {
+    font-size: 24px;
+}
+#article_content h2 {
+    font-size: 22px;
+}
+#article_content h3 {
+    font-size: 20px;
+}
+#article_content h4 {
+    font-size: 18px;
+}
+#article_content h5 {
+    font-size: 16px;
+}
+.pager {
+    padding: 0px 10px;
+}
+.previous a, .next a{
+    max-width: 49%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+.next a {
+    direction: rtl;
+    text-align: left;
+}
 </style>
 </head>
 
@@ -173,7 +207,7 @@ code {
                     <li class="previous"><a href="${pageContext.request.contextPath}/show/${previousArticle.id}.html">&larr; ${previousArticle.title}</a></li>
                 </c:if>
                 <c:if test="${nextArticle!=null}">
-                    <li class="next"><a href="${pageContext.request.contextPath}/show/${nextArticle.id}.html">${nextArticle.title} &rarr;</a></li>
+                    <li class="next"><a href="${pageContext.request.contextPath}/show/${nextArticle.id}.html">&rarr; ${nextArticle.title}</a></li>
                 </c:if>
             </ul>
         </div>
