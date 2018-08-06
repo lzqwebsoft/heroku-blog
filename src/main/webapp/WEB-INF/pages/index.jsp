@@ -129,22 +129,20 @@
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
                 <div class="panel panel-default">
                     <div class="panel-heading">文章分类</div>
-                    <div class="panel-body">
-                        <c:choose>
-                        <c:when test="${articleTypes!=null&&fn:length(articleTypes)>0}">
-                        <div class="list-group">
-                            <c:forEach items="${articleTypes}" var="articleType">
-                                <c:if test="${!articleType.disable}">
-                                <a href="<%= request.getContextPath() %>/select/${articleType.id}.html" class="list-group-item <c:if test="${requestScope.articleTypeId!=null && requestScope.articleTypeId==articleType.id}"><c:out value="active" /></c:if>">${articleType.name}<span class="badge">${fn:length(articleType.articles)}</span></a>
-                                </c:if>
-                            </c:forEach>
-                        </div>
-                        </c:when>
-                        <c:otherwise>
-                            <p>暂无</p>
-                        </c:otherwise>
-                        </c:choose>
+                    <c:choose>
+                    <c:when test="${articleTypes!=null&&fn:length(articleTypes)>0}">
+                    <div class="list-group">
+                        <c:forEach items="${articleTypes}" var="articleType">
+                            <c:if test="${!articleType.disable}">
+                            <a href="<%= request.getContextPath() %>/select/${articleType.id}.html" class="list-group-item <c:if test="${requestScope.articleTypeId!=null && requestScope.articleTypeId==articleType.id}"><c:out value="active" /></c:if>">${articleType.name}<span class="badge">${fn:length(articleType.articles)}</span></a>
+                            </c:if>
+                        </c:forEach>
                     </div>
+                    </c:when>
+                    <c:otherwise>
+                        <p>暂无</p>
+                    </c:otherwise>
+                    </c:choose>
                 </div>
 
                 <div class="panel panel-default">
@@ -165,24 +163,20 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">相关链接</div>
-                    <div class="panel-body">
-                        <div class="list-group">
-                            <a href="http://blog.csdn.net/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> CSDN</a>
-                            <a href="http://my.oschina.net/websoft" class="list-group-item glyphicon glyphicon-link"> 开源中国</a>
-                            <a href="http://weibo.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> 新浪微博</a>
-                            <a href="https://www.facebook.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Facebook</a>
-                            <a href="https://twitter.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Tiwtter</a>
-                        </div>
+                    <div class="list-group">
+                        <a href="http://blog.csdn.net/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> CSDN</a>
+                        <a href="http://my.oschina.net/websoft" class="list-group-item glyphicon glyphicon-link"> 开源中国</a>
+                        <a href="http://weibo.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> 新浪微博</a>
+                        <a href="https://www.facebook.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Facebook</a>
+                        <a href="https://twitter.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Tiwtter</a>
                     </div>
                 </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">联系我</div>
-                    <div class="panel-body">
-                        <div class="list-group" style="font-size: 14px;">
-                            <a href="mailto:lzqwebsoft@gmail.com" class="list-group-item glyphicon glyphicon-envelope"> lzqwebsoft@gmail.com</a>
-                            <a href="mailto:751939573@qq.com" class="list-group-item glyphicon glyphicon-envelope"> 751939573@qq.com</a>
-                        </div>
+                    <div class="list-group" style="font-size: 14px;">
+                        <a href="mailto:lzqwebsoft@gmail.com" class="list-group-item glyphicon glyphicon-envelope"> lzqwebsoft@gmail.com</a>
+                        <a href="mailto:751939573@qq.com" class="list-group-item glyphicon glyphicon-envelope"> 751939573@qq.com</a>
                     </div>
                 </div>
             </div>
