@@ -62,7 +62,7 @@ public class SetController {
 		List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
 		request.setAttribute("articleTypes", articleTypes);
 		// 所有的图片
-		List<Image> images = imageSerivce.getAllImages();
+		Page<Image> images = imageSerivce.getAllImagesByPage(1, 20);
 		request.setAttribute("images", images);
 		// 所有的草稿
 		Page<Article> page_drafts =  articleService.getAllDrafts(1, 15);
@@ -113,12 +113,12 @@ public class SetController {
 				blogInfoService.updateBlogInfo(blogInfo);
 			}
 			out.print(json);
-			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			if(out!=null) {
-				out.close();
-			}
+		} finally {
+		    if(out!=null) {
+                out.close();
+            }
 		}
 	}
 }

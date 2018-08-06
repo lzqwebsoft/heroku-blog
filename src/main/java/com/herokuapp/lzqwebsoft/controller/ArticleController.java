@@ -333,17 +333,17 @@ public class ArticleController {
 
     // ================== 主要用于set页面的AJAX处理=============
     @RequestMapping("/delete/article/{articleId}")
-    public String deleteArticle(@PathVariable("articleId") String articleId, int articleTypeId, String title, String pageNo, HttpServletRequest request) {
-        if (pageNo == null || pageNo.trim().length() <= 0)
-            pageNo = "1";
-        int pageNoIndex = Integer.parseInt(pageNo);
+    public String deleteArticle(@PathVariable("articleId") String articleId, int articleTypeId, String title, int pageNo, HttpServletRequest request) {
+        if (pageNo <= 0)
+            pageNo = 1;
 
         articleService.delete(articleId);
-        Page<Article> articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNoIndex, 15);
+        Page<Article> articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNo, 15);
 
         // 如果删除的一条数据刚好是这一页的最后一条数据，则显示上页
-        if (pageNoIndex > 1 && articles.getData().size() <= 0)
-            articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNoIndex - 1, 15);
+        if (pageNo > 1 && articles.getData().size() <= 0) {
+            articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNo - 1, 15);
+        }
 
         request.setAttribute("page", articles);
 
@@ -354,18 +354,17 @@ public class ArticleController {
     }
 
     @RequestMapping("/delete/draft/{articleId}")
-    public String deleteDraft(@PathVariable("articleId") String articleId, String pageNo, HttpServletRequest request) {
-        if (pageNo == null || pageNo.trim().length() <= 0)
-            pageNo = "1";
-        int pageNoIndex = Integer.parseInt(pageNo);
+    public String deleteDraft(@PathVariable("articleId") String articleId, int pageNo, HttpServletRequest request) {
+        if (pageNo <= 0)
+            pageNo = 1;
 
         articleService.delete(articleId);
         // 所有的草稿
-        Page<Article> page_drafts = articleService.getAllDrafts(pageNoIndex, 15);
+        Page<Article> page_drafts = articleService.getAllDrafts(pageNo, 15);
 
         // 如果删除的一条数据刚好是这一页的最后一条数据，则显示上页
-        if (pageNoIndex > 1 && page_drafts.getData().size() <= 0)
-            page_drafts = articleService.getAllDrafts(pageNoIndex - 1, 15);
+        if (pageNo > 1 && page_drafts.getData().size() <= 0)
+            page_drafts = articleService.getAllDrafts(pageNo - 1, 15);
 
         request.setAttribute("page_drafts", page_drafts);
 
@@ -373,25 +372,23 @@ public class ArticleController {
     }
 
     @RequestMapping("/draft/page")
-    public String pageDraft(String pageNo, HttpServletRequest request) {
-        if (pageNo == null || pageNo.trim().length() <= 0)
-            pageNo = "1";
-        int pageNoIndex = Integer.parseInt(pageNo);
+    public String pageDraft(Integer pageNo, HttpServletRequest request) {
+        if (pageNo == null || pageNo <= 0)
+            pageNo = 1;
 
         // 所有的草稿
-        Page<Article> page_drafts = articleService.getAllDrafts(pageNoIndex, 15);
+        Page<Article> page_drafts = articleService.getAllDrafts(pageNo, 15);
         request.setAttribute("page_drafts", page_drafts);
 
         return "_draft_tab";
     }
 
     @RequestMapping("/article/select")
-    public String select(int articleTypeId, String title, String pageNo, HttpServletRequest request) {
-        if (pageNo == null || pageNo.trim().length() <= 0)
-            pageNo = "1";
-        int pageNoIndex = Integer.parseInt(pageNo);
+    public String select(int articleTypeId, String title, Integer pageNo, HttpServletRequest request) {
+        if (pageNo == null || pageNo <= 0)
+            pageNo = 1;
 
-        Page<Article> page = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNoIndex, 15);
+        Page<Article> page = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNo, 15);
         request.setAttribute("page", page);
 
         request.setAttribute("articleTypeId", articleTypeId);
