@@ -21,77 +21,74 @@ import com.herokuapp.lzqwebsoft.pojo.Page;
  * 
  * @author zqluo
  *
- * @param <T> 封装结果对象
+ * @param <T>
+ *            封装结果对象
  */
 public class PageBaseDAO<T> {
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	private HibernateTemplate ht = null;
-	
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    private HibernateTemplate ht = null;
+
     public HibernateTemplate getHibernateTemple() {
-        if(ht==null) {
+        if (ht == null) {
             ht = new HibernateTemplate(sessionFactory);
         }
         return ht;
     }
-	
-	@SuppressWarnings("unchecked")
-	public Page pagedQuery(final String hql, int pageNo, final int pageSize,
-			final Object... values) {
-		Assert.hasText(hql);
-		Assert.isTrue(pageNo >= 0, "pageNo should start from 1");
-		
-		// Count 查询
-		String countQueryString = "select count(*) "
-				+ removeSelect(removeOrders(hql));
-		List countlist = getHibernateTemple().find(countQueryString, values);
-		long totalCount = (Long) countlist.get(0);
-		if (totalCount < 1) {
-			return new Page();
-		}
 
-		// 实际查询返回分页对象
-		final int startIndex = Page.getStartOfPage(pageNo, pageSize);
-		
-		List<T> list = getHibernateTemple().executeFind(
-				new HibernateCallback() {
-					public List<T> doInHibernate(Session session)
-							throws HibernateException, SQLException {
-						Query query = session.createQuery(hql);
-						for(int i=0; i<values.length; i++)
-							query.setParameter(i, values[i]);
-						query.setFirstResult(startIndex);
-						query.setMaxResults(pageSize);
-						List list = query.list();
-						return list;
-					}
-				});
-		return new Page(startIndex, totalCount, pageSize, 5, list);
+    @SuppressWarnings("unchecked")
+    public Page<T> pagedQuery(final String hql, int pageNo, final int pageSize, final Object... values) {
+        Assert.hasText(hql);
+        Assert.isTrue(pageNo >= 0, "pageNo should start from 1");
 
-	}
+        // Count 查询
+        String countQueryString = "select count(*) " + removeSelect(removeOrders(hql));
+        List<T> countlist = getHibernateTemple().find(countQueryString, values);
+        long totalCount = (Long) countlist.get(0);
+        if (totalCount < 1) {
+            return new Page<T>();
+        }
 
-	// 去除hql的select子句
-	private static String removeSelect(String hql) {
-		Assert.hasText(hql);
-		int beginPost = hql.toLowerCase().indexOf("from");
-		Assert.isTrue(beginPost != -1, "hql : " + hql + " must has a keyword form");
-		return hql.substring(beginPost);
-	}
+        // 实际查询返回分页对象
+        final int startIndex = Page.getStartOfPage(pageNo, pageSize);
 
-	// 除去hql的order by子句
-	private static String removeOrders(String hql) {
-		Assert.hasText(hql);
-		Pattern p = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(hql);
+        List<T> list = getHibernateTemple().executeFind(new HibernateCallback() {
+            public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
+                Query query = session.createQuery(hql);
+                for (int i = 0; i < values.length; i++)
+                    query.setParameter(i, values[i]);
+                query.setFirstResult(startIndex);
+                query.setMaxResults(pageSize);
+                List list = query.list();
+                return list;
+            }
+        });
+        return new Page<T>(startIndex, totalCount, pageSize, 5, list);
 
-		StringBuffer sb = new StringBuffer();
-		while (m.find()) {
-			m.appendReplacement(sb, "");
-		}
-		m.appendTail(sb);
-		
-		return sb.toString();
+    }
 
-	}
+    // 去除hql的select子句
+    private static String removeSelect(String hql) {
+        Assert.hasText(hql);
+        int beginPost = hql.toLowerCase().indexOf("from");
+        Assert.isTrue(beginPost != -1, "hql : " + hql + " must has a keyword form");
+        return hql.substring(beginPost);
+    }
+
+    // 除去hql的order by子句
+    private static String removeOrders(String hql) {
+        Assert.hasText(hql);
+        Pattern p = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(hql);
+
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(sb, "");
+        }
+        m.appendTail(sb);
+
+        return sb.toString();
+
+    }
 }

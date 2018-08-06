@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.herokuapp.lzqwebsoft.pojo.Image;
+import com.herokuapp.lzqwebsoft.pojo.Page;
 
 @Repository("imageDAO")
-public class ImageDAO extends BaseDAO {
+public class ImageDAO extends PageBaseDAO<Image> {
 
     public void save(Image image) {
         getHibernateTemple().save(image);
@@ -19,7 +20,12 @@ public class ImageDAO extends BaseDAO {
 
     @SuppressWarnings("unchecked")
     public List<Image> getAllImages() {
-        return (List<Image>) getHibernateTemple().find("from Image");
+        return (List<Image>) getHibernateTemple().find("FROM Image");
+    }
+    
+    public Page<Image> getAllImagesByPage(int pageNo, int pageSize) {
+        String queryString = "FROM Image AS img ORDER BY img.id ASC";
+        return pagedQuery(queryString, pageNo, pageSize);
     }
 
     public Image getImageById(String id) {

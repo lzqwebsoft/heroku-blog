@@ -3,7 +3,7 @@ editor = KindEditor.ready(function(K) {
     editor = K.create('#blog_description', {
         themeType : 'simple',
         width : "100%", //编辑器的宽度为70%
-        height : "200px", //编辑器的高度为100px
+        height : "350px", //编辑器的高度为350px
         filterMode : false, //不会过滤HTML代码
         designMode: true,   // 编辑模式
         resizeType : 1, //编辑器只能调整高度
@@ -256,12 +256,15 @@ function confirm_draft_delete(message, id, pageNo) {
 //===================================================================
 
 //============================image tab==============================
-function delete_image(message, id) {
+function delete_image(message, id, pageNo) {
     var option = confirm(message);
     if (option) {
         $.ajax({
             url : "images/delete/" + id + ".html",
             type : "post",
+            data: {
+                "pageNo": pageNo
+            },
             success : function(data, status) {
                 $("#blog_images_list").html(data);
             },
@@ -270,6 +273,22 @@ function delete_image(message, id) {
             }
         });
     }
+}
+//实现图片翻页
+function image_page_update(url, pageNo) {
+    $.ajax({
+        url: url,
+        type: "post",
+        data: {
+            "pageNo": pageNo
+        },
+        success: function(data, status) {
+            $("#blog_images_list").html(data);
+        },
+        error: function(xhr, strError, errorObj) {
+            alert(errorObj);
+        }
+    });
 }
 //===================================================================
 $(function() {
