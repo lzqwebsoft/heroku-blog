@@ -17,7 +17,7 @@
 <title>${article.title}-<spring:message code="page.title" /></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/prism.css" />
-<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/share.css" />
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/share.css?_v=1.0" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />
 <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js?_v=4.0.0"></script>
 <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh-CN.js"></script>
@@ -144,6 +144,10 @@ code {
     #validateCodeZone span{
         margin-top: 10px;
     }
+}
+#article_content ul {
+    margin-left: 30px;
+    margin-top: 10px;
 }
 </style>
 </head>
