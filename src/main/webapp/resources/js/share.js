@@ -37,9 +37,9 @@
             },
             shareUrl = {
                 tsina: 'http://service.weibo.com/share/share.php?url={url}&title={title}&appkey={appkey}&pic={pic}&searchPic=true',
-                tqzone: 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={url}&pics={pic}&title={title}&summary={summary}&desc={title}',
-                twitter: 'https://twitter.com/intent/tweet?text={title} {url}&url={url}&pic={pic}',
-                facebook: 'https://www.facebook.com/sharer/sharer.php?u={url}&t={title}&pic={pic}'
+                tqzone: 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={url}&pics={pic}&title={title}&summary={summary}&desc=&site=',
+                twitter: 'https://twitter.com/intent/tweet?text={title}&url={url}&pic={pic}',
+                facebook: 'https://www.facebook.com/sharer/sharer.php?u={url}'
             };
 
 

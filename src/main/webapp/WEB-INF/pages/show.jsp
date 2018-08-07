@@ -201,26 +201,28 @@ code {
         <div id="article_content" style="margin-top: 10px; word-break:break-all;">
             <c:out value="${article.content}" escapeXml="false" />
         </div>
-        <div id="sns_share" class="cf">
-            <span class="sns_share_to fl">分享到：</span>
-            <a class="share_weixin share_icon fl" href="javascript:void(0);" title="查看本文二维码，分享至微信"><em>二维码</em></a>
-            <a class="share_tsina share_icon fl" href="javascript:void(0);" title="分享到新浪微博"><em>新浪微博</em></a>
-            <a class="share_tqzone share_icon fl" href="javascript:void(0);" title="分享到QQ空间"><em>QQ空间</em></a>
-            <a class="share_twitter share_icon fl" href="javascript:void(0);" title="分享到Twitter"><em>twitter</em></a>
-            <a class="share_facebook share_icon fl" href="javascript:void(0);" title="分享到Facebook"><em>Facebook</em></a>
-
-            <div class="wemcn" id="wemcn">
-                <div id="ewm" class="ewmDiv clearfix">
-                    <div class="rwmtext">
-                        <p>扫一扫，用手机观看！</p>
-                        <p>用微信扫描还可以</p>
-                        <p>分享至好友和朋友圈</p>
+        <div class="share_zone">
+            <div id="sns_share" class="cf">
+                <span class="sns_share_to fl">分享到：</span>
+                <a class="share_weixin share_icon fl" href="javascript:void(0);" title="查看本文二维码，分享至微信"><em>二维码</em></a>
+                <a class="share_tsina share_icon fl" href="javascript:void(0);" title="分享到新浪微博"><em>新浪微博</em></a>
+                <a class="share_tqzone share_icon fl" href="javascript:void(0);" title="分享到QQ空间"><em>QQ空间</em></a>
+                <a class="share_twitter share_icon fl" href="javascript:void(0);" title="分享到Twitter"><em>twitter</em></a>
+                <a class="share_facebook share_icon fl" href="javascript:void(0);" title="分享到Facebook"><em>Facebook</em></a>
+    
+                <div class="wemcn" id="wemcn">
+                    <div id="ewm" class="ewmDiv clearfix">
+                        <div class="rwmtext">
+                            <p>扫一扫，用手机观看！</p>
+                            <p>用微信扫描还可以</p>
+                            <p>分享至好友和朋友圈</p>
+                        </div>
+                        <div class="qrcode"></div>
+                        <img id='ewmimg' class='ewmimg' width='85' height='85' alt='二维码分享' />
                     </div>
-                    <div class="qrcode"></div>
-                    <img id='ewmimg' class='ewmimg' width='85' height='85' alt='二维码分享' />
+                    <a class="share_icon" href="javascript:void(0)" id="ewmkg"></a>
+                    <i class="ewmsj share_icon"></i>
                 </div>
-                <a class="share_icon" href="javascript:void(0)" id="ewmkg"></a>
-                <i class="ewmsj share_icon"></i>
             </div>
         </div>
 
