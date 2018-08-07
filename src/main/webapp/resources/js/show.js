@@ -196,4 +196,50 @@ $(function() {
             $(this).html(pre_content).addClass("my_pre");
         }
     });
+    // 二唯码
+    $(".qrcode").qrcode({
+        text: window.location.href,
+        width: 85,
+        height: 85
+    });
+    $(".qrcode").hide();
+    var canvas = $('.qrcode canvas');
+    var img = canvas.get(0).toDataURL("image/png");
+    $("#ewmimg").attr('src', img);
+    // 分享按钮使用
+    var shareTitle = $("title").text();
+    var sinaTitle = '分享文章 「' + shareTitle + '」 （分享自@-ZQLUO-）';
+    var tqzoneTitle = '分享文章 「' + shareTitle + '」（分享自@一迹飘痕）';
+    var twitterTitle = '分享文章 「' + shareTitle + '」（分享自@lzqwebsoft）';
+    var facebookTitle = '分享文章 「' + shareTitle + '」（分享自@lzqwebsoft）';
+    var picShare = $("img").length > 0 ? encodeURIComponent($("img")[0].src) : "";
+    $('body').snsShare({
+        tsina:{
+            url : encodeURIComponent(window.location.href),
+            title: sinaTitle,
+            pic: picShare
+        },
+        tqzone:{
+            url : encodeURIComponent(window.location.href),
+            title: tqzoneTitle,            
+            pic: picShare 
+        },
+        twitter:{
+            url : encodeURIComponent(window.location.href),
+            title: twitterTitle,            
+            pic: picShare 
+        },
+        facebook:{
+            url : encodeURIComponent(window.location.href),
+            title: facebookTitle,            
+            pic: picShare 
+        }
+    });
+    // 微信分享	
+    $(".share_weixin").click(function(){
+        $("#wemcn").show();
+    });
+    $("#ewmkg").click(function(){
+        $("#wemcn").hide();
+    });
 });
