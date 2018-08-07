@@ -145,10 +145,6 @@ code {
         margin-top: 10px;
     }
 }
-#article_content ul {
-    margin-left: 30px;
-    margin-top: 10px;
-}
 </style>
 </head>
 
