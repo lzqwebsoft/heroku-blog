@@ -118,24 +118,30 @@ public class WhitespaceFilter implements Filter {
             // Finally override the flush method so that it trims whitespace.
             public void flush() {
                 synchronized (builder) {
-                    BufferedReader reader = new BufferedReader(new StringReader(builder.toString()));
+                    String oldContent = builder.toString();
+                    BufferedReader reader = new BufferedReader(new StringReader(oldContent));
                     String line = null;
+                    StringBuffer  content = new StringBuffer();
 
                     try {
                         while ((line = reader.readLine()) != null) {
                             if (startTrim(line)) {
                                 trim = true;
-                                out.write(line);
+                                content.append(line);
                             } else if (trim) {
-                                out.write(line.trim());
+                                content.append(line.trim());
                                 if (stopTrim(line)) {
                                     trim = false;
-                                    println();
+                                    content.append("\n");
                                 }
                             } else {
-                                out.write(line);
-                                println();
+                                content.append(line).append("\n");
                             }
+                        }
+                        if(!oldContent.endsWith("\n")) {
+                            out.write(content.toString().replaceAll("(\n*)$", ""));
+                        } else {
+                            out.write(content.toString());
                         }
                     } catch (IOException e) {
                         setError();
