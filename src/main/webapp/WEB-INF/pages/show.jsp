@@ -17,7 +17,7 @@
 <title>${article.title}-<spring:message code="page.title" /></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/prism.css" />
-
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/share.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />
 <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js?_v=4.0.0"></script>
 <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh-CN.js"></script>
@@ -201,14 +201,27 @@ code {
         <div id="article_content" style="margin-top: 10px; word-break:break-all;">
             <c:out value="${article.content}" escapeXml="false" />
         </div>
-        <div class="bdsharebuttonbox">
-            <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-            <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-            <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
-            <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
-            <a href="#" class="bds_more" data-cmd="more"></a>
-            <a class="bds_count" data-cmd="count"></a>
+        <div id="sns_share" class="cf">
+            <span class="sns_share_to fl">分享到：</span>
+            <a class="share_weixin share_icon fl" href="javascript:void(0);" title="查看本文二维码，分享至微信"><em>二维码</em></a>
+            <a class="share_tsina share_icon fl" href="javascript:void(0);" title="分享到新浪微博"><em>新浪微博</em></a>
+            <a class="share_tqzone share_icon fl" href="javascript:void(0);" title="分享到QQ空间"><em>QQ空间</em></a>
+            <a class="share_twitter share_icon fl" href="javascript:void(0);" title="分享到Twitter"><em>twitter</em></a>
+            <a class="share_facebook share_icon fl" href="javascript:void(0);" title="分享到Facebook"><em>Facebook</em></a>
+
+            <div class="wemcn" id="wemcn">
+                <div id="ewm" class="ewmDiv clearfix">
+                    <div class="rwmtext">
+                        <p>扫一扫，用手机观看！</p>
+                        <p>用微信扫描还可以</p>
+                        <p>分享至好友和朋友圈</p>
+                    </div>
+                    <div class="qrcode"></div>
+                    <img id='ewmimg' class='ewmimg' width='85' height='85' alt='二维码分享' />
+                </div>
+                <a class="share_icon" href="javascript:void(0)" id="ewmkg"></a>
+                <i class="ewmsj share_icon"></i>
+            </div>
         </div>
 
         <div class="row">
@@ -306,6 +319,8 @@ code {
 
     <%@ include file="/WEB-INF/pages/common/default_js.jsp"%>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/prism.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/share.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.0.1"></script>
     <script type="text/javascript">
         $(function() {
@@ -317,6 +332,5 @@ code {
             });
         });
     </script>
-    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 </body>
 </html>

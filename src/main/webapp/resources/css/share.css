@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 14px/1.5 "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    color: #2b2b2b;
+    overflow: visible;
+}
+
+.cf {
+    display: block;
+    zoom: 1;
+}
+
+* html .cf {
+    height: 1%;
+}
+
+.cf:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.cf {
+    *zoom: 1;
+}
+
+.fl {
+    float: left;
+}
+
+.post_title {
+    width: 100%;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.post_img {
+    margin: 0 auto;
+    display: block;
+}
+
+#sns_share {
+    height: 32px;
+    margin: 10px 0;
+    position: relative;
+}
+
+.sns_share_to {
+    color: #999;
+    line-height: 32px;
+}
+
+.share_icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+    display: block;
+    overflow: hidden;
+    opacity: 0.8;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    background: url('../images/shares.png');
+    background-repeat: no-repeat;
+    border-radius: 4px;
+}
+
+.share_icon:hover {
+    opacity: 1;
+}
+
+.share_icon em {
+    display: none;
+    width: 60px;
+    height: 30px;
+    margin-left: 30px;
+    line-height: 30px;
+    float: left;
+}
+
+.share_weixin {
+    background-position: 0 0px;
+}
+
+.share_tqzone {
+    background-position: 0 -33px;
+}
+
+.share_tsina {
+    background-position: 0 -66px;
+}
+
+.share_facebook {
+    background-position: 0 -99px;
+}
+
+.share_twitter {
+    background-position: 0 -131px;
+}
+
+/*微信二维码*/
+.wemcn {
+    position: absolute;
+    left: -80px;
+    top: -125px;
+    z-index: 4;
+    display: none;
+}
+
+.ewmDiv {
+    width: 255px;
+    height: 89px;
+    border: 2px solid #dcdcdc;
+    padding: 10px;
+    background: #fff;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    z-index: 7;
+}
+
+#ewmimg {
+    float: left;
+    width: 85px;
+    height: 85px;
+}
+
+.rwmtext {
+    float: left;
+    padding-top: 7px;
+    width: 145px;
+    text-indent: 8px;
+}
+
+.rwmtext p {
+    line-height: 25px;
+    width: 145px;
+    text-indent: 12px;
+    color: #636363;
+    font-size: 12px;
+}
+
+#ewmkg {
+    width: 13px;
+    height: 13px;
+    display: block;
+    position: absolute;
+    right: 12px;
+    top: 11px;
+    background-position: 0px -170px;
+}
+
+#ewmkg:hover {
+    background-position: -32px -172px;
+}
+
+.ewmsj {
+    margin-left: 140px;
+    margin-top: -2px;
+    width: 18px;
+    height: 13px;
+    position: absolute;
+    background-position: -200px 0px;
+}
