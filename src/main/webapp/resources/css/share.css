@@ -44,8 +44,11 @@ body {
     margin: 0 auto;
     display: block;
 }
-
+.share_zone {
+    height: 52px;
+}
 #sns_share {
+    float: right;
     height: 32px;
     margin: 10px 0;
     position: relative;
@@ -68,6 +71,7 @@ body {
     background: url('../images/shares.png');
     background-repeat: no-repeat;
     border-radius: 4px;
+    outline: 0;
 }
 
 .share_icon:hover {
@@ -113,13 +117,12 @@ body {
 }
 
 .ewmDiv {
-    width: 255px;
-    height: 89px;
+    width: 285px;
     border: 2px solid #dcdcdc;
     padding: 10px;
     background: #fff;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
     z-index: 7;
 }
 
@@ -142,6 +145,7 @@ body {
     text-indent: 12px;
     color: #636363;
     font-size: 12px;
+    margin: 0;
 }
 
 #ewmkg {
@@ -151,18 +155,20 @@ body {
     position: absolute;
     right: 12px;
     top: 11px;
-    background-position: 0px -170px;
+    background-position: -1px -171px;
 }
 
 #ewmkg:hover {
-    background-position: -32px -172px;
+    background-position: -18px -171px;
 }
 
 .ewmsj {
     margin-left: 140px;
     margin-top: -2px;
-    width: 18px;
-    height: 13px;
+    width: 1px;
+    height: 1px;
     position: absolute;
-    background-position: -200px 0px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(198, 198, 198, 0.9);
 }

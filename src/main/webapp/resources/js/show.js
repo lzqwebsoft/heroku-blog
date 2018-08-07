@@ -209,10 +209,11 @@ $(function() {
     // 分享按钮使用
     var shareTitle = $("title").text();
     var sinaTitle = '分享文章 「' + shareTitle + '」 （分享自@-ZQLUO-）';
-    var tqzoneTitle = '分享文章 「' + shareTitle + '」（分享自@一迹飘痕）';
+    var tqzoneTitle = tqzoneTitle;
+    var tqzoneSummary = '分享文章 「' + shareTitle + '」（分享自@一迹飘痕）';
     var twitterTitle = '分享文章 「' + shareTitle + '」（分享自@lzqwebsoft）';
     var facebookTitle = '分享文章 「' + shareTitle + '」（分享自@lzqwebsoft）';
-    var picShare = $("img").length > 0 ? encodeURIComponent($("img")[0].src) : "";
+    var picShare = $("#article_content img").length > 0 ? encodeURIComponent($("img")[0].src) : "";
     $('body').snsShare({
         tsina:{
             url : encodeURIComponent(window.location.href),
@@ -221,17 +222,18 @@ $(function() {
         },
         tqzone:{
             url : encodeURIComponent(window.location.href),
-            title: tqzoneTitle,            
-            pic: picShare 
+            title: tqzoneTitle,
+            pic: picShare,
+            summary: tqzoneSummary
         },
         twitter:{
             url : encodeURIComponent(window.location.href),
-            title: twitterTitle,            
+            title: twitterTitle,
             pic: picShare 
         },
         facebook:{
             url : encodeURIComponent(window.location.href),
-            title: facebookTitle,            
+            title: facebookTitle,
             pic: picShare 
         }
     });
