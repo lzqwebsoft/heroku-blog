@@ -189,7 +189,7 @@ public class WhitespaceFilter implements Filter {
             
             // 去除HTML标签中无用的行内空格
             private String cleanEmptyChar(String text) {
-                return text.replaceAll("^\\s+?<", "<").replaceAll(">(\\s)+?<", "><").replaceAll(">\\s+?", ">").replaceAll("(\\s)+", "$1");
+                return text.replaceAll("^\\s+?<", "<").replaceAll(">(\\s)+?<", "><").replaceAll(">\\s+?$", ">").replaceAll("(\\s)+", "$1");
             }
 
             private String join(String[] array, String separator) {
