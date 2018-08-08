@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -127,9 +129,9 @@ public class WhitespaceFilter implements Filter {
                         while ((line = reader.readLine()) != null) {
                             if (startTrim(line)) {
                                 trim = true;
-                                content.append(line);
+                                content.append(suffixTrim(line));
                             } else if (trim) {
-                                content.append(line.trim());
+                                content.append(prefixTrim(line.trim()));
                                 if (stopTrim(line)) {
                                     trim = false;
                                     content.append("\n");
@@ -171,6 +173,59 @@ public class WhitespaceFilter implements Filter {
                 }
                 return false;
             }
+            
+            private String prefixTrim(String line) {
+                StringBuffer smallLine = new StringBuffer();
+                String regex = join(START_TRIM_AFTER, "|");
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(line);
+                int lastIndex = 0;
+                while (matcher.find()) {
+                    if (lastIndex == 0) {
+                        smallLine.append(line.substring(lastIndex, matcher.end()));
+                    } else {
+                        smallLine.append(line.substring(lastIndex, matcher.end()).replaceAll(">(\\s)+?<", "><"));
+                    }
+                    lastIndex = matcher.end();
+                }
+                if (lastIndex < line.length()) {
+                    smallLine.append(line.substring(lastIndex, line.length()).replaceAll(">(\\s)+?<", "><"));
+                }
+
+                return smallLine.toString();
+            }
+
+            private String suffixTrim(String line) {
+                StringBuffer smallLine = new StringBuffer();
+                String regex = join(STOP_TRIM_AFTER, "|");
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(line);
+                int lastIndex = 0;
+                while (matcher.find()) {
+                    if (lastIndex == 0) {
+                        smallLine.append(line.substring(lastIndex, matcher.end()).replaceAll(">(\\s)+?<", "><"));
+                    } else {
+                        smallLine.append(line.substring(lastIndex, matcher.end()));
+                    }
+                    lastIndex = matcher.end();
+                }
+                if (lastIndex < line.length()) {
+                    smallLine.append(line.substring(lastIndex, line.length()));
+                }
+
+                return smallLine.toString();
+            }
+
+            private String join(String[] array, String separator) {
+                StringBuffer s = new StringBuffer();
+                String step = "";
+                for (String item : array) {
+                    s.append(step).append(item);
+                    step = separator;
+                }
+                return s.toString();
+            }
+
         };
     }
 
