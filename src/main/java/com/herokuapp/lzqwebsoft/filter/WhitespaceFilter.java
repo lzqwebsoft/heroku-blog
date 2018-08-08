@@ -101,7 +101,7 @@ public class WhitespaceFilter implements Filter {
     private static PrintWriter createTrimWriter(final HttpServletResponse response) throws IOException {
         return new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"), true) {
             private StringBuilder builder = new StringBuilder();
-            private boolean trim = false;
+            private boolean surround = false;  // 在特殊标签（不能去换行符）的范围里
 
             public void write(int c) {
                 builder.append((char) c); // It is actually a char, not an int.
@@ -126,22 +126,53 @@ public class WhitespaceFilter implements Filter {
                     StringBuffer  content = new StringBuffer();
 
                     try {
+                        String startTags = join(START_TRIM_AFTER, "|");
+                        String regex = join(STOP_TRIM_AFTER, "|") + "|" + join(START_TRIM_AFTER, "|");
+                        Pattern pattern = Pattern.compile(regex);
                         while ((line = reader.readLine()) != null) {
-                            if (startTrim(line)) {
-                                trim = true;
-                                content.append(suffixTrim(line));
-                            } else if (trim) {
-                                content.append(prefixTrim(line.trim()));
-                                if (stopTrim(line)) {
-                                    trim = false;
-                                    content.append("\n");
+                            StringBuffer smallLine = new StringBuffer();
+                            Matcher matcher = pattern.matcher(line);
+                            int lastIndex = 0;
+                            boolean find = false;
+                            // 行内去空格
+                            while (matcher.find()){
+                                find = true;
+                                String tag = matcher.group();
+                                if(tag.matches(startTags)) {  // 结束标签，前面的部分不能动
+                                    smallLine.append(line.substring(lastIndex, matcher.end()));
+                                    surround = false;
+                                } else {
+                                    // 开始标签，前面的部分可以动
+                                    if(surround) {
+                                        smallLine.append(line.substring(lastIndex, matcher.end()));
+                                    } else {
+                                        smallLine.append(cleanEmptyChar(line.substring(lastIndex, matcher.end())));
+                                    }
+                                    surround = true;
+                                }
+                                lastIndex = matcher.end();
+                            }
+                            if(find) {
+                                if(surround && lastIndex < line.length()) {
+                                    smallLine.append(line.substring(lastIndex, line.length())).append("\n");
+                                } else if(!surround && lastIndex < line.length()) {
+                                    smallLine.append(cleanEmptyChar(line.substring(lastIndex, line.length())));
                                 }
                             } else {
-                                content.append(line).append("\n");
+                                // 没有找到特别的标签则判断是否在包围里
+                                // 没有找到且不在包围里则去空格
+                                if(surround) {
+                                    smallLine.append(line).append("\n");
+                                } else {
+                                    smallLine.append(cleanEmptyChar(line.trim()));
+                                }
                             }
+                            content.append(smallLine);
                         }
+                        // 由于截取是的部分HTML，可能readline读的本来就没有换行
+                        // 故在这里与原内容进行比对，原内容最后没有空格的这里去换行
                         if(!oldContent.endsWith("\n")) {
-                            out.write(content.toString().replaceAll("(\n*)$", ""));
+                            out.write(content.toString().replaceAll("(\n+)$", ""));
                         } else {
                             out.write(content.toString());
                         }
@@ -155,65 +186,10 @@ public class WhitespaceFilter implements Filter {
                     super.flush();
                 }
             }
-
-            private boolean startTrim(String line) {
-                for (String match : START_TRIM_AFTER) {
-                    if (line.contains(match)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            private boolean stopTrim(String line) {
-                for (String match : STOP_TRIM_AFTER) {
-                    if (line.contains(match)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
             
-            private String prefixTrim(String line) {
-                StringBuffer smallLine = new StringBuffer();
-                String regex = join(START_TRIM_AFTER, "|");
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(line);
-                int lastIndex = 0;
-                while (matcher.find()) {
-                    if (lastIndex == 0) {
-                        smallLine.append(line.substring(lastIndex, matcher.end()));
-                    } else {
-                        smallLine.append(line.substring(lastIndex, matcher.end()).replaceAll(">(\\s)+?<", "><"));
-                    }
-                    lastIndex = matcher.end();
-                }
-                if (lastIndex < line.length()) {
-                    smallLine.append(line.substring(lastIndex, line.length()).replaceAll(">(\\s)+?<", "><"));
-                }
-
-                return smallLine.toString();
-            }
-
-            private String suffixTrim(String line) {
-                StringBuffer smallLine = new StringBuffer();
-                String regex = join(STOP_TRIM_AFTER, "|");
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(line);
-                int lastIndex = 0;
-                while (matcher.find()) {
-                    if (lastIndex == 0) {
-                        smallLine.append(line.substring(lastIndex, matcher.end()).replaceAll(">(\\s)+?<", "><"));
-                    } else {
-                        smallLine.append(line.substring(lastIndex, matcher.end()));
-                    }
-                    lastIndex = matcher.end();
-                }
-                if (lastIndex < line.length()) {
-                    smallLine.append(line.substring(lastIndex, line.length()));
-                }
-
-                return smallLine.toString();
+            // 去除HTML标签中无用的行内空格
+            private String cleanEmptyChar(String text) {
+                return text.replaceAll("^\\s+?<", "<").replaceAll(">(\\s)+?<", "><").replaceAll(">\\s+?", ">").replaceAll("(\\s)+", "$1");
             }
 
             private String join(String[] array, String separator) {
