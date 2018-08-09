@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/pace.min.js"></script>
 
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css?_v=3.3.7" />
-<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/comment.css?_v=1.0.2" />
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/comment.css?_v=1.0.3" />
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
