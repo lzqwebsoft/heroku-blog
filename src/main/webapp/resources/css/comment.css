@@ -12,7 +12,14 @@ body {
 }
 .form-control {
     -webkit-box-shadow: none;
-    box-shadow: none;
+    box-shadow: none!important;
+    /* Remove First */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.ke-container {
+    border-radius: 4px;
 }
 #about-button {
     text-decoration: none;
