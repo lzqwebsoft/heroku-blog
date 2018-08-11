@@ -41,7 +41,7 @@ $(function () {
         {
             name: "heading",
             action: SimpleMDE.toggleHeadingSmaller,
-            className: "fa fa-header",
+            className: "fa fa-heading",
             title: "标题",
         },
         "|",
@@ -114,7 +114,7 @@ $(function () {
                 $("#image-upload-dialog #file-upload").val('');
                 $('#image-upload-dialog').modal('show');
             },
-            className: "fa fa-picture-o",
+            className: "fa fa-image",
             title: "插入图片",
             default: true
         },
@@ -165,7 +165,9 @@ $(function () {
         showIcons: ['strikethrough', 'code', 'table'],
         spellChecker: false,
         forceSync: true,
-        toolbar: toolbarBuiltInButtons
+        toolbar: toolbarBuiltInButtons,
+        tabSize: 4,
+        autoDownloadFontAwesome: false
     });
     $("body").on("click", "#upload-button", function () {
         $("#file-upload").trigger("click");

@@ -13,9 +13,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
 <title>编辑博客-<spring:message code="page.title" /></title>
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/fontawesome.min.css?_v=5.2.0" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/simplemde.min.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/new-md.css" />
-<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/simplemde.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/simplemde.min.js?_v=1.0.1"></script>
 </head>
 
 <body>

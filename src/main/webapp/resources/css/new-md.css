@@ -1,7 +1,7 @@
 .editor-toolbar.fullscreen {
     z-index: 1030;
 }
-.CodeMirror-fullscreen {
+.CodeMirror-fullscreen,.editor-preview-side {
     z-index: 1030;
 }
 .editor-statusbar {
@@ -59,4 +59,28 @@
     background-color: #f5f5f5;
     border: 1px solid #ccc;
     border-radius: 4px;
+    white-space: pre;
+    word-wrap: normal;
+}
+.cm-s-default .cm-header {
+    color: #000;
+}
+.CodeMirror-code {
+    line-height: 22px;
+}
+.CodeMirror-wrap pre {
+    font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
+}
+.CodeMirror .CodeMirror-code .cm-comment {
+    background-color: inherit;
+    border-radius: 2px;
+    letter-spacing: normal;
+    color: #a50;
+}
+.CodeMirror-wrap pre .cm-image.cm-image-alt-text {
+    color: #63a35c;
+    text-decoration: none;
+}
+.CodeMirror-wrap pre .cm-image.cm-image-marker {
+    color: #63a35c;
 }
