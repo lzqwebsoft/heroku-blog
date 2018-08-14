@@ -87,10 +87,10 @@
                                     </p>
                                     <p class="article-operate-zone">
                                         
-                                        <a class="btn btn-default" role="button" href="show/${article.id}.html"><span>阅读(${article.readCountLabel})</span></a> <a class="btn btn-default" role="button" href="show/${article.id}.html#reply_comment"><span>评论(${article.commentCount})</span></a>
+                                        <a class="btn btn-default" role="button" href="<%=request.getContextPath()%>/show/${article.id}.html"><span>阅读(${article.readCountLabel})</span></a> <a class="btn btn-default" role="button" href="<%=request.getContextPath()%>/show/${article.id}.html#reply_comment"><span>评论(${article.commentCount})</span></a>
                                         <c:if test="${sessionScope.user!=null}">
                                             <a class="btn btn-danger pull-right" style="margin-right: 0;" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
-                                            <a class="btn btn-primary pull-right" role="button" href="edit/${article.id}.html">编辑</a>
+                                            <a class="btn btn-primary pull-right" role="button" href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>
                                         </c:if>
                                     </p>
                                 </div>

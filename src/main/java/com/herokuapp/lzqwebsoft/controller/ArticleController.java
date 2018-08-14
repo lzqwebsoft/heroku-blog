@@ -148,7 +148,7 @@ public class ArticleController {
 
         List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
         model.addAttribute("articleTypes", articleTypes);
-        return "new";
+        return "new-w";
     }
 
     @RequestMapping("/article/publish")
@@ -161,6 +161,9 @@ public class ArticleController {
         boolean isConvert = false;   // 判断是否为转化内容
         if (save != null && save.trim().equals("2")) {
             isConvert = true;
+        }
+        if (article == null) {
+            return "redirect:/";
         }
         if (article.getContentType() == 1) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contentMD", "info.required", new Object[] { articleContentLabel });
@@ -313,7 +316,7 @@ public class ArticleController {
         model.addAttribute("articleTypes", articleTypes);
 
         if (article.getContentType() == 0) {
-            return "new";
+            return "new-w";
         } else {
             return "new-md";
         }
