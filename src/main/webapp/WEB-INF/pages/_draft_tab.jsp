@@ -18,12 +18,12 @@
             <tbody>
                 <c:forEach items="${requestScope.page_drafts.data}" var="draft">
                     <tr>
-                        <td><a href='<%= request.getContextPath() %>/show/${draft.id}.html'><c:out value="${draft.title}" /></a> <span>(<fmt:formatDate value="${draft.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>)</span></td>
+                        <td><a href='<%= request.getContextPath() %>/show/${draft.id}.html'><c:out value="${draft.title == "" ? "无标题" : draft.title}" /></a> <span>(<fmt:formatDate value="${draft.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/>)</span></td>
                         <td class="text-center"><c:out value="${draft.readedNum}" /></td>
                         <td class="text-center"><c:out value="${draft.commentCount}" /></td>
                         <td class="text-center">
                             <a href='<%= request.getContextPath() %>/edit/${draft.id}.html'>编辑</a> | 
-                            <a href='javascript:void(0)' onclick="confirm_draft_delete('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(draft.title)}" />', '${draft.id}', '${requestScope.page_drafts.currentPageNo}')" name=del>删除</a>
+                            <a href='javascript:void(0)' onclick="confirm_draft_delete('<spring:message code="page.confirm.delete.article" arguments="${draft.title == "" ? "无标题" : fn:escapeXml(draft.title)}" />', '${draft.id}', '${requestScope.page_drafts.currentPageNo}')" name=del>删除</a>
                         </td>
                     </tr>
                 </c:forEach>

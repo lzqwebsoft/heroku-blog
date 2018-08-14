@@ -18,9 +18,7 @@
 <%@ include file="/WEB-INF/pages/common/default_css.jsp"%>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/prism.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/share.css?_v=1.0" />
-<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/js/ke4/themes/default/default.css" />
-<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/kindeditor-min.js?_v=4.0.0"></script>
-<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/ke4/lang/zh-CN.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/wangEditor.min.js"></script>
 
 <style type="text/css">
 /* 代码块CSS */
@@ -90,10 +88,17 @@ pre.my_pre {
     margin-left: 20px;
     margin-bottom: 10px;
 }
-
 .comment_content,.comment_content p {
     background-color: #FFF;
+    background-image: none;
     padding-left: 4px;
+    box-shadow: none;
+}
+.article_comment a {
+    margin-right: 5px;
+}
+.child_comment .comment_content p {
+    display: inline;
 }
 code {
     white-space: normal;
@@ -144,6 +149,22 @@ code {
     #validateCodeZone span{
         margin-top: 10px;
     }
+}
+#content {
+    display: none;
+}
+.w-e-toolbar {
+    flex-wrap: wrap;
+    -webkit-box-lines: multiple;
+    background-color: #FFF !important;
+    border-radius: 4px 4px 0 0;
+}
+.w-e-text-container {
+    border-radius: 0 0 4px 4px;
+    height: 100px !important;
+}
+.w-e-text {
+    overflow-y: hidden;
 }
 </style>
 </head>
@@ -294,7 +315,8 @@ code {
                             </c:if>
                             <div class="form-group">
                                 <div class="col-sm-7">
-                                    <form:textarea id="comment_content" path="content" cssClass="form-control" rows="4" />
+                                    <div id="comment_content"></div>
+                                    <form:textarea id="content" path="content" cssClass="form-control" rows="4" />
                                     <span id="wordcount" class="help-block pull-right">您还可输入<span id="str">120</span>个字</span>
                                 </div>
                             </div>
