@@ -11,7 +11,7 @@ editor.customConfig.onchange = function(html) {
         len = 120 - content.length;
         $('#wordcount').html("您还可以输入<span id='str'>120</span>个字");
         $('#wordcount #str').text(len);
-        if (count > 0 && $("#add-comment-info-div").attr('type') == "2") {
+        if (content.length > 0 && $("#add-comment-info-div").attr('type') == "2") {
             $("#add-comment-info-div").removeClass("show").addClass("hidden");
         }
     }
