@@ -8,38 +8,38 @@ import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 
 @Repository("articleTypeDAO")
 public class ArticleTypeDAO extends BaseDAO {
-	
-	public ArticleType save(ArticleType articleType) {
-		getHibernateTemple().save(articleType);
-		return articleType;
-	}
-	
-	public void update(ArticleType articleType) {
-		getHibernateTemple().update(articleType);
-	}
-	
-	public void delete(ArticleType articleType) {
-		getHibernateTemple().delete(articleType);
-	}
-	
-	public ArticleType getArticleTypeById(int id) {
-		return getHibernateTemple().get(ArticleType.class, id);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<ArticleType> getAllArticleType() {
-		String queryString = "from ArticleType";
-		return getHibernateTemple().find(queryString);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public ArticleType getArticleTypeByName(String name) {
-		String queryString = "from ArticleType art where art.name=?";
-		List<ArticleType> list = (List<ArticleType>)getHibernateTemple().find(queryString, new Object[]{name});
-		if(list!=null&&list.size()>0) {
-			return list.get(0);
-		} else {
-			return null;
-		}
-	}
+
+    public ArticleType save(ArticleType articleType) {
+        getSession().save(articleType);
+        return articleType;
+    }
+
+    public void update(ArticleType articleType) {
+        getSession().update(articleType);
+    }
+
+    public void delete(ArticleType articleType) {
+        getSession().delete(articleType);
+    }
+
+    public ArticleType getArticleTypeById(int id) {
+        return getSession().get(ArticleType.class, id);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<ArticleType> getAllArticleType() {
+        String queryString = "from ArticleType";
+        return getSession().createQuery(queryString).list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public ArticleType getArticleTypeByName(String name) {
+        String queryString = "from ArticleType art where art.name=?0";
+        List<ArticleType> list = getSession().createQuery(queryString).setParameter(0, name).list();
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
 }

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-    id="heroku_blog" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="heroku_blog" version="3.0">
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -52,11 +50,11 @@
     </servlet>
 
     <!-- 程序启动时自动运行 -->
-<!--     <servlet> -->
-<!--         <servlet-name>AutoRunServlet</servlet-name> -->
-<!--         <servlet-class>com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet</servlet-class> -->
-<!--         <load-on-startup>2</load-on-startup> -->
-<!--     </servlet> -->
+    <!-- <servlet> -->
+    <!-- <servlet-name>AutoRunServlet</servlet-name> -->
+    <!-- <servlet-class>com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet</servlet-class> -->
+    <!-- <load-on-startup>2</load-on-startup> -->
+    <!-- </servlet> -->
 
     <servlet-mapping>
         <servlet-name>springDispacher</servlet-name>
@@ -84,17 +82,19 @@
         <param-value>classpath:spring-database-context.xml</param-value>
     </context-param>
 
+
+
     <!-- 异常页面 -->
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/error503.html</location>
     </error-page>
-    
+
     <error-page>
         <error-code>400</error-code>
         <location>/error400.html</location>
     </error-page>
-    
+
     <error-page>
         <error-code>404</error-code>
         <location>/error404.html</location>
@@ -109,7 +109,7 @@
         <error-code>503</error-code>
         <location>/error503.html</location>
     </error-page>
-    
+
     <!-- 转化JSP的输出去空格和换行 -->
     <filter>
         <filter-name>whitespaceFilter</filter-name>
@@ -117,6 +117,19 @@
     </filter>
     <filter-mapping>
         <filter-name>whitespaceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>hibernateFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+        <init-param>
+            <param-name>sessionFactory</param-name>
+            <param-value>session.factory</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
@@ -130,10 +143,10 @@
         </cookie-config>
     </session-config>
 
-<!--     <jsp-config> -->
-<!--         <jsp-property-group> -->
-<!--             <url-pattern>*.jsp</url-pattern> -->
-<!--             <trim-directive-whitespaces>true</trim-directive-whitespaces> -->
-<!--         </jsp-property-group> -->
-<!--     </jsp-config> -->
+    <!-- <jsp-config> -->
+    <!-- <jsp-property-group> -->
+    <!-- <url-pattern>*.jsp</url-pattern> -->
+    <!-- <trim-directive-whitespaces>true</trim-directive-whitespaces> -->
+    <!-- </jsp-property-group> -->
+    <!-- </jsp-config> -->
 </web-app>
