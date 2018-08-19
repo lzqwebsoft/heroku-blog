@@ -10,16 +10,16 @@ import com.herokuapp.lzqwebsoft.pojo.Menu;
 
 @Service("menuService")
 public class MenuServiceImpl implements MenuService {
-	@Autowired
-	private MenuDAO menuDAO;
+    @Autowired
+    private MenuDAO menuDAO;
 
-	@Override
-	public List<Menu> getAllMenus(boolean isLogined) {
-		if(isLogined) {
-			return menuDAO.getALLMenu();
-		} else {
-			return menuDAO.getGeneralMenu();
-		}
-	}
+    @Override
+    public List<Menu> getAllMenus(boolean isLogined) {
+        if (isLogined) {
+            return menuDAO.getALLMenu();
+        } else {
+            return menuDAO.getGeneralMenu();
+        }
+    }
 
 }

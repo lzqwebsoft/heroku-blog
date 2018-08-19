@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xmlns:mvc="http://www.springframework.org/schema/mvc"
-        xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
                 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx.xsd
+                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="propertyConfigurer" 
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath:database.properties</value>
@@ -17,36 +16,58 @@
     </bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="${database.driverClassName}"/>
-		<property name="url" value="${database.url}"/>
-		<property name="username" value="${database.username}"/>
-		<property name="password" value="${database.password}"/>
+        <property name="driverClassName" value="${database.driverClassName}" />
+        <property name="url" value="${database.url}" />
+        <property name="username" value="${database.username}" />
+        <property name="password" value="${database.password}" />
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-    	<property name="dataSource" ref="dataSource" />
-    	<property name="mappingResources">
-    		<list>
-    			<value>com/herokuapp/lzqwebsoft/pojo/User.hbm.xml</value>
-    			<value>com/herokuapp/lzqwebsoft/pojo/Menu.hbm.xml</value>
-    			<value>com/herokuapp/lzqwebsoft/pojo/Article.hbm.xml</value>
-    			<value>com/herokuapp/lzqwebsoft/pojo/ArticleType.hbm.xml</value>
-    			<value>com/herokuapp/lzqwebsoft/pojo/Image.hbm.xml</value>
-    			<value>com/herokuapp/lzqwebsoft/pojo/Comment.hbm.xml</value>
-    			<value>com/herokuapp/lzqwebsoft/pojo/BlogInfo.hbm.xml</value>
-    		</list>
-    	</property>
-    	<!-- hibernate的一些配置 -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mappingResources">
+            <list>
+                <value>com/herokuapp/lzqwebsoft/pojo/User.hbm.xml</value>
+                <value>com/herokuapp/lzqwebsoft/pojo/Menu.hbm.xml</value>
+                <value>com/herokuapp/lzqwebsoft/pojo/Article.hbm.xml</value>
+                <value>com/herokuapp/lzqwebsoft/pojo/ArticleType.hbm.xml</value>
+                <value>com/herokuapp/lzqwebsoft/pojo/Image.hbm.xml</value>
+                <value>com/herokuapp/lzqwebsoft/pojo/Comment.hbm.xml</value>
+                <value>com/herokuapp/lzqwebsoft/pojo/BlogInfo.hbm.xml</value>
+            </list>
+        </property>
+        <!-- hibernate的一些配置 -->
         <property name="hibernateProperties">
             <props>
-            	<!--使用的数据库方言-->
+                <!--使用的数据库方言 -->
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.current_session_context_class">thread</prop>
+                <!-- <prop key="hibernate.current_session_context_class">thread</prop> -->
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
     </bean>
+
+    <!-- 1. 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- 2. 配置事务属性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 根据方法名指定事务的属性 -->
+            <tx:method name="purchase" propagation="REQUIRES_NEW" />
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="find*" read-only="true" />
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 3. 配置事务切入点, 以及把事务切入点和事务属性关联起来 -->
+    <aop:config>
+        <aop:pointcut id="txPointCut" expression="execution(* com.herokuapp.lzqwebsoft.service.*Impl.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut" />
+    </aop:config>
 </beans>
 

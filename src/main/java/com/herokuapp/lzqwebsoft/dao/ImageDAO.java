@@ -11,28 +11,28 @@ import com.herokuapp.lzqwebsoft.pojo.Page;
 public class ImageDAO extends PageBaseDAO<Image> {
 
     public void save(Image image) {
-        getHibernateTemple().save(image);
+        getSession().save(image);
     }
 
     public void update(Image image) {
-        getHibernateTemple().update(image);
+        getSession().update(image);
     }
 
     @SuppressWarnings("unchecked")
     public List<Image> getAllImages() {
-        return (List<Image>) getHibernateTemple().find("FROM Image");
+        return (List<Image>) getSession().createQuery("FROM Image").getResultList();
     }
-    
+
     public Page<Image> getAllImagesByPage(int pageNo, int pageSize) {
         String queryString = "FROM Image AS img ORDER BY img.id ASC";
         return pagedQuery(queryString, pageNo, pageSize);
     }
 
     public Image getImageById(String id) {
-        return getHibernateTemple().get(Image.class, id);
+        return getSession().get(Image.class, id);
     }
 
     public void delete(Image image) {
-        getHibernateTemple().delete(image);
+        getSession().delete(image);
     }
 }

@@ -11,7 +11,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.2.14.RELEASE</spring.version>
+        <spring.version>5.0.8.RELEASE</spring.version>
+        <hibernate.version>5.3.5.Final</hibernate.version>
         <jetty.version>9.3.6.v20151106</jetty.version>
         <flexmark.version>0.34.12</flexmark.version>
     </properties>
@@ -116,6 +117,18 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.1</version>
+        </dependency>
 
         <!-- for json -->
         <dependency>
@@ -141,7 +154,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.6.4.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <!-- 使用的数据库连接池包 -->
