@@ -117,11 +117,17 @@ public class ArticleController {
         return "show";
     }
 
-    @RequestMapping("/article/new")
-    public String create(ModelMap model) {
+    @RequestMapping("/article/new{type}")
+    public String create(@PathVariable("type") String type, ModelMap model) {
         Article article = new Article();
         article.setAllowComment(true);
-        article.setContentType(1); // markdown
+        String view = "new-md";
+        if (type != null && type.equals("html")) {
+            article.setContentType(0); // HTML
+            view = "new-w";
+        } else {
+            article.setContentType(1); // markdown
+        }
         model.addAttribute("article", article);
 
         model.addAttribute("patterns", patterns);
@@ -131,24 +137,7 @@ public class ArticleController {
 
         List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
         model.addAttribute("articleTypes", articleTypes);
-        return "new-md";
-    }
-
-    @RequestMapping("/article/newhtml")
-    public String createMD(ModelMap model) {
-        Article article = new Article();
-        article.setAllowComment(true);
-        article.setContentType(0); // HTML
-        model.addAttribute("article", article);
-
-        model.addAttribute("patterns", patterns);
-        model.addAttribute("codeThemes", themes);
-
-        model.addAttribute("editOrCreate", "CREATE");
-
-        List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
-        model.addAttribute("articleTypes", articleTypes);
-        return "new-w";
+        return view;
     }
 
     @RequestMapping("/article/publish")
