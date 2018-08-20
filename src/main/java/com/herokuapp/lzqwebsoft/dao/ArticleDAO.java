@@ -32,7 +32,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
     }
 
     public void delete(Article article) {
-        getSession().clear();
+        getSession().clear(); // 这里必须的，清除缓存，不然因为与article type关联删除会报错
         getSession().delete(article);
     }
 
@@ -52,10 +52,10 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         Page<Article> page = new Page<Article>();
         if (typeId == 0) {
             queryString = "from Article as art where art.status=1 and art.title like ?0 order by art.isTop desc, art.createAt desc";
-            page = pagedQuery(queryString, pageNo, pageSize, new Object[] { likeParam });
+            page = pagedQuery(queryString, pageNo, pageSize, likeParam);
         } else {
             queryString = "from Article as art where art.status=1 and art.type.id=?0 and art.title like ?1 order by art.isTop desc, art.createAt desc";
-            page = pagedQuery(queryString, pageNo, pageSize, new Object[] { typeId, likeParam });
+            page = pagedQuery(queryString, pageNo, pageSize, typeId, likeParam);
         }
         return page;
     }
@@ -84,10 +84,8 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         query.setParameter(0, article.getCreateAt());
         query.setFirstResult(0);
         query.setMaxResults(1);
-        List<Article> list = query.list();
-        if (list != null && list.size() >= 1)
-            return list.get(0);
-        return null;
+        Article previous = (Article) query.getSingleResult();
+        return previous;
     }
 
     @SuppressWarnings("unchecked")
@@ -97,9 +95,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         query.setParameter(0, article.getCreateAt());
         query.setFirstResult(0);
         query.setMaxResults(1);
-        List<Article> list = query.list();
-        if (list != null && list.size() >= 1)
-            return list.get(0);
-        return null;
+        Article next = (Article) query.getSingleResult();
+        return next;
     }
 }

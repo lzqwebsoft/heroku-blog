@@ -58,17 +58,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(String userid) {
-		Long uid = null;
-		try {
-			uid = Long.parseLong(userid);
-		} catch(NumberFormatException e) {
-			return null;
-		}
-		if(uid==null)
-			return null;
-		
-		return userDAO.getUser(uid);
+	public User getUser(Long userid) {
+		return userDAO.getUser(userid);
 	}
 
 	@Override

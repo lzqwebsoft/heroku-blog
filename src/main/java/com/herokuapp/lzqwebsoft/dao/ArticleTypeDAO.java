@@ -32,14 +32,9 @@ public class ArticleTypeDAO extends BaseDAO {
         return getSession().createQuery(queryString).list();
     }
 
-    @SuppressWarnings("unchecked")
     public ArticleType getArticleTypeByName(String name) {
         String queryString = "from ArticleType art where art.name=?0";
-        List<ArticleType> list = getSession().createQuery(queryString).setParameter(0, name).list();
-        if (list != null && list.size() > 0) {
-            return list.get(0);
-        } else {
-            return null;
-        }
+        ArticleType articleType = (ArticleType)getSession().createQuery(queryString).setParameter(0, name).getSingleResult();
+        return articleType;
     }
 }
