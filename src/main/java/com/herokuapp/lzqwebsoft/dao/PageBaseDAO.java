@@ -29,8 +29,7 @@ public class PageBaseDAO<T> extends BaseDAO {
         for (int i = 0; i < values.length; i++) {
             query.setParameter(i, values[i]);
         }
-        List<T> countlist = query.list();
-        long totalCount = (Long) countlist.get(0);
+        long totalCount = (Long)query.getSingleResult();
         if (totalCount < 1) {
             return new Page<T>();
         }

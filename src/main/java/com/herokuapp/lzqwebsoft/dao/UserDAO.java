@@ -2,6 +2,9 @@ package com.herokuapp.lzqwebsoft.dao;
 
 import com.herokuapp.lzqwebsoft.pojo.User;
 import java.util.List;
+
+import javax.persistence.NoResultException;
+
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
@@ -27,8 +30,12 @@ public class UserDAO extends BaseDAO {
     }
 
     public User getUserByName(String username) {
-        User user = (User) getSession().createQuery("from User u where u.userName=?0").setParameter(0, username).getSingleResult();
-        return user;
+        try {
+            User user = (User) getSession().createQuery("from User u where u.userName=?0").setParameter(0, username).getSingleResult();
+            return user;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -39,7 +46,11 @@ public class UserDAO extends BaseDAO {
     }
 
     public User getUserByEmail(String email) {
-        User user = (User) getSession().createQuery("from User u where u.email=?0 limit 0,1").setParameter(0, email).getSingleResult();
-        return user;
+        try {
+            User user = (User) getSession().createQuery("from User u where u.email=?0 limit 0,1").setParameter(0, email).getSingleResult();
+            return user;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

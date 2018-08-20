@@ -2,6 +2,8 @@ package com.herokuapp.lzqwebsoft.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -84,8 +86,12 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         query.setParameter(0, article.getCreateAt());
         query.setFirstResult(0);
         query.setMaxResults(1);
-        Article previous = (Article) query.getSingleResult();
-        return previous;
+        try {
+            Article previous = (Article) query.getSingleResult();
+            return previous;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -95,7 +101,12 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         query.setParameter(0, article.getCreateAt());
         query.setFirstResult(0);
         query.setMaxResults(1);
-        Article next = (Article) query.getSingleResult();
-        return next;
+        try {
+            Article next = (Article) query.getSingleResult();
+            return next;
+        } catch (NoResultException e) {
+            return null;
+        }
+
     }
 }

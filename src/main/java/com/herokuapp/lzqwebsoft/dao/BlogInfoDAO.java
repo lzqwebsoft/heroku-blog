@@ -1,5 +1,7 @@
 package com.herokuapp.lzqwebsoft.dao;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.stereotype.Repository;
 
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
@@ -21,7 +23,11 @@ public class BlogInfoDAO extends BaseDAO {
 
     public BlogInfo getBlogInfo() {
         String queryString = "from BlogInfo binfo order by binfo.updateAt desc";
-        BlogInfo blogInfo = (BlogInfo) getSession().createQuery(queryString).setFirstResult(0).setMaxResults(1).getSingleResult();
-        return blogInfo;
+        try {
+            BlogInfo blogInfo = (BlogInfo) getSession().createQuery(queryString).setFirstResult(0).setMaxResults(1).getSingleResult();
+            return blogInfo;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
