@@ -37,7 +37,7 @@ public class MarkdownUtil {
     }
 
     public static String parseHtmlToMarkdown(String html) {
-        if (html.trim().length() <= 0)
+        if (html == null || html.trim().length() <= 0)
             return "";
         String markdown = FlexmarkHtmlParser.parse(html);
         return markdown;
