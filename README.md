@@ -1,6 +1,6 @@
 Heroku Blog
 ===========
-一个博客WEB应用，基于Spring3 MVC与Hibernate3， 前台使用JQuery， 用于部署在Heroku上，项目运行预览：[http://lzqwebsoft.net](http://lzqwebsoft.net "我的空间")。
+一个博客WEB应用，基于Spring5 MVC与Hibernate5， 前台使用JQuery， 用于部署在Heroku上，项目运行预览：[http://lzqwebsoft.net](http://lzqwebsoft.net "我的空间")。
 
 使用支付宝，打赏一下作者，请他喝瓶饮料。
 
