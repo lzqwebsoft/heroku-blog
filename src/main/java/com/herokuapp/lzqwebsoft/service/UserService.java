@@ -50,5 +50,5 @@ public interface UserService {
 	 * @param userid 用户id
 	 * @return 用户对象
 	 */
-	public User getUser(String userid);
+	public User getUser(Long userid);
 }
