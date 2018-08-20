@@ -47,7 +47,7 @@ public class UserDAO extends BaseDAO {
 
     public User getUserByEmail(String email) {
         try {
-            User user = (User) getSession().createQuery("from User u where u.email=?0 limit 0,1").setParameter(0, email).getSingleResult();
+            User user = (User) getSession().createQuery("from User u where u.email=?0").setParameter(0, email).getSingleResult();
             return user;
         } catch (NoResultException e) {
             return null;
