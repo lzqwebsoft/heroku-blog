@@ -3,15 +3,15 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
-   <class name="BlogInfo" table="blog_infos">
-       <id name="id">
-		   <generator class="native"/>
-       </id>
-       <property name="head" length="255" not-null="true" column="head"/>
-       <property name="descriptions" length="225" not-null="true" column="descriptions"/>
-       <property name="about" type="text" not-null="true" column="about"/>
-       <property name="email" length="60" not-null="true" column="associate_email" />
-       <property name="accessNum" type="long" not-null="true" column="access_num" />
-       <property name="updateAt" column="update_at"/>
-   </class>
+    <class name="BlogInfo" table="blog_infos">
+        <id name="id">
+            <generator class="native" />
+        </id>
+        <property name="head" length="255" not-null="true" column="head" />
+        <property name="descriptions" length="225" not-null="true" column="descriptions" />
+        <property name="about" type="text" not-null="true" column="about" />
+        <property name="email" length="60" not-null="true" column="associate_email" />
+        <property name="accessNum" type="long" not-null="true" column="access_num" />
+        <property name="updateAt" column="update_at" />
+    </class>
 </hibernate-mapping>

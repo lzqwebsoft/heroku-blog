@@ -120,19 +120,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>hibernateFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
-        <init-param>
-            <param-name>sessionFactory</param-name>
-            <param-value>session.factory</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>hibernateFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
     <session-config>
         <!-- <session-timeout>720</session-timeout> -->
         <cookie-config>

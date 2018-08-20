@@ -4,30 +4,25 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
     <class name="Comment" table="comments">
-       <id name="id" type="long">
-		   <generator class="increment"/>
-       </id>
-       <many-to-one name="article" class="Article" foreign-key="fk_article"
-           column="article_id" cascade="save-update" />
-       <property name="reviewer" length="255" not-null="true" column="reviewer" />
-       <property name="website" length="255" column="website" />
-       <property name="content" type="text" not-null="true" column="content" />
-       <property name="createAt" column="create_at" />
-       <property name="isBlogger" column="is_blogger"/>
-       <!-- 自关联一对多关系 -->
-       <many-to-one name="parentComment" class="Comment" foreign-key="fk_parent"
-           column="parent_id"/>
-       <many-to-one name="rootComment" class="Comment" foreign-key="fk_root_comment"
-           column="root_id"/>
-       <set name="childComments" inverse="true" cascade="all" lazy="false"
-            embed-xml="false" order-by="create_at asc">
-          <key column="parent_id" />
-          <one-to-many class="Comment" />
-       </set>
-       <set name="allChildComments" inverse="true" cascade="all" lazy="false"
-            embed-xml="false" order-by="create_at asc">
-          <key column="root_id" />
-          <one-to-many class="Comment" />
-       </set>
+        <id name="id" type="long">
+            <generator class="increment" />
+        </id>
+        <many-to-one name="article" class="Article" foreign-key="fk_article" column="article_id" cascade="save-update" />
+        <property name="reviewer" length="255" not-null="true" column="reviewer" />
+        <property name="website" length="255" column="website" />
+        <property name="content" type="text" not-null="true" column="content" />
+        <property name="createAt" column="create_at" />
+        <property name="isBlogger" column="is_blogger" />
+        <!-- 自关联一对多关系 -->
+        <many-to-one name="parentComment" class="Comment" foreign-key="fk_parent" column="parent_id" />
+        <many-to-one name="rootComment" class="Comment" foreign-key="fk_root_comment" column="root_id" />
+        <set name="childComments" inverse="true" cascade="all" lazy="false" embed-xml="false" order-by="create_at asc">
+            <key column="parent_id" />
+            <one-to-many class="Comment" />
+        </set>
+        <set name="allChildComments" inverse="true" cascade="all" lazy="false" embed-xml="false" order-by="create_at asc">
+            <key column="root_id" />
+            <one-to-many class="Comment" />
+        </set>
     </class>
 </hibernate-mapping>
