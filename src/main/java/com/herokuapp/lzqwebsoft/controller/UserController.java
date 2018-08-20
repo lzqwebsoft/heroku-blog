@@ -245,7 +245,7 @@ public class UserController {
         if (port != 80)
             link.append(":").append(port);
         link.append(request.getContextPath()).append("/authenticate.html?sid=").append(sid).append("&uid=").append(user.getId());
-        String dateStr = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(date);
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
         String subject = messageSource.getMessage("email.foundpwd.title", null, locale);
         String content = messageSource.getMessage("email.foundpwd.content", new Object[] { user.getUserName(), dateStr, link.toString() }, locale);
         MailUtil.sendEMail(user.getEmail(), subject, content);
