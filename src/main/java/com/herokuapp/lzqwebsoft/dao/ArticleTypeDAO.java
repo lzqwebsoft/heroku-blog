@@ -2,6 +2,8 @@ package com.herokuapp.lzqwebsoft.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.stereotype.Repository;
 
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
@@ -34,7 +36,12 @@ public class ArticleTypeDAO extends BaseDAO {
 
     public ArticleType getArticleTypeByName(String name) {
         String queryString = "from ArticleType art where art.name=?0";
-        ArticleType articleType = (ArticleType)getSession().createQuery(queryString).setParameter(0, name).getSingleResult();
-        return articleType;
+        try {
+            ArticleType articleType = (ArticleType)getSession().createQuery(queryString).setParameter(0, name).getSingleResult();
+            return articleType;
+        } catch(NoResultException e) {
+            return null;
+        }
+        
     }
 }
