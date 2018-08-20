@@ -22,11 +22,9 @@ public class ArticleDAO extends PageBaseDAO<Article> {
 
     public void edit(Article article) {
         Session session = getSession();
-        session.beginTransaction();
         session.merge(article);
         article = (Article) session.get(Article.class, article.getId());
         session.update(article);
-        session.getTransaction().commit();
     }
 
     public Article getArticleById(String id) {
@@ -34,6 +32,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
     }
 
     public void delete(Article article) {
+        getSession().clear();
         getSession().delete(article);
     }
 

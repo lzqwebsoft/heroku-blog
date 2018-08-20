@@ -3,16 +3,16 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
-   <class name="Image" table="images">
-       <id name="id" type="string">
-		   <generator class="assigned" />
-       </id>
-       <property name="fileName" length="255" not-null="true" column="filename" />
-       <property name="content" type="binary" not-null="true" column="content" length="6291456" />
-       <property name="size" not-null="true" />
-       <property name="descriptions" length="255" not-null="false" column="descriptions" />
-       <property name="qiniuKey" length="255"  not-null="false" column="qiniu_key"/>
-       <property name="qiniuHash" length="255"  not-null="false" column="qiniu_hash"/>
-       <property name="createAt" column="create_at" />
-   </class>
+    <class name="Image" table="images">
+        <id name="id" type="string">
+            <generator class="assigned" />
+        </id>
+        <property name="fileName" length="255" not-null="true" column="filename" />
+        <property name="content" type="binary" not-null="true" column="content" length="6291456" />
+        <property name="size" not-null="true" />
+        <property name="descriptions" length="255" not-null="false" column="descriptions" />
+        <property name="qiniuKey" length="255" not-null="false" column="qiniu_key" />
+        <property name="qiniuHash" length="255" not-null="false" column="qiniu_hash" />
+        <property name="createAt" column="create_at" />
+    </class>
 </hibernate-mapping>

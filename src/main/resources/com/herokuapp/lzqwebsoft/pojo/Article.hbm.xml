@@ -3,34 +3,32 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.herokuapp.lzqwebsoft.pojo">
-   <class name="Article" table="articles">
-       <id name="id" type="string">
-           <generator class="assigned" />
-       </id>
-       <many-to-one name="author" class="User" foreign-key="fk_author"
-               column="author_id" cascade="save-update" >
-       </many-to-one>
-       <many-to-one name="type" class="ArticleType" foreign-key="fk_article_type"
-               column="type_id" cascade="save-update" lazy="false">
-       </many-to-one>
-       <property name="patternTypeId" not-null="true" column="pattern_type"/>
-       <property name="title" length="255" column="title" />
-       <property name="allowComment" column="allow_comment" />
-       <property name="codeTheme" length="100" column="code_theme" />
-       <property name="isTop" column="is_top" />
-       <property name="content" type="text" not-null="true" column="content"/>
-       <property name="contentMD" type="text" not-null="true" column="content_md"/>
-       <property name="contentType" type="int">
-           <column name="content_type" not-null="true" default="0" />
-       </property>
-       <property name="status" column="status" />
-       <property name="readedNum" type="long" column="readed_num" />
-       <property name="createAt" column="create_at" update="false"/>
-       <property name="updateAt" column="update_at"/>
-       <property name="commentCount" type="int" formula="(select count(com.id) from comments as com where com.article_id=id and com.parent_id is null)" />
-       <set name="comments" inverse="true" cascade="all">
-           <key column="article_id" />
-           <one-to-many class="Comment"/>
-       </set>
-   </class>
+    <class name="Article" table="articles">
+        <id name="id" type="string">
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="author" class="User" foreign-key="fk_author" column="author_id" cascade="save-update">
+        </many-to-one>
+        <many-to-one name="type" class="ArticleType" foreign-key="fk_article_type" column="type_id" cascade="save-update" lazy="false">
+        </many-to-one>
+        <property name="patternTypeId" not-null="true" column="pattern_type" />
+        <property name="title" length="255" column="title" />
+        <property name="allowComment" column="allow_comment" />
+        <property name="codeTheme" length="100" column="code_theme" />
+        <property name="isTop" column="is_top" />
+        <property name="content" type="text" not-null="true" column="content" />
+        <property name="contentMD" type="text" not-null="true" column="content_md" />
+        <property name="contentType" type="int">
+            <column name="content_type" not-null="true" default="0" />
+        </property>
+        <property name="status" column="status" />
+        <property name="readedNum" type="long" column="readed_num" />
+        <property name="createAt" column="create_at" update="false" />
+        <property name="updateAt" column="update_at" />
+        <property name="commentCount" type="int" formula="(select count(com.id) from comments as com where com.article_id=id and com.parent_id is null)" />
+        <set name="comments" inverse="true" cascade="all">
+            <key column="article_id" />
+            <one-to-many class="Comment" />
+        </set>
+    </class>
 </hibernate-mapping>
