@@ -10,6 +10,7 @@ import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
 public class BlogInfoDAO extends BaseDAO {
 
     public void upate(BlogInfo blogInfo) {
+        getSession().clear();
         getSession().update(blogInfo);
     }
 
