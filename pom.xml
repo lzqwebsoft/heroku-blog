@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.herokuapp.lzqwebsoft</groupId>
     <version>2.0.1</version>
@@ -11,6 +12,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>5.0.8.RELEASE</spring.version>
+        <HikariCP.version>3.2.0</HikariCP.version>
         <hibernate.version>5.3.5.Final</hibernate.version>
         <jetty.version>9.3.6.v20151106</jetty.version>
         <flexmark.version>0.34.12</flexmark.version>
@@ -157,11 +159,10 @@
         </dependency>
 
         <!-- 使用的数据库连接池包 -->
-        <!-- Hibernate gives you a choice of bytecode providers between cglib and javassist -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.1.10</version>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${HikariCP.version}</version>
         </dependency>
 
         <!-- MYSQL驱动包 -->

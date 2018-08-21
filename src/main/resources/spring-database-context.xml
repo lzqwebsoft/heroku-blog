@@ -15,18 +15,13 @@
         </property>
     </bean>
 
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="${database.driverClassName}" />
-        <property name="url" value="${database.url}" />
+        <property name="jdbcUrl" value="${database.url}" />
         <property name="username" value="${database.username}" />
         <property name="password" value="${database.password}" />
-        <property name="initialSize" value="3" />
-        <property name="minIdle" value="3" />
-        <property name="maxActive" value="20" />
-
-        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-        <property name="poolPreparedStatements" value="true" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+        <property name="minimumIdle" value="3" />
+        <property name="maximumPoolSize" value="10" />
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
