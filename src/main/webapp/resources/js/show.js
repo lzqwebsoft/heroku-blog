@@ -197,6 +197,7 @@ $(function() {
                 $(this).has("code").attr('class', 'language-none');
             }
         } else {
+            var class_val = $(this).attr("class");
             if (class_val && class_val != "") {
                 var class_arr = new Array();
                 class_arr = class_val.split(';');
