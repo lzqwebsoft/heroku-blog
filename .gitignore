@@ -1,6 +1,8 @@
 *.class
 *.prefs
 .settings
+.idea
+*.iml
 # Package Files #
 target
 *.jar
