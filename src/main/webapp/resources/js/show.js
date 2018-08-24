@@ -191,7 +191,7 @@ $(function() {
     // prism.js代码高亮显示
     var doc_pre = $("#article_content pre");
     doc_pre.each(function () {
-        if ($(this).has("code").length() > 0) {
+        if ($(this).has("code").length > 0) {
             var class_val = $(this).has("code").attr("class");
             if (typeof class_val == typeof undefined || attr == false) {
                 $(this).has("code").attr('class', 'language-none');
