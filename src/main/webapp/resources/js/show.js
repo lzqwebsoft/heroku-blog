@@ -191,13 +191,12 @@ $(function() {
     // prism.js代码高亮显示
     var doc_pre = $("#article_content pre");
     doc_pre.each(function () {
-        if ($(this).has("code")) {
+        if ($(this).has("code").length() > 0) {
             var class_val = $(this).has("code").attr("class");
             if (typeof class_val == typeof undefined || attr == false) {
                 $(this).has("code").attr('class', 'language-none');
             }
         } else {
-            var class_val = $(this).attr('class');
             if (class_val && class_val != "") {
                 var class_arr = new Array();
                 class_arr = class_val.split(';');
