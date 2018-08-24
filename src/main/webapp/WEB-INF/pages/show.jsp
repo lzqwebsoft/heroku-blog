@@ -345,7 +345,7 @@ code {
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/prism.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery.qrcode.min.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/share.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.1.4"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.1.5"></script>
     <script type="text/javascript">
         $(function() {
             $("#update-captcha-link").click(function() {
