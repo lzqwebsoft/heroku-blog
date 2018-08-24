@@ -1,8 +1,10 @@
 *.class
 *.prefs
 .settings
+.idea
 # Package Files #
 target
 *.jar
 *.war
 *.ear
+*.iml
