@@ -191,15 +191,23 @@ $(function() {
     // prism.js代码高亮显示
     var doc_pre = $("#article_content pre");
     doc_pre.each(function() {
-        var class_val = $(this).attr('class');
-        if (class_val && class_val != "") {
-            var class_arr = new Array();
-            class_arr = class_val.split(';');
-            class_arr = class_arr['0'].split(':');
-            var lan_class = 'language-' + $.trim(class_arr['1']);
-            var pre_content = '<code class="' + lan_class + '">' + $(this).html() + '</code>';
-            $(this).html(pre_content).addClass("my_pre");
+        if($(this).has("code")) {
+            var class_val = $(this).has("code").attr("class");
+            if(typeof class_val == typeof undefined || attr == false) {
+                $(this).has("code").attr('class', 'language-none');
+            }
+        } else {
+            var class_val = $(this).attr('class');
+            if (class_val && class_val != "") {
+                var class_arr = new Array();
+                class_arr = class_val.split(';');
+                class_arr = class_arr['0'].split(':');
+                var lan_class = 'language-' + $.trim(class_arr['1']);
+                var pre_content = '<code class="' + lan_class + '">' + $(this).html() + '</code>';
+                $(this).html(pre_content).addClass("my_pre");
+            }
         }
+    }
     });
     // 二唯码
     $(".qrcode").qrcode({
@@ -247,6 +255,4 @@ $(function() {
         $("#wemcn").show();
     });
     $("#ewmkg").click(function() {
-        $("#wemcn").hide();
-    });
-});
+        $("#wemcn").                     
