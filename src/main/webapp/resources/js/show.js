@@ -71,7 +71,7 @@ var last_num = -1;
 var last_heads = [];
 $(function() {
     // 自动提取文章的标题生成对应的目录
-    $("#article_content :header").each(function(idx, elm) {
+    $("#article_content :header").each(function (idx, elm) {
         var current_elm = $(elm);
         current_elm.attr('id', 'st' + idx)
         var tagName = current_elm.get(0).tagName;
@@ -79,7 +79,7 @@ $(function() {
         var new_node = $('<li><a href="#st' + idx + '">' + current_elm.html() + '</a></li>');
         if (last_num == -1) {
             $("#auto_contents").append(new_node);
-            last_heads.push([ num, new_node ]);
+            last_heads.push([num, new_node]);
             $("#table_of_contents").removeClass("hidden").addClass("show");
         } else if (last_num >= num) {
             var hasPosition = false;
@@ -94,9 +94,9 @@ $(function() {
                 }
             }
             if (!hasPosition) {
-                last_heads = [ num, new_node ];
+                last_heads = [num, new_node];
             } else {
-                last_heads.splice(position, last_heads.length - position, [ num, new_node ]);
+                last_heads.splice(position, last_heads.length - position, [num, new_node]);
             }
         } else if (last_num < num) {
             var tmp = last_heads[last_heads.length - 1];
@@ -106,14 +106,14 @@ $(function() {
                 var nested_ul = $('<ul class="nav"></ul>');
                 nested_ul.append(new_node);
                 tmp[1].append(nested_ul);
-                last_heads.push([ num, new_node ]);
+                last_heads.push([num, new_node]);
             }
         }
         last_num = num;
     });
 
     // 验证表单用户输入值
-    $("#reply_comment").submit(function(event) {
+    $("#reply_comment").submit(function (event) {
         event.preventDefault();
         // 验证用户输入值
         var nickname = $("#reviewer").val();
@@ -147,15 +147,15 @@ $(function() {
         // 提交用户数据
         var form_data = $(this).serialize();
         $.ajax({
-            url : $(this).attr("action"),
-            data : form_data,
-            type : "post",
-            success : function(data, status) {
+            url: $(this).attr("action"),
+            data: form_data,
+            type: "post",
+            success: function (data, status) {
                 var messages_div = $("#add-comment-info-div");
                 if (data.status != null) {
                     // 当评论后台验证失败
                     var info_context = "<ul>";
-                    $.each(data.messages, function(idx, element) {
+                    $.each(data.messages, function (idx, element) {
                         info_context += "<li>" + element + "</li>";
                     });
                     info_context += "</ul>";
@@ -173,13 +173,13 @@ $(function() {
                 // 提交后更新图片验证码
                 $("#update-captcha-link").triggerHandler("click");
             },
-            error : function(xhr, strError, errorObj) {
+            error: function (xhr, strError, errorObj) {
                 alert(errorObj);
             }
         });
     });
 
-    $("#reviewer").change(function() {
+    $("#reviewer").change(function () {
         var nickname = $("#reviewer").val();
         var info_node = $("#add-comment-info-div");
         if ($.trim(nickname) != "" && info_node.attr('type') == "1") {
@@ -190,22 +190,28 @@ $(function() {
 
     // prism.js代码高亮显示
     var doc_pre = $("#article_content pre");
-    doc_pre.each(function() {
-        var class_val = $(this).attr('class');
-        if (class_val && class_val != "") {
-            var class_arr = new Array();
-            class_arr = class_val.split(';');
-            class_arr = class_arr['0'].split(':');
-            var lan_class = 'language-' + $.trim(class_arr['1']);
-            var pre_content = '<code class="' + lan_class + '">' + $(this).html() + '</code>';
-            $(this).html(pre_content).addClass("my_pre");
+    doc_pre.each(function () {
+        if ($(this).has("code").length > 0) {
+            var class_val = $(this).has("code").attr("class");
+            if (typeof class_val == typeof undefined || attr == false) {
+                $(this).has("code").attr('class', 'language-none');
+            }
+        } else {
+            if (class_val && class_val != "") {
+                var class_arr = new Array();
+                class_arr = class_val.split(';');
+                class_arr = class_arr['0'].split(':');
+                var lan_class = 'language-' + $.trim(class_arr['1']);
+                var pre_content = '<code class="' + lan_class + '">' + $(this).html() + '</code>';
+                $(this).html(pre_content).addClass("my_pre");
+            }
         }
     });
     // 二唯码
     $(".qrcode").qrcode({
-        text : window.location.href,
-        width : 85,
-        height : 85
+        text: window.location.href,
+        width: 85,
+        height: 85
     });
     $(".qrcode").hide();
     var canvas = $('.qrcode canvas');
@@ -220,33 +226,33 @@ $(function() {
     var facebookTitle = '分享文章 「' + shareTitle + '」（分享自@lzqwebsoft）';
     var picShare = $("#article_content img").length > 0 ? encodeURIComponent($("img")[0].src) : "";
     $('body').snsShare({
-        tsina : {
-            url : encodeURIComponent(window.location.href),
-            title : sinaTitle,
-            pic : picShare
+        tsina: {
+            url: encodeURIComponent(window.location.href),
+            title: sinaTitle,
+            pic: picShare
         },
-        tqzone : {
-            url : encodeURIComponent(window.location.href),
-            title : tqzoneTitle,
-            pic : picShare,
-            summary : tqzoneSummary
+        tqzone: {
+            url: encodeURIComponent(window.location.href),
+            title: tqzoneTitle,
+            pic: picShare,
+            summary: tqzoneSummary
         },
-        twitter : {
-            url : encodeURIComponent(window.location.href),
-            title : twitterTitle,
-            pic : picShare
+        twitter: {
+            url: encodeURIComponent(window.location.href),
+            title: twitterTitle,
+            pic: picShare
         },
-        facebook : {
-            url : encodeURIComponent(window.location.href),
-            title : facebookTitle,
-            pic : picShare
+        facebook: {
+            url: encodeURIComponent(window.location.href),
+            title: facebookTitle,
+            pic: picShare
         }
     });
     // 微信分享
-    $(".share_weixin").click(function() {
+    $(".share_weixin").click(function () {
         $("#wemcn").show();
     });
-    $("#ewmkg").click(function() {
+    $("#ewmkg").click(function () {
         $("#wemcn").hide();
     });
 });
