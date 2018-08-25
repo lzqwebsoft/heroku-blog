@@ -55,6 +55,7 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
             String url = null;
             while (count > 0) {
                 url = rb.getString("authentication.checkpath." + count);
+                url = url.replaceAll("\\.html", "(.html)?");  // 意思就是不是.html后缀的也要拦截
                 Pattern pattern = Pattern.compile(".*" + url + "$", Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(requestURL);
                 if (url != null && matcher.matches()) {

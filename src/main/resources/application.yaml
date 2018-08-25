@@ -1,24 +1,24 @@
 spring:
+  main:
+    banner-mode: "off"
   application:
     name: heroku-blog
-  datasource:
-    hikari:
-      minimum-idle: 3
-      maximum-pool-size: 10
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://192.168.2.142:3306/heroku_blog_db?characterEncoding=UTF-8
-    driver-class-name: com.mysql.jdbc.Driver
-    username: qiaohu
-    password: 2013Pwd07
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
-        show_sql: false
-        format_sql: true
 server:
-  port: 9000
-main:
-  banner-mode: "off"
+  # 启用GZIP压缩
+  compression:
+    enabled: true
+    mime-types: text/html,text/plain,text/xml,application/xhtml+xml,text/css,application/javascript,application/x-javascript,image/svg+xml
+  port: 9001
+  servlet:
+    session:
+      cookie:
+        name: LZQWEBSOFT_SESSIONID
+        http-only: true
+        secure: false
+logging:
+  path: /var/log/
+  file: heroku-blog-info.log
+  level:
+    root: info
+    org.hibernate: WARN
+
