@@ -39,7 +39,7 @@ public class HomeController{
     @Autowired
     private ArticleTypeService articleTypeService;
     
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = {"/", "/index"})
     public String home(ModelMap model, Integer pageNo) {
         if (pageNo == null || pageNo <= 0)
             pageNo = 1;
