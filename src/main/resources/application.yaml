@@ -8,7 +8,7 @@ server:
   compression:
     enabled: true
     mime-types: text/html,text/plain,text/xml,application/xhtml+xml,text/css,application/javascript,application/x-javascript,image/svg+xml
-  port: 9001
+  port: 9000
   servlet:
     session:
       cookie:
