@@ -144,19 +144,4 @@ public class HomeController{
 
         return map;
     }
-    
-    @RequestMapping(value="/error404")
-    public String error404() {
-        return "error404";
-    }
-    
-    @RequestMapping(value="/error400")
-    public String error400() {
-        return "error400";
-    }
-    
-    @RequestMapping(value="/error503")
-    public String error503() {
-        return "error503";
-    }
 }
