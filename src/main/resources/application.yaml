@@ -15,6 +15,10 @@ server:
         name: LZQWEBSOFT_SESSIONID
         http-only: true
         secure: false
+  # 禁用系统错误处理，开启自定义错误控制器
+  error:
+    whitelabel:
+      enabled: false
 logging:
   path: /var/log/
   file: heroku-blog-info.log
