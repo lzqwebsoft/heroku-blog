@@ -23,6 +23,7 @@
         <bean class="com.herokuapp.lzqwebsoft.interceptor.AuthenticateInterceptor" />
         <!-- 配置显示博客信息的拦截器 -->
         <mvc:interceptor>
+            <mvc:mapping path="/" />
             <mvc:mapping path="/show/*.html" />
             <mvc:mapping path="/index.html" />
             <mvc:mapping path="/select/*.html" />
