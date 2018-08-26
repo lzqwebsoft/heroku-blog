@@ -1,6 +1,6 @@
 Heroku Blog
 ===========
-一个博客WEB应用，基于Spring5 MVC与Hibernate5， 前台使用JQuery， 用于部署在Heroku上，项目运行预览：[http://lzqwebsoft.net](http://lzqwebsoft.net "我的空间")。
+一个博客WEB应用，基于Spring MVC与Hibernate， 前台使用Bootstrap3， 并整合Spring Boot，可用于部署在Heroku等云端上，项目运行预览：[http://lzqwebsoft.net](http://lzqwebsoft.net "我的空间")。
 
 使用支付宝，打赏一下作者，请他喝瓶饮料。
 
@@ -8,7 +8,7 @@ Heroku Blog
 
 
 #### 部署开发环境
-如果你想二次开发本应用，可以将其部署在Eclipse上（本应用使用Jetty作为容器运行）,如下：
+如果你想二次开发本应用，可以将其直接导入IDE开发（本应用使用Undertow作为容器运行）,并己迁移支持Sproing Boot 2.0打包管理.
 
 ##### 1. 下载
 点击[https://github.com/lzqwebsoft/heroku-blog](https://github.com/lzqwebsoft/heroku-blog)页面中的<b>ZIP</b>链接将其打包成zip文件，下载到本地。或使用git命令将其克隆到本地：
@@ -33,41 +33,15 @@ OS name: "windows vista", version: "6.1", arch: "x86", family: "windows"
 
 请到[http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)下载maven，然后将maven的bin目录加入到系统的环境变量中。
 
-##### 3. 在Eclipse中配置jetty并调试
-+ 将下载的heroku-blog应用目录导入到Eclipse项目中。
-+ 将M2_REPO加入到Eclipse的classpath中（这一步即是将Maven的仓库包导入为Eclipse的ClassPath），使用菜单：<br />
-Window > Preferences. Select the Java > Build Path > Classpath Variables page；<br />接着点击New，新建M2_REPO变量，路径设为Maven的仓库路径，默认为：(windows)C:\Documents and Settings\（当前用户）\.m2\repository,(Linux)~\.m2\repository。
-+ 配置一个外部工具，来运行Jetty：<br />选择菜单Run->External Tools->External Tools Configurations...;在左边选择Program，再右击点New.命名为jetty。<br />配置Location为mvn的完整目录，Windows下：D:\Program Files\apache-maven-3.0.4\bin\mvn.bat，Linux下：使用选择无后辍的mvn文件。<br />选择Working Directory为本项目。<br />Arguments填写：`-Djetty.port=9000 jetty:run`<br />再点Enviroment选择卡：加入MAVEN_OPTS变量，值为：`-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n`<br />最后点点APPLY，再关闭本对话框。设置好后，点击Run->External Tools->Origanize favirites...加入
-+ 配置jetty调试: 选择菜单Run->Debug Configarutions....弹出对话框，在其中选择Remote Java Application，右击New，Name中输入heroku-blog，Project选择本应用，Host填localhost，port为4000，同时勾选Allow termination of remote VM，注意这里的port端口需与上一步中设置的`MAVEN_OPTS`变量端口一致;其他的默认，填好后Close。
-+ 配置jetty stop: 选择菜单Run->External Tools->External Tools Configurations...，选择Program，右击New，Name为jetty-stop,Location为mvn.bat或mvn的完整路径，Working Directory为本项目。Arguments填写：`jetty:stop`。
+##### 3. 导入IDE开发
+本项目可以直接导入支持maven的JAVA IDE进行开发，如Eclipse和IntelliJ IDEA.建议使用IntelliJ IDEA。
+由于本项目己迁移整合Spring Boot, 运行本项目可以直运行`com.herokuapp.lzqwebsoft.StartApplication`类中的`main`方法启动。
+也可以在运行maven命令`mvn spring-bot:run`启动，还可以使用`mvn package`直接打包本项目为JAR包，使用`java -jar target/xxxx.jar`命令直接运行。
 
-这样运行本应用将只需选择jetty就行了，调试是在jetty启动后，再选heroku-blog，停止jetty只需选择jetty-stop.
+> 说明： 如果想使用传统的Spring MVC开发本项目，建议下载使用[v2.0](https://github.com/lzqwebsoft/heroku-blog/releases/tag/v2.0)版本，运行方式为`mvn jetty:run`.
 
-运行成功后在浏览器中输入:[http://localhost:9000/heroku-blog](http://localhost:9000/heroku-blog)启动本程序。
-
-**注意**，在项目下的pom.xml文件中检查是否存在，如下配置：
-```xml
-<build>
-    <plugins>
-        <plugin>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>maven-jetty-plugin</artifactId>
-            <configuration>
-              <!-- 停止jetty -->
-              <stopPort>9966</stopPort>
-              <stopKey>foo</stopKey>
-          </configuration>
-        </plugin>
-    </plugins>
-</build>
-```
-
-在使用本程序时还要注意配置数据库的连接信息（本地运行使用MySQL），根据个人情况配置：`src\main\resources\database.properties`文件。同时在运行前，需要先在SQL环境中执行databaseDesign目录中的几个sql脚本程序，来导入程序运行时的初始化数据。
-更多关于Maven与Jetty在Eclipse中的开发配置，可以参考下列博客：<br>
-[http://blog.csdn.net/whuslei/article/details/6647275](http://blog.csdn.net/whuslei/article/details/6647275)<br>
-[http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html](http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html)
-<br/>
 #### 部署到Heroku云端
+
 使用本项目的源码，只需做一点点的更改，就可以将其部署在Heroku云端，从而拥有一个真正的博客。
 
 ##### 1. 配置你的Heroku环境
@@ -91,9 +65,10 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
 <prop key="hibernate.show_sql">false</prop>
 ```
+注意这里需要修改`pom.xml`中的依赖的驱动程序。
 当然了部署到heroku上的数据库是可以通过Add-ons功能更改的，也不一定要更改为PostgreSQL，这都要根据你为heroku上的应用添加的数据库来决定，详情可以参考heroku的帮助文档，这里个人还是比较推荐使用PostgreSQL数据库。
 
-##### 3. 配置程序自启动Servlet类
+##### 3. ~~配置程序自启动Servlet类~~ (弃用)
 由于本程序在启动时，需要一些初始化的数据，因此需要一种方法，确保程序在第一次初始化时，将一些必要的数据导入数据库，这就是编写自启动Servlet类的目地；默认情况下自启动Servlet类的配置是关闭的，需要到`src/main/webapp/WEB-INF/web.xml`文件中将其打开，如下：
 ```xml
 <servlet>
@@ -105,16 +80,18 @@ Window > Preferences. Select the Java > Build Path > Classpath Variables page；
 从上面的配置可知控制程序自启动的Servlet类是`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`,它控制着登录本博客应用的初始帐号与密码，还有一些登录后的博客设置信息与管理的菜单。
 默认情况下提供登录本博客的初始帐户名是websoft,密码是通过SHA1加密的123456。
 
+> 注意这里迁移到Spring Boot，没有配置该Servlet类，如有需要需自己手动配置，如果可以直接操作数据库，建议直接执行里面的初始化SQL语句即可，该Servlet建议弃用。 
+
 ##### 4. 配置邮件服务
 本博客拥有博客新评论邮件提示与邮件验证找回密码的功能，也就是说当你博客有网友的新评论或进行找回密码时，会由你事先配置好的邮件服务器中发送一份邮件到你指定的邮箱中，予以提示。<br />
 控制新评论的邮箱是由`blog_infos`表中的邮件项控制，可到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
-<pre>
+```java
 stmt.executeUpdate("INSERT INTO blog_infos VALUES ('1', '飘痕', '心诚则灵', '关于内容', 'lzqwebsoft@gmail.com', '0', '2012-12-19 17:26:32');");
-</pre>
+```
 即当有新评论时，`lzqwebsoft@gmail.com`邮箱会收到提示。<br />
 控制用户帐户的变更是由`users`表的邮件项控制，同样需要到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
 ```java
-stmt.executeUpdate("INSERT INTO blog_infos VALUES ('1', '飘痕', '心诚则灵', '关于内容', 'lzqwebsoft@gmail.com', '0', '2012-12-19 17:26:32');");
+stmt.executeUpdate("INSERT INTO users VALUES ('1', 'websoft', '××××××××', '751939573@qq.com', '××××××××', '', '0','2012-12-17 16:02:26', '2012-12-13 16:43:03', '2012-12-17 16:02:06');");
 ```
 即当用户有找回密码的操作时，邮件`751939573@qq.com`会收到提示。
 
@@ -160,40 +137,8 @@ content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).html", domain 
 article.setContent(content);
 ```
 
-##### 6. 对应Heroku云修改pom.xml
-由于部署在本地时使用的是mysql数据库，而pushing上传到Heroku云端使用的是PostgreSQL数据库，因些需要修改项目依赖的驱动架包，同时需要对pom.xml文件进行一定的更改，如下修改pom.xml中的build:
-
-```xml
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.mortbay.jetty</groupId>
-                                    <artifactId>jetty-runner</artifactId>
-                                    <version>7.4.5.v20110725</version>
-                                    <destFileName>jetty-runner.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-```
-
-##### 7. 上传部署
+##### 6. 上传部署
+决定部置在heroku的运行环境的两个决定文件是：`Procfile`与`system.properties`,需根据最新的heroku文档来修改(这里未测试,因为项目预览己转为虚拟主机).
 根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，在上传之前最好先在本地跑一下，看是否成功；
 关于使用Git部署上传Java应用可以参考翻译的官网博客：
 [http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606)<br />

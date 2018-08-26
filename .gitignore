@@ -1,6 +1,8 @@
 *.class
 *.prefs
 .settings
+.classpath
+.project
 .idea
 *.iml
 # Package Files #
