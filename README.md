@@ -139,6 +139,7 @@ article.setContent(content);
 
 ##### 6. 上传部署
 决定部置在heroku的运行环境的两个决定文件是：`Procfile`与`system.properties`,需根据最新的heroku文档来修改(这里未测试,因为项目预览己转为虚拟主机).
+
 根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，在上传之前最好先在本地跑一下，看是否成功；
 关于使用Git部署上传Java应用可以参考翻译的官网博客：
 [http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606)<br />
