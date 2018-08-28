@@ -107,6 +107,9 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         } catch (NoResultException e) {
             return null;
         }
+    }
 
+    public List<Article> getTotalArticles() {
+        return (List<Article>) getSession().createQuery("FROM Article").getResultList();
     }
 }

@@ -163,4 +163,16 @@ public interface ArticleService {
      * @return 文章对象
      */
     Article getPreviousArticle(Article article);
+
+    /**
+     * 获取数据库中的所有文章列表
+     * @return 所有的文章列表
+     */
+    List<Article> getTotalArticles();
+
+    /**
+     * 保存文章
+     * @param article  文章对象
+     */
+    void update(Article article);
 }

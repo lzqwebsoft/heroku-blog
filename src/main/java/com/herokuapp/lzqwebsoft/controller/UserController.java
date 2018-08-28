@@ -1,12 +1,7 @@
 package com.herokuapp.lzqwebsoft.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +24,7 @@ import com.herokuapp.lzqwebsoft.service.UserService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
 import com.herokuapp.lzqwebsoft.util.MailUtil;
 import com.herokuapp.lzqwebsoft.util.SHA1Util;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 主要用于用户的登录、改密、及找回密码
@@ -44,57 +40,46 @@ public class UserController extends BaseController {
     @Autowired
     private MessageSource messageSource;
 
-    // JSON登录
+    // JSON登录(从2.0开始的UI不再使用该方法)
+    @ResponseBody
     @RequestMapping(value = "/login.html")
-    public void login(String username, String password, String captcha, HttpServletResponse response, HttpSession session, Locale locale) {
+    public String login(String username, String password, String captcha, HttpServletResponse response, HttpSession session, Locale locale) {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json;charset=UTF-8");
         // 用户验证
-        PrintWriter out = null;
-        try {
-            out = response.getWriter();
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("application/json;charset=UTF-8");
-            StringBuffer json = new StringBuffer();
-            String validateCode = (String) session.getAttribute(CommonConstant.CAPTCHA);
-            // 计算登录失败次数
-            if (session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT) == null) {
-                session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
-            }
-            int errorNum = (Integer) session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
-            if (username == null || username.trim().length() <= 0 || password == null || password.length() <= 0) {
-                errorNum++;
-                json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
-                        .append(messageSource.getMessage("info.login.nameOrPasswordEmpty", null, locale)).append("\"}");
-                session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
-            } else if (errorNum >= 3 && !validateCode.equalsIgnoreCase(captcha)) {
-                errorNum++;
-                json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"")
-                        .append(messageSource.getMessage("info.login.invalid.captcha", null, locale)).append("\"}");
-                session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+        String validateCode = (String) session.getAttribute(CommonConstant.CAPTCHA);
+        // 计算登录失败次数
+        if (session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT) == null) {
+            session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, 0);
+        }
+        int errorNum = (Integer) session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+        Map<String, Object> datas = new HashMap<String, Object>();
+        String message = "";
+        if (username == null || username.trim().length() <= 0 || password == null || password.length() <= 0) {
+            errorNum++;
+            message = messageSource.getMessage("info.login.nameOrPasswordEmpty", null, locale);
+        } else if (errorNum >= 3 && !validateCode.equalsIgnoreCase(captcha)) {
+            errorNum++;
+            message = messageSource.getMessage("info.login.invalid.captcha", null, locale);
+        } else {
+            User user = userService.loginService(username, password);
+            if (user != null) {
+                session.setAttribute(CommonConstant.LOGIN_USER, user);
+                // 移除错误登录计数
+                if (session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT) != null)
+                    session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
+                datas.put("error_num", 0);
+                return successJSON("", datas);
             } else {
-                User user = userService.loginService(username, password);
-                if (user != null) {
-                    json.append("{\"status\": \"SUCCESS\", \"messages\": \"\", \"error_num\": 0}");
-                    session.setAttribute(CommonConstant.LOGIN_USER, user);
-                    // 移除错误登录计数
-                    if (session.getAttribute(CommonConstant.ERROR_LOGIN_COUNT) != null)
-                        session.removeAttribute(CommonConstant.ERROR_LOGIN_COUNT);
-                } else {
-                    errorNum++;
-                    json.append("{\"status\": \"FAILURE\",").append("\"error_num\":").append(errorNum).append(", \"messages\": \"").append(messageSource.getMessage("info.login.error", null, locale))
-                            .append("\"}");
-                    session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
-                }
-            }
-            // 验证通过后清除SESSION验证码
-            session.removeAttribute(CommonConstant.CAPTCHA);
-            out.print(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
+                errorNum++;
+                message = messageSource.getMessage("info.login.error", null, locale);
             }
         }
+        // 验证通过后清除SESSION验证码
+        session.removeAttribute(CommonConstant.CAPTCHA);
+        session.setAttribute(CommonConstant.ERROR_LOGIN_COUNT, errorNum);
+        datas.put("error_num", errorNum);
+        return errorJSON(message, datas);
     }
 
     // GET链接到登录页面
