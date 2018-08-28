@@ -16,6 +16,8 @@ import com.herokuapp.lzqwebsoft.pojo.Image;
 import com.herokuapp.lzqwebsoft.service.ImageService;
 import com.herokuapp.lzqwebsoft.util.QiniuUtil;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 工具控制器，用于提供一些工具操作
  *
@@ -33,7 +35,10 @@ public class ToolsController extends BaseController {
     // 七牛云图片文件批量上传备份工具
     @ResponseBody
     @RequestMapping(value = "/images_upload.html")
-    public List<Map> imageUpload() {
+    public List<Map> imageUpload(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json;charset=UTF-8");
+
         List<Map> list = new ArrayList<Map>();
 
         List<Image> images = imageService.getAllImages();
@@ -62,7 +67,10 @@ public class ToolsController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/replace_image_urls.html")
-    public String replaceImageUrls() {
+    public String replaceImageUrls(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json;charset=UTF-8");
+
         List<Article> articles = articleService.getTotalArticles();
         if (articles != null && articles.size() > 0) {
             for(Article article : articles) {

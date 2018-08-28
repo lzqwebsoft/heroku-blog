@@ -208,7 +208,7 @@ public class ArticleController extends BaseController {
     // ================== 主要用于文章编辑页面的AJAX自动保存处理=============
     @ResponseBody
     @RequestMapping(value = "/article/autoSave.html", method = RequestMethod.POST)
-    public String autoSave(@ModelAttribute("article") Article article, HttpSession session, String editOrCreate, Locale locale) {
+    public String autoSave(@ModelAttribute("article") Article article, HttpSession session, String editOrCreate, HttpServletResponse response, Locale locale) {
         String content = article.getContent();
         String contentMD = article.getContentMD();
         boolean status = false;
@@ -236,6 +236,8 @@ public class ArticleController extends BaseController {
             status = true;
         }
 
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json;charset=UTF-8");
         if (status) {
             String nowTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             String successMessage = messageSource.getMessage("info.article.autoSaveSuccess", new Object[]{nowTime}, locale);
