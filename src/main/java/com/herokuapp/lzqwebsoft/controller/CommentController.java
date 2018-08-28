@@ -1,7 +1,5 @@
 package com.herokuapp.lzqwebsoft.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -124,6 +122,8 @@ public class CommentController extends BaseController {
         List<Comment> comments = commentService.getAllParentComment(articleId);
         model.addAttribute("comments", comments);
 
+        // 用于标记用户评论是否成功
+        request.setAttribute("comment_status", true);
         return render("_article_comments", model, request, response);
     }
 

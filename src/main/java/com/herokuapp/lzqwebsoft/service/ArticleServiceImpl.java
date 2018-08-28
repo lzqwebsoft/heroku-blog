@@ -213,4 +213,14 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return content;
     }
+
+    @Override
+    public List<Article> getTotalArticles() {
+        return articleDAO.getTotalArticles();
+    }
+
+    @Override
+    public void update(Article article) {
+        articleDAO.update(article);
+    }
 }

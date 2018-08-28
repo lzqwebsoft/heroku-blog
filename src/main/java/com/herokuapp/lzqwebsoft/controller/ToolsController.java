@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+import com.herokuapp.lzqwebsoft.pojo.Article;
+import com.herokuapp.lzqwebsoft.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,15 +18,17 @@ import com.herokuapp.lzqwebsoft.util.QiniuUtil;
 
 /**
  * 工具控制器，用于提供一些工具操作
- * 
+ *
  * @author ZQLUO
- * 
  */
 @Controller
 @RequestMapping("/tools")
 public class ToolsController extends BaseController {
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private ArticleService articleService;
 
     // 七牛云图片文件批量上传备份工具
     @ResponseBody
@@ -54,5 +58,20 @@ public class ToolsController extends BaseController {
             }
         }
         return list;
+    }
+
+    @ResponseBody
+    @RequestMapping("/replace_image_urls.html")
+    public String replaceImageUrls() {
+        List<Article> articles = articleService.getTotalArticles();
+        if (articles != null && articles.size() > 0) {
+            for(Article article : articles) {
+                String content = article.getContent();
+                content = content.replaceAll("(\\/images\\/show\\/\\d{14}\\w{30}).html", "$1.jpg");
+                article.setContent(content);
+                articleService.update(article);
+            }
+        }
+        return successJSON("替换后缀HTML图片到JPG后缀成功！");
     }
 }

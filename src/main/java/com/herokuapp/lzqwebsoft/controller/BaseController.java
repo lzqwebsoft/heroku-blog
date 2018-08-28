@@ -1,7 +1,6 @@
 package com.herokuapp.lzqwebsoft.controller;
 
 import com.google.gson.Gson;
-import io.undertow.servlet.spec.HttpServletResponseImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.View;
@@ -37,6 +36,10 @@ public class BaseController {
 
     public String errorJSON(List<String> messages) {
         return generateJson(ERROR, messages, null);
+    }
+
+    public String errorJSON(String message, Map<String, Object> datas) {
+        return generateJson(ERROR, message, datas);
     }
 
     private String generateJson(int status, Object message, Map<String, Object> datas) {

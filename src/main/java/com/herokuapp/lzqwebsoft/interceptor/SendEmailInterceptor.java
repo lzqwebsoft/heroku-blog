@@ -20,9 +20,8 @@ import com.herokuapp.lzqwebsoft.util.StringUtil;
 
 /**
  * 当有网友评论博客时，发送邮件给博主
- * 
- * @author zqluo
  *
+ * @author zqluo
  */
 public class SendEmailInterceptor implements HandlerInterceptor {
 
@@ -61,7 +60,7 @@ public class SendEmailInterceptor implements HandlerInterceptor {
                 if (port != 80 && port != 443)
                     link.append(":").append(port);
                 link.append(request.getContextPath()).append("/show/").append(articleId).append(".html").toString();
-                String content = messageSource.getMessage("email.addComment.content", new Object[] { user.getUserName(), articleTitile, commentContent, link.toString() }, locale);
+                String content = messageSource.getMessage("email.addComment.content", new Object[]{user.getUserName(), articleTitile, commentContent, link.toString()}, locale);
                 String title = messageSource.getMessage("email.addComment.title", null, locale);
                 String to = email;
                 // 发送邮件
@@ -74,12 +73,8 @@ public class SendEmailInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView view) {
-        if (view != null) {
-            String viewName = view.getViewName();
-            isSuccessed = viewName != null && viewName.equalsIgnoreCase("_article_comments");
-        } else {
-            isSuccessed = false;
-        }
+        Object status = request.getAttribute("comment_status");
+        isSuccessed = status != null ? (Boolean) status : false;
     }
 
     @Override
