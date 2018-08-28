@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,7 +63,7 @@ public class WhitespaceFilter implements Filter {
     /**
      * @see Filter#init(FilterConfig)
      */
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
         //
     }
 
@@ -99,7 +100,7 @@ public class WhitespaceFilter implements Filter {
      *             If something fails at I/O level.
      */
     private static PrintWriter createTrimWriter(final HttpServletResponse response) throws IOException {
-        return new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"), true) {
+        return new PrintWriter(new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8), true) {
             private StringBuilder builder = new StringBuilder();
             private boolean surround = false;  // 在特殊标签（不能去换行符）的范围里
 
@@ -139,12 +140,12 @@ public class WhitespaceFilter implements Filter {
                                 find = true;
                                 String tag = matcher.group();
                                 if(tag.matches(startTags)) {  // 结束标签，前面的部分不能动
-                                    smallLine.append(line.substring(lastIndex, matcher.end()));
+                                    smallLine.append(line, lastIndex, matcher.end());
                                     surround = false;
                                 } else {
                                     // 开始标签，前面的部分可以动
                                     if(surround) {
-                                        smallLine.append(line.substring(lastIndex, matcher.end()));
+                                        smallLine.append(line, lastIndex, matcher.end());
                                     } else {
                                         smallLine.append(cleanEmptyChar(line.substring(lastIndex, matcher.end())));
                                     }
@@ -154,9 +155,9 @@ public class WhitespaceFilter implements Filter {
                             }
                             if(find) {
                                 if(surround && lastIndex < line.length()) {
-                                    smallLine.append(line.substring(lastIndex, line.length())).append("\n");
+                                    smallLine.append(line.substring(lastIndex)).append("\n");
                                 } else if(!surround && lastIndex < line.length()) {
-                                    smallLine.append(cleanEmptyChar(line.substring(lastIndex, line.length())));
+                                    smallLine.append(cleanEmptyChar(line.substring(lastIndex)));
                                 }
                             } else {
                                 // 没有找到特别的标签则判断是否在包围里
@@ -218,7 +219,7 @@ public class WhitespaceFilter implements Filter {
      */
     private static HttpServletResponse wrapResponse(final HttpServletResponse response, final PrintWriter writer) {
         return new HttpServletResponseWrapper(response) {
-            public PrintWriter getWriter() throws IOException {
+            public PrintWriter getWriter() {
                 return writer;
             }
         };

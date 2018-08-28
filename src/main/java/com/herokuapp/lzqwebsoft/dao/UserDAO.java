@@ -21,7 +21,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public User getUser(Long userid) {
-        User user = (User) getSession().get(User.class, userid);
+        User user = getSession().get(User.class, userid);
         return user;
     }
 

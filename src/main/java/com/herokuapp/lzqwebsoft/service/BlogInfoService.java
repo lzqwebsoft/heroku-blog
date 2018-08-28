@@ -8,11 +8,11 @@ public interface BlogInfoService {
 	 * 得到系统中设置的博客配置信息
 	 * @return BlogInfo对象
 	 */
-	public BlogInfo getSystemBlogInfo();
+    BlogInfo getSystemBlogInfo();
 	
 	/**
 	 * 更新指定的博客配置信息
 	 * @param blogInfo 博客配置信息对象
 	 */
-	public void updateBlogInfo(BlogInfo blogInfo);
+    void updateBlogInfo(BlogInfo blogInfo);
 }

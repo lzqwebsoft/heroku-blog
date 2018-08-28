@@ -1,7 +1,7 @@
 // 添加文本编辑器
-var E = window.wangEditor
-var editor = new E('#comment_content')
-var $text1 = $('#content')
+var E = window.wangEditor;
+var editor = new E('#comment_content');
+var $text1 = $('#content');
 editor.customConfig.onchange = function(html) {
     $text1.val(html);
     var content = editor.txt.text();
@@ -15,10 +15,10 @@ editor.customConfig.onchange = function(html) {
             $("#add-comment-info-div").removeClass("show").addClass("hidden");
         }
     }
-}
+};
 editor.customConfig.onfocus = function() {
     $("#validateCodeZone").removeClass('hidden');
-}
+};
 var localEmotions = [];
 var baseurl = window.location.origin != null ? window.location.origin : "";
 for (var i = 0; i < 134; i++) {
@@ -73,7 +73,7 @@ $(function() {
     // 自动提取文章的标题生成对应的目录
     $("#article_content :header").each(function (idx, elm) {
         var current_elm = $(elm);
-        current_elm.attr('id', 'st' + idx)
+        current_elm.attr('id', 'st' + idx);
         var tagName = current_elm.get(0).tagName;
         var num = Number(tagName.substr(tagName.length - 1));
         var new_node = $('<li><a href="#st' + idx + '">' + current_elm.html() + '</a></li>');
@@ -152,7 +152,7 @@ $(function() {
             type: "post",
             success: function (data, status) {
                 var messages_div = $("#add-comment-info-div");
-                if (data.status != null) {
+                if (data.status != null && data.messages != null) {
                     // 当评论后台验证失败
                     var info_context = "<ul>";
                     $.each(data.messages, function (idx, element) {
@@ -199,7 +199,7 @@ $(function() {
         } else {
             var class_val = $(this).attr("class");
             if (class_val && class_val != "") {
-                var class_arr = new Array();
+                var class_arr = [];
                 class_arr = class_val.split(';');
                 class_arr = class_arr['0'].split(':');
                 var lan_class = 'language-' + $.trim(class_arr['1']);

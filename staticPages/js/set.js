@@ -24,7 +24,7 @@ $(function() {
         var styleId = obj.attr("id");
         obj.addClass("active");
         var index = styleId.lastIndexOf("_");
-        var selectBox = styleId.substring(0, index)
+        var selectBox = styleId.substring(0, index);
         $.each(tagBoxs, function(idx, item) {
             if(item==selectBox)
                 $("#"+item).show();

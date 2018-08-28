@@ -20,9 +20,8 @@ import com.herokuapp.lzqwebsoft.util.CommonConstant;
 
 /**
  * 用户管理菜单权限，如果用户没有登录，则能查看的菜单是有限的。
- * 
- * @author zqluo
  *
+ * @author zqluo
  */
 public class AuthenticateInterceptor implements HandlerInterceptor {
 
@@ -30,14 +29,14 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
     private MenuService menuService;
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) {
 
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView model) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView model) {
         HttpSession session = request.getSession();
-        boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER) == null) ? false : true;
+        boolean isLogined = session.getAttribute(CommonConstant.LOGIN_USER) != null;
         List<Menu> menus = menuService.getAllMenus(isLogined);
         request.setAttribute(CommonConstant.MENUS, menus);
     }
@@ -46,7 +45,7 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 用于过滤掉普通用户不能访问的页面，如果用户没权限访问则重定向到index.html画面
         HttpSession session = request.getSession();
-        boolean isLogined = (session.getAttribute(CommonConstant.LOGIN_USER) == null) ? false : true;
+        boolean isLogined = session.getAttribute(CommonConstant.LOGIN_USER) != null;
         if (!isLogined) {
             String requestURL = new UrlPathHelper().getPathWithinApplication(request);
             ResourceBundle rb = ResourceBundle.getBundle("checkpath");
@@ -59,7 +58,7 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
                 Pattern pattern = Pattern.compile(".*" + url + "$", Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(requestURL);
                 if (url != null && matcher.matches()) {
-                    if(!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
                         // AJAX请求，则不将URL放入session,登录成功后不跳AJAX链接
                         session.setAttribute(CommonConstant.LAST_REQUEST_URL, requestURL);
                     }

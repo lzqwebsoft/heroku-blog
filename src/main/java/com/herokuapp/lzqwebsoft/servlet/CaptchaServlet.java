@@ -24,12 +24,12 @@ public class CaptchaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+        throws IOException {
         this.doPost(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+        throws IOException {
         
         response.setHeader("Pragma", "No-cache");  
         response.setHeader("Cache-Control", "No-cache");  

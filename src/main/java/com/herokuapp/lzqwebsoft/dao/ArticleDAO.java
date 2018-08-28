@@ -25,7 +25,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
     public void edit(Article article) {
         Session session = getSession();
         session.merge(article);
-        article = (Article) session.get(Article.class, article.getId());
+        article = session.get(Article.class, article.getId());
         session.update(article);
     }
 
@@ -87,7 +87,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         query.setFirstResult(0);
         query.setMaxResults(1);
         try {
-            Article previous = (Article) query.getSingleResult();
+            Article previous = query.getSingleResult();
             return previous;
         } catch (NoResultException e) {
             return null;
@@ -102,7 +102,7 @@ public class ArticleDAO extends PageBaseDAO<Article> {
         query.setFirstResult(0);
         query.setMaxResults(1);
         try {
-            Article next = (Article) query.getSingleResult();
+            Article next = query.getSingleResult();
             return next;
         } catch (NoResultException e) {
             return null;

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.herokuapp.lzqwebsoft.exception.HttpNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -30,14 +31,12 @@ import com.herokuapp.lzqwebsoft.util.MailUtil;
 import com.herokuapp.lzqwebsoft.util.SHA1Util;
 
 /**
- * 
  * 主要用于用户的登录、改密、及找回密码
- * 
- * @author zqluo
  *
+ * @author zqluo
  */
 @Controller
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -46,7 +45,7 @@ public class UserController {
     private MessageSource messageSource;
 
     // JSON登录
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login.html")
     public void login(String username, String password, String captcha, HttpServletResponse response, HttpSession session, Locale locale) {
         // 用户验证
         PrintWriter out = null;
@@ -99,14 +98,14 @@ public class UserController {
     }
 
     // GET链接到登录页面
-    @RequestMapping(value = "/signIn", method = RequestMethod.GET)
+    @RequestMapping(value = "/signIn.html", method = RequestMethod.GET)
     public String signInGet(ModelMap model) {
         model.addAttribute("user", new User());
         return "login";
     }
 
     // POST处理登录
-    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    @RequestMapping(value = "/signIn.html", method = RequestMethod.POST)
     public String signInPOST(@ModelAttribute("user") User user, String validateCode, HttpServletRequest request, HttpSession session, Errors errors) {
         // 验证用户信息
         String userName = user.getUserName();
@@ -153,7 +152,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/logout")
+    @RequestMapping(value = "/logout.html")
     public String logout(HttpServletRequest request, HttpSession session) {
         // 销毁session对象
         if (session.getAttribute(CommonConstant.LOGIN_USER) != null)
@@ -168,15 +167,15 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/changepwd_handle", method = RequestMethod.POST)
+    @RequestMapping(value = "/changepwd_handle.html", method = RequestMethod.POST)
     public String changePWD(@ModelAttribute("userBean") ChangePasswordUserBean userBean, ModelMap model, HttpSession session, Errors errors, Locale locale) {
         // 使用ValidationUtils工具包验证数据的合法性
         String passwordLabel = messageSource.getMessage("page.label.changepwd.password", null, locale);
         String newPasswordLabel = messageSource.getMessage("page.label.changepwd.newpassword", null, locale);
         String confirmPasswordLabel = messageSource.getMessage("page.label.changepwd.confirmPassword", null, locale);
-        ValidationUtils.rejectIfEmpty(errors, "password", "info.changepwd.required", new Object[] { passwordLabel });
-        ValidationUtils.rejectIfEmpty(errors, "newPassword", "info.changepwd.required", new Object[] { newPasswordLabel });
-        ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "info.changepwd.required", new Object[] { confirmPasswordLabel });
+        ValidationUtils.rejectIfEmpty(errors, "password", "info.changepwd.required", new Object[]{passwordLabel});
+        ValidationUtils.rejectIfEmpty(errors, "newPassword", "info.changepwd.required", new Object[]{newPasswordLabel});
+        ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "info.changepwd.required", new Object[]{confirmPasswordLabel});
         if (!errors.hasErrors()) {
             if (userBean.getNewPassword().length() < 6 || userBean.getNewPassword().length() > 20) {
                 errors.rejectValue("newPassword", "info.changepwd.newpassword.invalid");
@@ -200,22 +199,22 @@ public class UserController {
         return "change_password";
     }
 
-    @RequestMapping("/forget_pwd")
+    @RequestMapping("/forget_pwd.html")
     public String forgetPassword() {
         return "forget_pwd";
     }
 
-    @RequestMapping("/found_pwd")
+    @RequestMapping("/found_pwd.html")
     public String foundPassword(String email, ModelMap model, HttpServletRequest request, Locale locale) {
         if (email == null || email.trim().length() <= 0) {
             String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
-            String errorInfo = messageSource.getMessage("info.required", new Object[] { emailLabel }, locale);
+            String errorInfo = messageSource.getMessage("info.required", new Object[]{emailLabel}, locale);
             model.addAttribute("errorInfo", errorInfo);
             return "forget_pwd";
         }
         if (!email.matches("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")) {
             String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
-            String errorInfo = messageSource.getMessage("info.invalid", new Object[] { emailLabel }, locale);
+            String errorInfo = messageSource.getMessage("info.invalid", new Object[]{emailLabel}, locale);
             model.addAttribute("errorInfo", errorInfo);
             model.addAttribute("email", email);
             return "forget_pwd";
@@ -225,7 +224,7 @@ public class UserController {
         User user = userService.validEmail(email);
         if (user == null) {
             String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
-            String errorInfo = messageSource.getMessage("info.notexist", new Object[] { emailLabel }, locale);
+            String errorInfo = messageSource.getMessage("info.notexist", new Object[]{emailLabel}, locale);
             model.addAttribute("errorInfo", errorInfo);
             model.addAttribute("email", email);
             return "forget_pwd";
@@ -247,36 +246,36 @@ public class UserController {
         link.append(request.getContextPath()).append("/authenticate.html?sid=").append(sid).append("&uid=").append(user.getId());
         String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
         String subject = messageSource.getMessage("email.foundpwd.title", null, locale);
-        String content = messageSource.getMessage("email.foundpwd.content", new Object[] { user.getUserName(), dateStr, link.toString() }, locale);
+        String content = messageSource.getMessage("email.foundpwd.content", new Object[]{user.getUserName(), dateStr, link.toString()}, locale);
         MailUtil.sendEMail(user.getEmail(), subject, content);
 
         model.addAttribute("email", email);
         return "found_pwd";
     }
 
-    @RequestMapping("/authenticate")
+    @RequestMapping("/authenticate.html")
     public String authenticate(String sid, Long uid, ModelMap model, HttpSession session) {
         if (sid == null || sid.trim().length() <= 0) {
-            return "redirect:/error404.html";
+            throw new HttpNotFoundException();
         }
 
         if (uid == null || uid <= 0) {
-            return "redirect:/error404.html";
+            throw new HttpNotFoundException();
         }
 
         User user = userService.getUser(uid);
         if (user == null) {
-            return "redirect:/error404.html";
+            throw new HttpNotFoundException();
         }
 
         // 检查失效
         Date now = new Date();
         if (now.getTime() > user.getEndTime()) {
-            return "redirect:/error404.html";
+            throw new HttpNotFoundException();
         }
         // 检查sid是否是有效的值
         if (!user.getSid().equals(sid)) {
-            return "redirect:/error404.html";
+            throw new HttpNotFoundException();
         }
         // 将链接设置过期
         user.setEndTime(0);
@@ -288,7 +287,7 @@ public class UserController {
         return "reset_pwd";
     }
 
-    @RequestMapping(value = "/reset_pwd", method = RequestMethod.POST)
+    @RequestMapping(value = "/reset_pwd.html", method = RequestMethod.POST)
     public String resetPwd(String sid, Long uid, String newPassword, String confirmPassword, HttpSession session, ModelMap model, Locale locale) {
         List<String> errors = new ArrayList<String>();
         // 没有sid，则说明是非法的访问。
@@ -310,7 +309,7 @@ public class UserController {
         // 验证密码的合法性
         if (newPassword == null || newPassword.equals("")) {
             String newPasswordLabel = messageSource.getMessage("page.label.changepwd.newpassword", null, locale);
-            String errorInfo = messageSource.getMessage("info.required", new Object[] { newPasswordLabel }, locale);
+            String errorInfo = messageSource.getMessage("info.required", new Object[]{newPasswordLabel}, locale);
             errors.add(errorInfo);
         } else if (newPassword.length() < 6 || newPassword.length() > 20) {
             String errorInfo = messageSource.getMessage("info.changepwd.newpassword.invalid", null, locale);
@@ -318,7 +317,7 @@ public class UserController {
         }
         if (confirmPassword == null || confirmPassword.equals("")) {
             String confirmPwdLabel = messageSource.getMessage("page.label.changepwd.confirmPassword", null, locale);
-            String errorInfo = messageSource.getMessage("info.required", new Object[] { confirmPwdLabel }, locale);
+            String errorInfo = messageSource.getMessage("info.required", new Object[]{confirmPwdLabel}, locale);
             errors.add(errorInfo);
         } else if (!confirmPassword.equals(newPassword)) {
             String errorInfo = messageSource.getMessage("info.changepwd.confirmPassword.invalid", null, locale);

@@ -8,10 +8,10 @@
         <c:forEach items="${requestScope.images.data}" var="image" varStatus="status">
             <dl>
                 <dd>
-                    <a rel="lightbox[roadtrip]" title="${image.descriptions}" href="<%= request.getContextPath() %>/images/show/${image.id}.html"> <img src="<%= request.getContextPath() %>/images/show/${image.id}.html" width="253" height="200" alt="${image.fileName}" title="${image.fileName}" /></a>
+                    <a rel="lightbox[roadtrip]" title="${image.descriptions}" href="<%= request.getContextPath() %>/images/show/${image.id}.jpg"> <img src="<%= request.getContextPath() %>/images/show/${image.id}.jpg" width="253" height="200" alt="${image.fileName}" title="${image.fileName}" /></a>
                 </dd>
                 <dt>
-                    <a title="${image.fileName}" href="<%= request.getContextPath() %>/images/show/${image.id}.html" rel="lightbox">图片${status.index+1}</a>&nbsp;&nbsp; <a href="javascript:void(0)" onclick="delete_image('<spring:message code="page.confirm.delete.images" />', '${image.id}', '${requestScope.images.currentPageNo}')">删除</a>
+                    <a title="${image.fileName}" href="<%= request.getContextPath() %>/images/show/${image.id}.jpg" rel="lightbox">图片${status.index+1}</a>&nbsp;&nbsp; <a href="javascript:void(0)" onclick="delete_image('<spring:message code="page.confirm.delete.images" />', '${image.id}', '${requestScope.images.currentPageNo}')">删除</a>
                 </dt>
             </dl>
         </c:forEach>

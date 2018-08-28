@@ -15,5 +15,5 @@ public interface MenuService {
 	 * @param isLogin 用户是否登录
 	 * @return 指定的菜单列表
 	 */
-	public List<Menu> getAllMenus(boolean isLogined);
+    List<Menu> getAllMenus(boolean isLogined);
 }

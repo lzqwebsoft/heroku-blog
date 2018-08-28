@@ -1,26 +1,20 @@
 package com.herokuapp.lzqwebsoft.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.herokuapp.lzqwebsoft.exception.HttpNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticlePattern;
@@ -36,7 +30,7 @@ import com.herokuapp.lzqwebsoft.util.CommonConstant;
 import com.herokuapp.lzqwebsoft.util.MarkdownUtil;
 
 @Controller
-public class ArticleController {
+public class ArticleController extends BaseController {
     @Autowired
     private ArticleTypeService articleTypeService;
     @Autowired
@@ -55,37 +49,26 @@ public class ArticleController {
     private CodeTheme themes;
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/show/{articleId}")
+    @RequestMapping(value = "/show/{articleId}.html")
     public String show(@PathVariable("articleId") String articleId, HttpSession session, ModelMap model, Locale locale) {
         Article article = articleService.get(articleId);
         if (article == null)
-            return "redirect:/error404.html";
+            throw new HttpNotFoundException();
         // 判断用户是否登录,未登录用户不可以查看草稿
         User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
         if (user == null && article.getStatus() == 0)
-            return "redirect:/error404.html";
+            throw new HttpNotFoundException();
 
         // 阅读计数, 只有是没有登录的用户才进行记数
         if (session.getAttribute(CommonConstant.LOGIN_USER) == null) {
-            List<String> viewedArticles = (List<String>) session.getAttribute(CommonConstant.VIEWED_ARTICLES);
+            Set<String> viewedArticles = (Set<String>) session.getAttribute(CommonConstant.VIEWED_ARTICLES);
             if (viewedArticles == null) {
-                viewedArticles = new ArrayList<String>();
+                viewedArticles = new HashSet();
+            }
+            if (!viewedArticles.contains(articleId)) {
                 viewedArticles.add(articleId);
                 articleService.addViewedCount(article);
                 session.setAttribute(CommonConstant.VIEWED_ARTICLES, viewedArticles);
-            } else {
-                boolean viewed = false;
-                for (String viewedArticle : viewedArticles) {
-                    if (viewedArticle.equals(articleId)) {
-                        viewed = true;
-                        break;
-                    }
-                }
-                if (!viewed) {
-                    viewedArticles.add(articleId);
-                    articleService.addViewedCount(article);
-                    session.setAttribute(CommonConstant.VIEWED_ARTICLES, viewedArticles);
-                }
             }
             // 用户未登录，则替换文章中内容使用的IMG标签SRC属性改为七牛云
             String domain = messageSource.getMessage("qiniu.bucket.domain", null, locale);
@@ -117,7 +100,7 @@ public class ArticleController {
         return "show";
     }
 
-    @RequestMapping("/article/new{type}")
+    @RequestMapping("/article/new{type}.html")
     public String create(@PathVariable("type") String type, ModelMap model) {
         Article article = new Article();
         article.setAllowComment(true);
@@ -125,8 +108,10 @@ public class ArticleController {
         if (type != null && type.equals("html")) {
             article.setContentType(0); // HTML
             view = "new-w";
-        } else {
+        } else if (type == null || type.trim().equals("")) {
             article.setContentType(1); // markdown
+        } else {
+            throw new HttpNotFoundException();
         }
         model.addAttribute("article", article);
 
@@ -140,51 +125,41 @@ public class ArticleController {
         return view;
     }
 
-    @RequestMapping("/article/publish")
-    public String publish(@ModelAttribute("article") Article article, Errors errors, String type_model, String new_type, ModelMap model, HttpServletRequest request, HttpSession session,
-            String publish, String save, String editOrCreate, Locale locale) {
+    @RequestMapping(value = "/article/publish.html", method = RequestMethod.POST)
+    public String publish(@ModelAttribute("article") Article article, Errors errors, int type_model, String new_type, ModelMap model, HttpSession session,
+                          String publish, String save, String editOrCreate, Locale locale) {
         // 验证用户提交数据的合法性
         String articleContentLabel = messageSource.getMessage("page.label.article.content", null, locale);
         String articleTitleLabel = messageSource.getMessage("page.label.title", null, locale);
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "info.required", new Object[] { articleTitleLabel });
-        boolean isConvert = false;   // 判断是否为转化内容
-        if (save != null && save.trim().equals("2")) {
-            isConvert = true;
-        }
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "info.required", new Object[]{articleTitleLabel});
+        boolean isConvert = save != null && save.trim().equals("2");   // 判断是否为转化内容
         if (article == null) {
             return "redirect:/";
         }
         if (article.getContentType() == 1) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contentMD", "info.required", new Object[] { articleContentLabel });
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contentMD", "info.required", new Object[]{articleContentLabel});
             article.setContent(MarkdownUtil.parseMarkdownToHtml(article.getContentMD()));
-            if(isConvert)
+            if (isConvert)
                 article.setContentType(0);
         } else {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "info.required", new Object[] { articleContentLabel });
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "info.required", new Object[]{articleContentLabel});
             article.setContentMD(MarkdownUtil.parseHtmlToMarkdown(article.getContent()));
-            if(isConvert)
+            if (isConvert)
                 article.setContentType(1);
         }
         int patternTypeId = article.getPatternTypeId();
         if (patternTypeId == 0) {
             String patternLabel = messageSource.getMessage("page.label.pattern", null, locale);
-            errors.rejectValue("patternTypeId", "info.select", new Object[] { patternLabel }, "");
+            errors.rejectValue("patternTypeId", "info.select", new Object[]{patternLabel}, "");
         }
 
-        int type = 0;
-        // 文章类型添加的方式，为0表示通过下拉框选择，1表示再创建
-        try {
-            type = Integer.parseInt(type_model);
-        } catch (NumberFormatException e) {
-            type = 0;
-        }
-
+        int type = type_model; // 文章类型添加的方式，为0表示通过下拉框选择，1表示再创建
         if (type == 0) {
             // 当为选择一个类别时
             ArticleType articleType = article.getType();
             if (articleType == null || articleType.getId() == 0) {
                 String articleTypeLabel = messageSource.getMessage("page.label.article.type", null, locale);
-                errors.rejectValue("type.id", "info.select", new Object[] { articleTypeLabel }, "");
+                errors.rejectValue("type.id", "info.select", new Object[]{articleTypeLabel}, "");
             } else {
                 articleType = articleTypeService.get(articleType.getId());
                 if (articleType == null) {
@@ -195,7 +170,7 @@ public class ArticleController {
             // 当为创建一个类别时
             if (new_type == null || new_type.trim().length() <= 0) {
                 String articleTypeLabel = messageSource.getMessage("page.label.article.type", null, locale);
-                ValidationUtils.rejectIfEmptyOrWhitespace(errors, "type.name", "info.required", new Object[] { articleTypeLabel });
+                ValidationUtils.rejectIfEmptyOrWhitespace(errors, "type.name", "info.required", new Object[]{articleTypeLabel});
             }
         }
 
@@ -209,18 +184,9 @@ public class ArticleController {
             return "new";
         } else {
             // 如果为添加类型，则先创建一个新的类型
-            boolean modelNew = false;
-            if (type == 1) {
-                if (new_type != null && new_type.trim().length() > 0) {
-                    modelNew = true;
-                }
-            }
-            boolean isDraft = false;
-            if (publish != null && publish.trim().length() > 0) {
-                isDraft = false;
-            } else {
-                isDraft = true;
-            }
+            boolean modelNew = type == 1 && new_type != null && new_type.trim().length() > 0;
+            // 判断是否为草稿内容
+            boolean isDraft = publish == null || publish.trim().length() <= 0;
             // 添加作者
             User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
             article.setAuthor(user);
@@ -231,7 +197,7 @@ public class ArticleController {
                 articleService.save(article, new_type, modelNew, isDraft);
             }
 
-            if(isConvert) {
+            if (isConvert) {
                 return "redirect:/edit/" + article.getId() + ".html";
             } else {
                 return "redirect:/show/" + article.getId() + ".html";
@@ -240,8 +206,9 @@ public class ArticleController {
     }
 
     // ================== 主要用于文章编辑页面的AJAX自动保存处理=============
-    @RequestMapping("/article/autoSave")
-    public void autoSave(@ModelAttribute("article") Article article, HttpServletResponse response, HttpSession session, String editOrCreate, Locale locale) {
+    @ResponseBody
+    @RequestMapping(value = "/article/autoSave.html", method = RequestMethod.POST)
+    public String autoSave(@ModelAttribute("article") Article article, HttpSession session, String editOrCreate, Locale locale) {
         String content = article.getContent();
         String contentMD = article.getContentMD();
         boolean status = false;
@@ -264,35 +231,24 @@ public class ArticleController {
             User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
             article.setAuthor(user);
             // 入库
-            boolean isEdit = false;
-            if (editOrCreate != null && editOrCreate.equals("EDIT")) {
-                isEdit = true;
-            }
+            boolean isEdit = editOrCreate != null && editOrCreate.equals("EDIT");
             articleService.autoSave(article, isEdit);
             status = true;
         }
-        PrintWriter out = null;
-        try {
-            out = response.getWriter();
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("application/json;charset=UTF-8");
-            StringBuffer json = new StringBuffer();
-            if (status) {
-                String nowTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                String successMessage = messageSource.getMessage("info.article.autoSaveSuccess", new Object[] { nowTime }, locale);
-                json.append("{\"status\": \"SUCCESS\", \"messages\": \"").append(successMessage).append("\", \"article_id\": \"").append(article.getId()).append("\"}");
-            } else {
-                String failureMessage = messageSource.getMessage("info.article.autoSaveFailure", null, locale);
-                json.append("{\"status\": \"FAILURE\", \"messages\": \"").append(failureMessage).append("\"}");
-            }
-            out.print(json);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (status) {
+            String nowTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            String successMessage = messageSource.getMessage("info.article.autoSaveSuccess", new Object[]{nowTime}, locale);
+            Map<String, Object> datas = new HashMap<String, Object>();
+            datas.put("article_id", article.getId());
+            return successJSON(successMessage, datas);
+        } else {
+            String failureMessage = messageSource.getMessage("info.article.autoSaveFailure", null, locale);
+            return errorJSON(failureMessage);
         }
     }
 
-    @RequestMapping("/edit/{articleId}")
+    @RequestMapping("/edit/{articleId}.html")
     public String edit(@PathVariable("articleId") String articleId, ModelMap model) {
         Article article = articleService.get(articleId);
         model.addAttribute("article", article);
@@ -304,14 +260,10 @@ public class ArticleController {
         List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
         model.addAttribute("articleTypes", articleTypes);
 
-        if (article.getContentType() == 0) {
-            return "new-w";
-        } else {
-            return "new-md";
-        }
+        return article.getContentType() == 0 ? "new-w" : "new-md";
     }
 
-    @RequestMapping("/delete/{articleId}")
+    @RequestMapping("/delete/{articleId}.html")
     public String delete(@PathVariable("articleId") String articleId, HttpServletRequest request) {
         articleService.delete(articleId);
 
@@ -324,7 +276,7 @@ public class ArticleController {
     }
 
     // ================== 主要用于set页面的AJAX处理=============
-    @RequestMapping("/delete/article/{articleId}")
+    @RequestMapping("/delete/article/{articleId}.html")
     public String deleteArticle(@PathVariable("articleId") String articleId, int articleTypeId, String title, int pageNo, HttpServletRequest request) {
         if (pageNo <= 0)
             pageNo = 1;
@@ -345,7 +297,7 @@ public class ArticleController {
         return "_article_tab";
     }
 
-    @RequestMapping("/delete/draft/{articleId}")
+    @RequestMapping("/delete/draft/{articleId}.html")
     public String deleteDraft(@PathVariable("articleId") String articleId, int pageNo, HttpServletRequest request) {
         if (pageNo <= 0)
             pageNo = 1;
@@ -363,7 +315,7 @@ public class ArticleController {
         return "_draft_tab";
     }
 
-    @RequestMapping("/draft/page")
+    @RequestMapping("/draft/page.html")
     public String pageDraft(Integer pageNo, HttpServletRequest request) {
         if (pageNo == null || pageNo <= 0)
             pageNo = 1;
@@ -375,7 +327,7 @@ public class ArticleController {
         return "_draft_tab";
     }
 
-    @RequestMapping("/article/select")
+    @RequestMapping("/article/select.html")
     public String select(int articleTypeId, String title, Integer pageNo, HttpServletRequest request) {
         if (pageNo == null || pageNo <= 0)
             pageNo = 1;
@@ -389,13 +341,13 @@ public class ArticleController {
         return "_article_tab";
     }
 
-    @RequestMapping("/update/allow_comment/{articleId}")
+    @RequestMapping("/update/allow_comment/{articleId}.html")
     public void updateAllowComment(@PathVariable("articleId") String articleId, boolean allowComment, HttpServletResponse response) {
         articleService.updateAllowComment(articleId, allowComment);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    @RequestMapping("/update/is_top/{articleId}")
+    @RequestMapping("/update/is_top/{articleId}.html")
     public void updateIsTop(@PathVariable("articleId") String articleId, boolean isTop, HttpServletResponse response) {
         articleService.updateIsTop(articleId, isTop);
         response.setStatus(HttpServletResponse.SC_OK);
