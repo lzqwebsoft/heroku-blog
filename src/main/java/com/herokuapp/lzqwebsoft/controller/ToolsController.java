@@ -22,13 +22,13 @@ import com.herokuapp.lzqwebsoft.util.QiniuUtil;
  */
 @Controller
 @RequestMapping("/tools")
-public class ToolsController {
+public class ToolsController extends BaseController {
     @Autowired
     private ImageService imageService;
 
     // 七牛云图片文件批量上传备份工具
     @ResponseBody
-    @RequestMapping(value = "/images_upload")
+    @RequestMapping(value = "/images_upload.html")
     public List<Map> imageUpload() {
         List<Map> list = new ArrayList<Map>();
 

@@ -39,7 +39,7 @@ public class SendEmailInterceptor implements HandlerInterceptor {
     private boolean isSuccessed;
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) {
         User user = (User) request.getSession().getAttribute(CommonConstant.LOGIN_USER);
         // 当用于为空，并添加评论成功，说明是外人的评论，则要求发送邮件给予通知
         if (user == null && isSuccessed) {
@@ -60,7 +60,7 @@ public class SendEmailInterceptor implements HandlerInterceptor {
                 int port = request.getServerPort();
                 if (port != 80 && port != 443)
                     link.append(":").append(port);
-                link.append("").append(request.getContextPath()).append("/show/").append(articleId).append(".html").toString();
+                link.append(request.getContextPath()).append("/show/").append(articleId).append(".html").toString();
                 String content = messageSource.getMessage("email.addComment.content", new Object[] { user.getUserName(), articleTitile, commentContent, link.toString() }, locale);
                 String title = messageSource.getMessage("email.addComment.title", null, locale);
                 String to = email;
@@ -73,21 +73,17 @@ public class SendEmailInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView view) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView view) {
         if (view != null) {
             String viewName = view.getViewName();
-            if (viewName != null && viewName.equalsIgnoreCase("_article_comments"))
-                isSuccessed = true;
-            else
-                isSuccessed = false;
+            isSuccessed = viewName != null && viewName.equalsIgnoreCase("_article_comments");
         } else {
             isSuccessed = false;
         }
-
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         return true;
     }
 

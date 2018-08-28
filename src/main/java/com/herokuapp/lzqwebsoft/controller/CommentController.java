@@ -24,9 +24,10 @@ import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.CommentService;
 import com.herokuapp.lzqwebsoft.util.CommonConstant;
 import com.herokuapp.lzqwebsoft.util.StringUtil;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class CommentController {
+public class CommentController extends BaseController {
     @Autowired
     private CommentService commentService;
 
@@ -36,9 +37,10 @@ public class CommentController {
     @Autowired
     private MessageSource messageSource;
 
-    @RequestMapping("/comment/add")
+    @ResponseBody
+    @RequestMapping("/comment/add.html")
     public String add(Comment comment, String parent_comment_id, String root_comment_id, String validateCode, ModelMap model, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response) {
+                      HttpServletResponse response) {
         // 判断用户是否登录,则博主不用输入昵称与网址
         User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
         if (user != null) {
@@ -56,26 +58,24 @@ public class CommentController {
         String website = comment.getWebsite();
         if (reviewer == null || reviewer.trim().length() <= 0) {
             String reviewerLabel = messageSource.getMessage("page.label.reviewer", null, locale);
-            errors.add(messageSource.getMessage("info.required", new Object[] { reviewerLabel }, locale));
+            errors.add(messageSource.getMessage("info.required", new Object[]{reviewerLabel}, locale));
         } else if (reviewer.trim().length() > 80) {
             String reviewerLabel = messageSource.getMessage("page.label.reviewer", null, locale);
-            errors.add(messageSource.getMessage("info.length.long", new Object[] { reviewerLabel, 80 }, locale));
+            errors.add(messageSource.getMessage("info.length.long", new Object[]{reviewerLabel, 80}, locale));
         }
         if (website != null && website.trim().length() > 0 && !website.matches("^((http[s]?)(://))(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*((:\\d+)?)(/(\\w+(-\\w+)*))*$")) {
             errors.add(messageSource.getMessage("info.invalid.website", null, locale));
         }
         if (contentStr == null || contentStr.trim().length() <= 0) {
             String contentLabel = messageSource.getMessage("page.label.content", null, locale);
-            errors.add(messageSource.getMessage("info.required", new Object[] { contentLabel }, locale));
+            errors.add(messageSource.getMessage("info.required", new Object[]{contentLabel}, locale));
         } else {
             contentStr = contentStr.toLowerCase();
-            contentStr = contentStr.replaceAll("<(img|embed).*?>", "K");
-            contentStr = contentStr.replaceAll("<.*?>", "");
-            contentStr = contentStr.replaceAll("\r\n|\n|\r/g", "");
+            contentStr = contentStr.replaceAll("<(img|embed).*?>", "K").replaceAll("<.*?>", "").replaceAll("\r\n|\n|\r/g", "");
             contentStr = contentStr.trim();
             if (contentStr.length() > 120) {
                 String contentLabel = messageSource.getMessage("page.label.content", null, locale);
-                errors.add(messageSource.getMessage("info.length.long", new Object[] { contentLabel, 120 }, locale));
+                errors.add(messageSource.getMessage("info.length.long", new Object[]{contentLabel, 120}, locale));
             }
         }
         String captcha = (String) session.getAttribute(CommonConstant.CAPTCHA);
@@ -88,28 +88,14 @@ public class CommentController {
         Article article = comment.getArticle();
         article = articleService.get(article.getId());
         if (article == null || !article.getAllowComment()) {
-            errors.add(messageSource.getMessage("info.article.notallowcomment", new Object[] {}, locale));
+            errors.add(messageSource.getMessage("info.article.notallowcomment", new Object[]{}, locale));
         }
+
+        // 校验用户数据错误，直接返回JSON信息
         if (errors.size() > 0) {
-            PrintWriter out = null;
-            try {
-                out = response.getWriter();
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/json; charset=UTF-8");
-
-                // 生成错误的JSON信息，用于提于用户
-                StringBuffer json = new StringBuffer("{\"status\": \"FAILURE\", \"messages\": [");
-                for (String error : errors)
-                    json.append("\"").append(error).append("\",");
-                json.deleteCharAt(json.length() - 1);
-                json.append("]}");
-
-                out.print(json);
-                out.close();
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json; charset=UTF-8");
+            return errorJSON(errors);
         }
         // 评论内容去XSS
         String content = comment.getContent();
@@ -138,10 +124,10 @@ public class CommentController {
         List<Comment> comments = commentService.getAllParentComment(articleId);
         model.addAttribute("comments", comments);
 
-        return "_article_comments";
+        return render("_article_comments", model, request, response);
     }
 
-    @RequestMapping("/comment/delete/{commentId}")
+    @RequestMapping("/comment/delete/{commentId}.html")
     public String delete(@PathVariable("commentId") long commentId, ModelMap model) {
         String articleId = commentService.delete(commentId);
 

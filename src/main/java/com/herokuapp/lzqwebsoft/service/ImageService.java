@@ -18,7 +18,7 @@ public interface ImageService {
      *            图片的描述信息对象
      * @return 图片在服务器端的路径
      */
-    public String save(MultipartFile file, Image image);
+    String save(MultipartFile file, Image image);
 
     /**
      * 图片信息更新
@@ -26,14 +26,14 @@ public interface ImageService {
      * @param image
      *            图片的描述信息对象
      */
-    public void update(Image image);
+    void update(Image image);
 
     /**
      * 返回系统中保存的所有上传的图片
      * 
      * @return 图片Image List集合
      */
-    public List<Image> getAllImages();
+    List<Image> getAllImages();
 
     /**
      * 返回系统中保存的所有上传的图片
@@ -44,7 +44,7 @@ public interface ImageService {
      *            每页显示数
      * @return 图片Image List集合
      */
-    public Page<Image> getAllImagesByPage(int pageNo, int pageSize);
+    Page<Image> getAllImagesByPage(int pageNo, int pageSize);
 
     /**
      * 根据图片对象的ID来删除指定的记录
@@ -52,7 +52,7 @@ public interface ImageService {
      * @param id
      *            图片ID
      */
-    public void delete(String id);
+    void delete(String id);
 
     /**
      * 根据图片的id来得到指定的图片对象
@@ -61,5 +61,5 @@ public interface ImageService {
      *            图片id
      * @return 图片对象
      */
-    public Image getImageById(String id);
+    Image getImageById(String id);
 }

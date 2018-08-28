@@ -74,14 +74,14 @@ window.wangEditor.plus = {
                 // 选取的是code，则去除<code>包裹
                 $selectionElem[0].parentNode.replaceChild(document.createTextNode(selectionText), $selectionElem[0]);
                 editor.selection.restoreSelection();
-                return;
+
             } else {
                 // 选取不是空，用 <code> 包裹即可
                 $code = $('<code>' + selectionText + '</code>');
                 editor.cmd.do('insertElem', $code);
                 editor.selection.createRangeByElem($code, false);
                 editor.selection.restoreSelection();
-                return;
+
             }
         } else {
             // 没有选取则插件pre，代码段
@@ -142,7 +142,7 @@ window.wangEditor.plus = {
                     }
                     text = replaceHtmlSymbol(text);
                     var $language = $("#insert-source-dialog #source_language");
-                    var language = $language.val() == "" && $language.val() == "none" ? "" : "language-" + $language.val();
+                    var language = $language.val() == "" && $language.val() == "none" ? "language-text" : "language-" + $language.val();
                     editor.cmd.do('insertHTML', '<pre><code class="' + language + '">' + text + '</code></pre><p><br></p>');
                 });
             }
@@ -152,11 +152,11 @@ window.wangEditor.plus = {
         }
     }
 };
-var E = window.wangEditor
+var E = window.wangEditor;
 var editor = new E('#article_content');
 var $text1 = $('#content');
 // 自定义菜单配置
-editor.customConfig.menus = ['head', 'bold', 'fontSize', 'fontName', 'italic', 'underline', 'strikeThrough', 'foreColor', 'backColor', 'link', 'list', 'justify', 'quote', 'emoticon', 'image', 'table', 'video', 'undo', 'redo']
+editor.customConfig.menus = ['head', 'bold', 'fontSize', 'fontName', 'italic', 'underline', 'strikeThrough', 'foreColor', 'backColor', 'link', 'list', 'justify', 'quote', 'emoticon', 'image', 'table', 'video', 'undo', 'redo'];
 editor.customConfig.uploadImgServer = $("#context-path").text() + "/images/upload.html";
 editor.customConfig.uploadImgMaxSize = 7 * 1024 * 1024;
 editor.customConfig.uploadFileName = 'imgFile';
@@ -165,16 +165,16 @@ editor.customConfig.uploadImgHooks = {
         var url = result.url;
         insertImg(url);
     }
-}
+};
 editor.customConfig.onchange = function (html) {
     $text1.val(html)
-}
+};
 var localEmotions = [];
-var baseurl = window.location.origin!=null ? window.location.origin: "";
+var baseurl = window.location.origin != null ? window.location.origin : "";
 for (var i = 0; i < 134; i++) {
     localEmotions.push({
         alt: '',
-        src: baseurl+$("#context-path").text()+ '/resources/js/ke4/plugins/emoticons/images/' + i + ".gif"
+        src: baseurl + $("#context-path").text() + '/resources/js/ke4/plugins/emoticons/images/' + i + ".gif"
     });
 }
 editor.customConfig.emotions = [
@@ -189,7 +189,7 @@ editor.customConfig.emotions = [
         type: 'emoji',
         content: ['😀', '😃', '😄', '😁', '😆']
     }
-]
+];
 editor.customConfig.zIndex = 1020;
 editor.create();
 $("#article_content .w-e-text-container").append($('#content'));
@@ -209,7 +209,7 @@ function check_article_input() {
         return false;
     }
     var content = editor.txt.text();
-    if ($.trim(content)=="") {
+    if ($.trim(content) == "") {
         prompt_info.removeClass("hidden").html("<strong>错误：</strong>文章内容不能为空!");
         return false;
     }
@@ -230,37 +230,33 @@ function check_article_input() {
     prompt_info.addClass("hidden").html("");
     return true;
 }
+
 // 定时循还执行文章保存,每5分钟执行一次
 var timeid = window.setInterval(autoSaveArticle, 300000);
+
 function autoSaveArticle() {
     var content = $text1.val();
-    if ($.trim(content)=="") {
+    if ($.trim(content) == "") {
         return;
     }
     var formData = $("#article").serialize();
     $.ajax({
-        url : $("#context-path").text() + "/article/autoSave.html",
-        type : "post",
-        data : formData,
-        dataType : "json",
-        success : function(data) {
-            if (data.status == "SUCCESS") {
-                var message = "系统自动保存成功！";
-                if (data.messages)
-                    message = data.messages;
-                $("#auto_prompt_info").css({
-                    color : "green"
-                }).html(message);
-                if (data.article_id) {
-                    $("#id").val(data.article_id);
+        url: $("#context-path").text() + "/article/autoSave.html",
+        type: "post",
+        data: formData,
+        dataType: "json",
+        success: function (json) {
+            if (json.status == 0) {
+                var message = json.messages ? json.messages : "系统自动保存成功！";
+                $("#auto_prompt_info").css({color: "green"}).html(message);
+                if (json.datas && json.datas.article_id) {
+                    $("#id").val(json.datas.article_id);
                     $("#editOrCreate").val("EDIT");
                 }
+            } else {
+                var message = json.messages ? json.messages : "系统自动保存失败！";
+                $("#auto_prompt_info").css({color: "red"}).html(message);
             }
-        },
-        error : function(xhr, strError, errorObj) {
-            $("#auto_prompt_info").css({
-                color : "red"
-            }).html(errorObj);
         }
     });
 }
@@ -273,9 +269,9 @@ function replaceHtmlSymbol(html) {
     return html.replace(/</gm, '&lt;').replace(/>/gm, '&gt;').replace(/"/gm, '&quot;');
 }
 
-$(function() {
+$(function () {
     // 切换编辑器
-    $("body").on("click", "#convert-button", function() {
+    $("body").on("click", "#convert-button", function () {
         var count = editor.txt.text();
         if ($("#id").length > 0 && $("#id").val() != '' || count != '') {
             // 是编辑，则切换时提醒用户HTML转markdown信息的丢失
@@ -288,7 +284,7 @@ $(function() {
         }
     });
 
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         var header = $(".w-e-toolbar");
         var sticky = header[0].offsetTop;
         if (window.pageYOffset > sticky + 51) {

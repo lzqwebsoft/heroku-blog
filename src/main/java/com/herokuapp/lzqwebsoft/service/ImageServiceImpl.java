@@ -36,7 +36,7 @@ public class ImageServiceImpl implements ImageService {
             // 添加七牛云文件备份
             image = QiniuUtil.upload(image);
             imageDAO.save(image);
-            return "images/show/" + image.getId() + ".html";
+            return "images/show/" + image.getId() + ".jpg";
         } catch (IOException e) {
             e.printStackTrace();
         }

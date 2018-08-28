@@ -5,8 +5,7 @@ function path() {
     for(var i = 0; i < args.length; i++)
         result.push(args[i].replace('@', 'js/shl/scripts/'));
     return result;
-};
- 
+}
 SyntaxHighlighter.autoloader.apply(null, path(
     'applescript            @shBrushAppleScript.js',
     'actionscript3 as3      @shBrushAS3.js',
@@ -87,7 +86,7 @@ $(function() {
     // 自动提取文章的标题生成对应的目录
     $("#article_content :header").each(function(idx, elm) {
         var current_elm = $(elm);
-        current_elm.attr('id', 'st'+idx)
+        current_elm.attr('id', 'st'+idx);
         var tagName = current_elm.get(0).tagName;
         var num = Number(tagName.substr(tagName.length-1));
         var new_node = $('<li><a href="#st'+idx+'">'+ current_elm.text() +'</a></li>');
@@ -129,7 +128,7 @@ $(function() {
     // 验证表单用户输入值
     $("#reply_comment").submit(function(event) {
         event.preventDefault();
-        editor.sync()
+        editor.sync();
         var nickname = $("#reviewer").val();
         var info_node = $("#add-comment-info-div");
         if($.trim(nickname)=="") {

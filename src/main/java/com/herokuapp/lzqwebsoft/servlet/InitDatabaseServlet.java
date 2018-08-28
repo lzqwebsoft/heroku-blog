@@ -22,7 +22,7 @@ public class InitDatabaseServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
 
-    public void init() throws ServletException { 
+    public void init() {
         try {
 //            Connection connection = getConnection();
 //            Statement stmt = connection.createStatement();

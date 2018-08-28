@@ -3,6 +3,11 @@ spring:
     banner-mode: "off"
   application:
     name: heroku-blog
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
 server:
   # 启用GZIP压缩
   compression:

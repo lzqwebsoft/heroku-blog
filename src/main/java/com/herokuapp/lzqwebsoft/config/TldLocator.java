@@ -2,7 +2,6 @@ package com.herokuapp.lzqwebsoft.config;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLClassLoader;
 import java.util.HashMap;
 
 import javax.xml.stream.XMLInputFactory;
@@ -43,7 +42,7 @@ public class TldLocator {
 
     static HashMap<String, TagLibraryInfo> createTldInfos() {
 
-        final URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
         final ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(loader);
         final Resource[] resources;

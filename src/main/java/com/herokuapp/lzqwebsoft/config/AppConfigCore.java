@@ -24,7 +24,7 @@ public class AppConfigCore implements WebMvcConfigurer {
     public FilterRegistrationBean<WhitespaceFilter> whitespaceFilter() {
         FilterRegistrationBean<WhitespaceFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new WhitespaceFilter());
-        registrationBean.addUrlPatterns("/*");
+        registrationBean.addUrlPatterns("*.html");
         return registrationBean;
     }
 

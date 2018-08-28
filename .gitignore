@@ -7,6 +7,7 @@
 *.iml
 # Package Files #
 target
+out
 *.jar
 *.war
 *.ear

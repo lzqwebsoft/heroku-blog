@@ -22,21 +22,20 @@ public class BlogInfoInterceptor implements HandlerInterceptor{
 
 	@Override
 	public void afterCompletion(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception exception)
-			throws Exception {
+			HttpServletResponse response, Object handler, Exception exception) {
 		
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest requset, HttpServletResponse response,
-			Object handler, ModelAndView model) throws Exception {
+			Object handler, ModelAndView model) {
 		BlogInfo blogInfo = blogInfoService.getSystemBlogInfo();
 		requset.setAttribute(CommonConstant.BLOG_INFO, blogInfo);
 	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler) throws Exception {
+			Object handler) {
 		return true;
 	}
 

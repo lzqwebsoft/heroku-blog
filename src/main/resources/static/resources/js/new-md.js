@@ -175,26 +175,35 @@ $(function () {
     $("body").on("change", "#file-upload", function () {
         var current = $(this)[0];
         if (current.value != '') {
-            var img = $("<img src="+$("#context-path").text()+"'/resources/images/loading.gif'/>");
+            var img = $("<img src=" + $("#context-path").text() + "'/resources/images/loading.gif'/>");
             img.css({"position": "absolute", "top": "45%", "left": "50%"});
             var loading = $("<div id='loading'></div>");
-            loading.css({"position": "absolute", "top": "0", "left": "0", "width": "100%", "height": "100%", "background-color": "#FFF", "opacity": "0.4"}).append(img).appendTo($("#image-upload-dialog .modal-content"));
+            loading.css({
+                "position": "absolute",
+                "top": "0",
+                "left": "0",
+                "width": "100%",
+                "height": "100%",
+                "background-color": "#FFF",
+                "opacity": "0.4"
+            }).append(img).appendTo($("#image-upload-dialog .modal-content"));
             var formData = new FormData();
             formData.append("imgFile", current.files[0]);
             $.ajax({
-                url: $("#context-path").text()+"/images/upload.html",
+                url: $("#context-path").text() + "/images/upload.html",
                 type: 'POST',
                 data: formData,
                 processData: false, // 必须false才会避开jQuery对formdata 的默认处理
                 contentType: false, // 必须false才会自动加上正确的Content-Type
                 success: function (responseStr) {
                     try {
-                        if(responseStr.url != null && responseStr.error == 0) {
+                        if (responseStr.url != null && responseStr.error == 0) {
                             $("#image-url").val(responseStr.url);
                             loading.remove();
                             return;
                         }
-                    } catch(e){}
+                    } catch (e) {
+                    }
                     alert('上传文件失败');
                     loading.remove();
                 },
@@ -214,9 +223,9 @@ $(function () {
         var url = $("#image-url").val() || "http://";
         _replaceSelection(cm, stat.image, options.insertTexts.image, url);
     });
-    
+
     // 切换编辑器
-    $("body").on("click", "#convert-button", function() {
+    $("body").on("click", "#convert-button", function () {
         var content = editor.value();
         if ($("#id").length > 0 && $("#id").val() != '' || content != "") {
             // 是编辑，则切换时提醒用户HTML转markdown信息的丢失
@@ -299,31 +308,30 @@ function _replaceSelection(cm, active, startEnd, url) {
 
 // 定时循还执行文章保存,每5分钟执行一次
 var timeid = window.setInterval(autoSaveArticle, 300000);
+
 function autoSaveArticle() {
     var content = editor.value();
-    if(content == '' || $.trim(content).length <= 0) {
+    if (content == '' || $.trim(content).length <= 0) {
         return;
     }
     var formData = $("#article").serialize();
     $.ajax({
-        url: $("#context-path").text()+"/article/autoSave.html",
+        url: $("#context-path").text() + "/article/autoSave.html",
         type: "post",
         data: formData,
         dataType: "json",
-        success: function(data) {
-            if(data.status=="SUCCESS") {
-                var message = "系统自动保存成功！";
-                if(data.messages)
-                    message = data.messages;
+        success: function (json) {
+            if (json.status == 0) {
+                var message = json.messages ? json.messages : "系统自动保存成功！";
                 $("#auto_prompt_info").css({color: "green"}).html(message);
-                if(data.article_id) {
-                    $("#id").val(data.article_id);
+                if (json.datas && json.datas.article_id) {
+                    $("#id").val(json.datas.article_id);
                     $("#editOrCreate").val("EDIT");
                 }
+            } else {
+                var message = json.messages ? json.messages : "系统自动保存失败！";
+                $("#auto_prompt_info").css({color: "red"}).html(message);
             }
-        },
-        error: function(xhr, strError, errorObj) {
-            $("#auto_prompt_info").css({color: "red"}).html(errorObj);
         }
     });
 }

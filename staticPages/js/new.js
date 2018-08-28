@@ -32,7 +32,7 @@ editor = KindEditor.ready(function(K) {
 });
 
 function check_article_input() {
-    editor.sync()
+    editor.sync();
     var prompt_info = $("#prompt_info");
     var pattern_type = $("#patternTypeId").val();
     if(pattern_type==null || pattern_type=="" || pattern_type=="0") {
