@@ -12,7 +12,7 @@
                     <font color="red">博主</font>发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
                 </c:when>
                 <c:otherwise>
-                    <a href="<c:out value="${comment.website}" default="javascript:void(0)" />">${comment.reviewer}</a>发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                    <a href="<c:out value="${comment.website}" default="javascript:void(0)" />">${comment.reviewer}</a>${comment.fromLocalLabel}发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
                 </c:otherwise>
             </c:choose>
             <span class="pull-right">
@@ -40,7 +40,7 @@
                             <font color="red">博主</font>发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
                         </c:when>
                         <c:otherwise>
-                            Re：<a href="<c:out value="${childComment.website}" default="javascript:void(0)" />">${childComment.reviewer}</a>发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                            Re：<a href="<c:out value="${childComment.website}" default="javascript:void(0)" />">${childComment.reviewer}</a>${comment.fromLocalLabel}发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
                         </c:otherwise>
                     </c:choose>
                     <span class="pull-right">
