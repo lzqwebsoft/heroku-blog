@@ -15,10 +15,10 @@
     <div id="blog-header" class="container">
 
         <h2>
-            <spring:message code="info.error400.title" />
+            <spring:message code="info.errorNO.title" arguments="${errorCode}" />
         </h2>
         <h3>
-            <spring:message code="info.error400.content" />
+            <spring:message code="info.errorNO.content" />
         </h3>
 
         <!-- 页面底端说明 -->

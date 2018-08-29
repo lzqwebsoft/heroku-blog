@@ -120,7 +120,7 @@ public class HomeController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getHeaders.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/getHeaders", method = RequestMethod.GET)
     public Map<String, String> headers(HttpServletRequest request) {
         Map<String, String> map = new HashMap<String, String>();
 
