@@ -25,6 +25,7 @@ import com.herokuapp.lzqwebsoft.util.CommonConstant;
 import com.herokuapp.lzqwebsoft.util.MailUtil;
 import com.herokuapp.lzqwebsoft.util.SHA1Util;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 主要用于用户的登录、改密、及找回密码
@@ -190,19 +191,19 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping("/found_pwd.html")
-    public String foundPassword(String email, ModelMap model, HttpServletRequest request, Locale locale) {
+    public String foundPassword(String email, ModelMap model, HttpServletRequest request, Locale locale, RedirectAttributes redirectAttrs) {
         if (email == null || email.trim().length() <= 0) {
             String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
             String errorInfo = messageSource.getMessage("info.required", new Object[]{emailLabel}, locale);
-            model.addAttribute("errorInfo", errorInfo);
-            return "forget_pwd";
+            redirectAttrs.addFlashAttribute("errorInfo", errorInfo);
+            return "redirect:/forget_pwd.html";
         }
         if (!email.matches("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")) {
             String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
             String errorInfo = messageSource.getMessage("info.invalid", new Object[]{emailLabel}, locale);
-            model.addAttribute("errorInfo", errorInfo);
-            model.addAttribute("email", email);
-            return "forget_pwd";
+            redirectAttrs.addFlashAttribute("errorInfo", errorInfo);
+            redirectAttrs.addFlashAttribute("email", email);
+            return "redirect:/forget_pwd.html";
         }
 
         // 验证数据库中是否存在指定邮箱
@@ -210,9 +211,9 @@ public class UserController extends BaseController {
         if (user == null) {
             String emailLabel = messageSource.getMessage("page.label.foundPwd.email", null, locale);
             String errorInfo = messageSource.getMessage("info.notexist", new Object[]{emailLabel}, locale);
-            model.addAttribute("errorInfo", errorInfo);
-            model.addAttribute("email", email);
-            return "forget_pwd";
+            redirectAttrs.addFlashAttribute("errorInfo", errorInfo);
+            redirectAttrs.addFlashAttribute("email", email);
+            return "redirect:/forget_pwd.html";
         }
 
         // 生成sid
@@ -232,10 +233,15 @@ public class UserController extends BaseController {
         String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
         String subject = messageSource.getMessage("email.foundpwd.title", null, locale);
         String content = messageSource.getMessage("email.foundpwd.content", new Object[]{user.getUserName(), dateStr, link.toString()}, locale);
-        MailUtil.sendEMail(user.getEmail(), subject, content);
-
-        model.addAttribute("email", email);
-        return "found_pwd";
+        if (MailUtil.sendEMail(user.getEmail(), subject, content)) {
+            model.addAttribute("email", email);
+            return "found_pwd";
+        } else {
+            String message = messageSource.getMessage("email.send.error.info", null, locale);
+            redirectAttrs.addFlashAttribute("errorInfo", message);
+            redirectAttrs.addFlashAttribute("email", email);
+            return "redirect:/forget_pwd.html";
+        }
     }
 
     @RequestMapping("/authenticate.html")

@@ -37,6 +37,7 @@ public class CustomContainer extends UndertowWebServerFactoryCustomizer {
             public void customize(DeploymentInfo deploymentInfo) {
                 deploymentInfo.setClassLoader(CustomContainer.class.getClassLoader())
                         .setContextPath("/")
+                        .setDefaultEncoding("UTF-8").setUrlEncoding("UTF-8")
                         .setDeploymentName("heroku-blog.war")
                         .setResourceManager(new DefaultResourceLoader(CustomContainer.class))
                         .addServlet(JspServletBuilder.createServlet("Default Jsp Servlet", "*.jsp"));
