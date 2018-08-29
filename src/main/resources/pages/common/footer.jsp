@@ -5,7 +5,7 @@
 <hr />
 <footer>
     <p>
-        Powered by <a href="http://www.heroku.com">Heroku</a>, UI by <a href="http://www.bootcss.com/">Bootstrap</a>, Design by <a href="https://twitter.com/lzqwebsoft">lzqwebsoft</a>.
+        Powered by <a href="https://spring.io/">Spring</a>, UI by <a href="http://www.bootcss.com/">Bootstrap</a>, Design by <a href="https://twitter.com/lzqwebsoft">-ZQLUO-</a>.
     </p>
     <p>Copyright &copy; 2012 - <fmt:formatDate value="${currDate}" pattern="yyyy" /></p>
 </footer>
