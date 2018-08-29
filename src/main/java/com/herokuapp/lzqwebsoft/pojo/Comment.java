@@ -73,7 +73,7 @@ public class Comment {
 
     public String getFromLocalLabel() {
         if (fromLocal != null && fromLocal.trim().length() > 0 && !fromLocal.equalsIgnoreCase("保留地址")) {
-            return "(" + fromLocal + ")";
+            return "<small>(" + fromLocal + ")</small>";
         } else {
             return "";
         }
