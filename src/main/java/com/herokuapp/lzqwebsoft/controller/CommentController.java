@@ -39,6 +39,10 @@ public class CommentController extends BaseController {
     @RequestMapping("/comment/add.html")
     public String add(Comment comment, String parent_comment_id, String root_comment_id, String validateCode, ModelMap model, HttpServletRequest request, HttpSession session,
                       HttpServletResponse response) {
+        // 验证数据的合法性
+        Locale locale = request.getLocale();
+        List<String> errors = new ArrayList<String>();
+
         // 判断用户是否登录,则博主不用输入昵称与网址
         User user = (User) session.getAttribute(CommonConstant.LOGIN_USER);
         if (user != null) {
@@ -46,11 +50,21 @@ public class CommentController extends BaseController {
             comment.setWebsite("http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
             // 标记此条评论由博主产生
             comment.setIsBlogger(true);
-        }
+        } else {
+            // 只有未登录的用户才需要验证图片验证码
+            String captcha = (String) session.getAttribute(CommonConstant.CAPTCHA);
+            if (!validateCode.equalsIgnoreCase(captcha)) {
+                errors.add(messageSource.getMessage("info.invalid.captcha", null, locale));
+            }
+            // 验证通过后清除SESSION验证码
+            session.removeAttribute(CommonConstant.CAPTCHA);
 
-        // 验证数据的合法性
-        Locale locale = request.getLocale();
-        List<String> errors = new ArrayList<String>();
+            // 记录评论者的IP，及归属地
+            String ip = getIpAddr(request);
+            String local = getIPLocation(ip);
+            comment.setFromIP(ip);
+            comment.setFromLocal(local);
+        }
         String reviewer = comment.getReviewer();
         String contentStr = comment.getContent();
         String website = comment.getWebsite();
@@ -76,12 +90,6 @@ public class CommentController extends BaseController {
                 errors.add(messageSource.getMessage("info.length.long", new Object[]{contentLabel, 120}, locale));
             }
         }
-        String captcha = (String) session.getAttribute(CommonConstant.CAPTCHA);
-        if (!validateCode.equalsIgnoreCase(captcha)) {
-            errors.add(messageSource.getMessage("info.invalid.captcha", null, locale));
-        }
-        // 验证通过后清除SESSION验证码
-        session.removeAttribute(CommonConstant.CAPTCHA);
         // 验证当前博客是否允许评论
         Article article = comment.getArticle();
         article = articleService.get(article.getId());
