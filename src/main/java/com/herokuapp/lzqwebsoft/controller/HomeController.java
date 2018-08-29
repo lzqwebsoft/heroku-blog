@@ -42,9 +42,9 @@ public class HomeController extends BaseController {
         if (pageNo == null || pageNo <= 0)
             pageNo = 1;
         Page<Article> page = articleService.getAllAricle(pageNo, 15);
-        // 当请求的页面数中没有数据，则重定向到上一页
+        // 当请求的页面数中没有数据，则重定向到最后一页
         if (pageNo > 1 && page.getData().size() <= 0) {
-            model.addAttribute("pageNo", pageNo - 1);
+            model.addAttribute("pageNo", page.getTotalPageCount());
             return "redirect:/index.html";
         }
         model.addAttribute("page", page);
@@ -64,9 +64,9 @@ public class HomeController extends BaseController {
             pageNo = 1;
 
         Page<Article> articles = articleService.getArticleByTypeId(articleTypeId, pageNo, 15);
-        // 当请求的页面数中没有数据，则重定向到上一页
+        // 当请求的页面数中没有数据，则重定向到最后一页
         if (pageNo > 1 && articles.getData().size() <= 0) {
-            model.addAttribute("pageNo", pageNo - 1);
+            model.addAttribute("pageNo", articles.getTotalPageCount());
             return "redirect:/select/" + articleTypeId + ".html";
         }
         model.addAttribute("page", articles);
