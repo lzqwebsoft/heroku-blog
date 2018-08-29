@@ -64,7 +64,7 @@ public class MailUtil {
 
             InternetAddress to_mail = new InternetAddress(to);
             message.setRecipient(Message.RecipientType.TO, to_mail);
-            message.setSubject(subject);
+            message.setSubject(subject, "UTF-8");
             message.setSentDate(new Date());
 
             BodyPart mdp = new MimeBodyPart();
