@@ -1,6 +1,8 @@
 package com.herokuapp.lzqwebsoft.interceptor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -58,11 +61,20 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
                 Pattern pattern = Pattern.compile(".*" + url + "$", Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(requestURL);
                 if (url != null && matcher.matches()) {
-                    if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                    if (!"XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
                         // AJAX请求，则不将URL放入session,登录成功后不跳AJAX链接
                         session.setAttribute(CommonConstant.LAST_REQUEST_URL, requestURL);
+                        response.sendRedirect(request.getContextPath() + "/signIn.html");
+                    } else {
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        response.setContentType("application/json;charset=UTF-8");
+
+                        Map<String, String> json = new HashMap();
+                        json.put("status", "-1");
+                        json.put("messages", "用户未登录，请先登录！");
+                        json.put("redirect_url", request.getContextPath() + "/signIn.html");
+                        response.getWriter().write(new Gson().toJson(json));
                     }
-                    response.sendRedirect(request.getContextPath() + "/signIn.html");
                     return false;
                 }
                 count--;

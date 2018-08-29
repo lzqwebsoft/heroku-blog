@@ -333,14 +333,14 @@ $(function () {
             type: "post",
             data: form_data,
             success: function (data, status) {
-                if (data.status != 0) {
+                if (data.status == 1) {
                     var error_ul = $("<ul></ul>");
                     $.each(data.messages, function (idx, message) {
                         error_ul.append("<li>" + message + "</li>")
                     });
                     $("#configure-messages").hide().text("");
                     $("#configure-errors").append(error_ul).show();
-                } else {
+                } else if (data.status == 0) {
                     $("#configure-errors").hide().html("");
                     $("#configure-messages").text(data.messages).show();
                 }

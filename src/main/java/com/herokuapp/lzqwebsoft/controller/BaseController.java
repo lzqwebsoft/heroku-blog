@@ -1,6 +1,7 @@
 package com.herokuapp.lzqwebsoft.controller;
 
 import com.google.gson.Gson;
+import com.herokuapp.lzqwebsoft.util.HtmlSingleLineWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.View;
@@ -54,6 +55,7 @@ public class BaseController {
     public String render(String view, ModelMap model, HttpServletRequest request, HttpServletResponse response) {
         View resolvedView = null;
         try {
+            response = HtmlSingleLineWriter.wrapResponse(response);
             resolvedView = viewResover.resolveViewName(view, request.getLocale());
             resolvedView.render(model, request, response);
         } catch (Exception e) {
