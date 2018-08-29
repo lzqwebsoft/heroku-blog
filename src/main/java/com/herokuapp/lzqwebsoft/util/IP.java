@@ -1,5 +1,8 @@
 package com.herokuapp.lzqwebsoft.util;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,19 +29,25 @@ public class IP {
     private static ReentrantLock lock = new ReentrantLock();
 
     static {
-        IP.load("static/17monipdb.dat");
+        IP.load("classpath:static/17monipdb.dat");
     }
 
     public static void load(String filename) {
-        ipFile = new File(IP.class.getClassLoader().getResource(filename).getFile());
-        load();
-        if (enableFileWatch) {
-            watch();
+        Resource resource = new ClassPathResource(filename);
+        try {
+            ipFile = resource.getFile();
+            load();
+            if (enableFileWatch) {
+                watch();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public static void load(String filename, boolean strict) throws Exception {
-        ipFile = new File(IP.class.getClassLoader().getResource(filename).getFile());
+        Resource resource = new ClassPathResource(filename);
+        ipFile = resource.getFile();
         if (strict) {
             int contentLength = Long.valueOf(ipFile.length()).intValue();
             if (contentLength < 512 * 1024) {

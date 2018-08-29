@@ -86,15 +86,20 @@ public class BaseController {
     public String getIPLocation(String ip) {
         if (ip == null || ip.trim().length() == 0)
             return "";
-        String[] resultIP = IP.find(ip);
-        if (resultIP != null && resultIP.length > 0) {
-            Set<String> set = new HashSet<String>(Arrays.asList(resultIP));
-            StringBuffer location = new StringBuffer();
-            for (String place : set) {
-                location.append(place);
+        try {
+            String[] resultIP = IP.find(ip);
+            if (resultIP != null && resultIP.length > 0) {
+                Set<String> set = new HashSet<String>(Arrays.asList(resultIP));
+                StringBuffer location = new StringBuffer();
+                for (String place : set) {
+                    location.append(place);
+                }
+                return location.toString();
             }
-            return location.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return "";
         }
-        return "";
     }
 }
