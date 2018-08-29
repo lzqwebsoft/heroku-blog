@@ -98,8 +98,7 @@ public class BaseController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            return "";
         }
+        return "";
     }
 }
