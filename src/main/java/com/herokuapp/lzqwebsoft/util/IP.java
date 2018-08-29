@@ -30,6 +30,9 @@ public class IP {
 
     static {
         IP.load("classpath:static/17monipdb.dat");
+        if (ipFile == null) {
+            IP.load("static/17monipdb.dat");
+        }
     }
 
     public static void load(String filename) {
