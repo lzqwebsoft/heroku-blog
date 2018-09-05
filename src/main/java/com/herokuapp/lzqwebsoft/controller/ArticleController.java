@@ -286,9 +286,9 @@ public class ArticleController extends BaseController {
         articleService.delete(articleId);
         Page<Article> articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNo, 15);
 
-        // 如果删除的一条数据刚好是这一页的最后一条数据，则显示上页
+        // 如果删除的一条数据刚好是这一页的最后一条数据，则显示最后一页
         if (pageNo > 1 && articles.getData().size() <= 0) {
-            articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, pageNo - 1, 15);
+            articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, (int)articles.getTotalPageCount(), 15);
         }
 
         request.setAttribute("page", articles);
@@ -308,9 +308,9 @@ public class ArticleController extends BaseController {
         // 所有的草稿
         Page<Article> page_drafts = articleService.getAllDrafts(pageNo, 15);
 
-        // 如果删除的一条数据刚好是这一页的最后一条数据，则显示上页
+        // 如果删除的一条数据刚好是这一页的最后一条数据，则显示最后一页
         if (pageNo > 1 && page_drafts.getData().size() <= 0)
-            page_drafts = articleService.getAllDrafts(pageNo - 1, 15);
+            page_drafts = articleService.getAllDrafts((int)page_drafts.getTotalPageCount(), 15);
 
         request.setAttribute("page_drafts", page_drafts);
 
