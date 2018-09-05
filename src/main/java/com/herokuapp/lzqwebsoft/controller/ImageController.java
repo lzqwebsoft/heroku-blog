@@ -90,7 +90,7 @@ public class ImageController extends BaseController {
             pageNo = 1;
         Page<Image> images = imageService.getAllImagesByPage(pageNo, 20);
         if ((images.getData() == null || images.getData().size() <= 0) && pageNo > 1) {
-            model.addAttribute("pageNo", pageNo - 1);
+            model.addAttribute("pageNo", images.getTotalPageCount());
             return "redirect:/images/page.html";
         }
         model.addAttribute("images", images);
