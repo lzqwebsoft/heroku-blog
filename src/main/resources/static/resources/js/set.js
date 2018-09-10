@@ -266,7 +266,7 @@ function delete_image(message, id, pageNo) {
     var option = confirm(message);
     if (option) {
         $.ajax({
-            url: "images/delete/" + id + ".html",
+            url: "images/delete/" + id + ".jpg",
             type: "post",
             data: {
                 "pageNo": pageNo
