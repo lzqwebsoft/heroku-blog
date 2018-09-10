@@ -1,7 +1,6 @@
 package com.herokuapp.lzqwebsoft.service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +13,8 @@ import com.herokuapp.lzqwebsoft.pojo.Article;
 import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.Page;
 
+import static java.util.stream.Collectors.toList;
+
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
@@ -23,6 +24,14 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDAO articleDAO;
 
     public void save(Article article, String typeName, boolean modelNew, boolean isDraft) {
+        saveOrUpdate(article, typeName, modelNew, isDraft, true);
+    }
+
+    public void update(Article article, String typeName, boolean modelNew, boolean isDraft) {
+        saveOrUpdate(article, typeName, modelNew, isDraft, false);
+    }
+
+    private void saveOrUpdate(Article article, String typeName, boolean modelNew, boolean isDraft, boolean isNew) {
         // 判断文章的类型是否通过文本框输入来得到
         if (modelNew) {
             ArticleType type = articleTypeDAO.getArticleTypeByName(typeName);
@@ -41,62 +50,37 @@ public class ArticleServiceImpl implements ArticleService {
             ArticleType type = articleTypeDAO.getArticleTypeById(article.getType().getId());
             article.setType(type);
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
-        String id = format.format(new Date());
 
-        // 文件对象入库
-        Date now = new Date();
-        article.setId(id);
         // 判断是否将文章保存为草稿或发表
         if (isDraft)
             article.setStatus(0);
         else
             article.setStatus(1);
-        article.setReadedNum(0);
-        article.setCreateAt(now);
-        article.setUpdateAt(now);
-        articleDAO.save(article);
-    }
 
-    public void update(Article article, String typeName, boolean modelNew, boolean isDraft) {
-        // 判断文章的类型是否通过文本框输入来得到
-        if (modelNew) {
-            ArticleType type = articleTypeDAO.getArticleTypeByName(typeName);
-            if (type == null) {
-                type = new ArticleType();
-                type.setName(typeName);
-                type.setDisable(false);
-                type.setCreateAt(new Date());
-                type.setUpdateAt(new Date());
-                articleTypeDAO.save(type);
-                article.setType(type);
-            } else {
-                article.setType(type);
-            }
-        } else {
-            ArticleType type = articleTypeDAO.getArticleTypeById(article.getType().getId());
-            article.setType(type);
+        Date now = new Date();
+        if (isNew) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
+            String id = format.format(new Date());
+            article.setId(id);
+            article.setCreateAt(now);
+            article.setReadedNum(0);
         }
-
-        // 更新文件对象
-        Date now = new Date();
-        // 判断是否将文章保存为草稿或发表
-        if (isDraft)
-            article.setStatus(0);
-        else
-            article.setStatus(1);
         article.setUpdateAt(now);
-        articleDAO.edit(article);
+        if (isNew) {
+            articleDAO.save(article);
+        } else {
+            articleDAO.edit(article);
+        }
     }
-    
-    
+
+
     public void autoSave(Article article, boolean isEdit) {
         // 更新文件对象
         Date now = new Date();
         // 将文章保存为草稿
         article.setStatus(0);
         article.setUpdateAt(now);
-        if(isEdit) {
+        if (isEdit) {
             articleDAO.edit(article);
         } else {
             SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -106,7 +90,7 @@ public class ArticleServiceImpl implements ArticleService {
             article.setCreateAt(now);
             articleDAO.save(article);
         }
-        
+
     }
 
     public void addViewedCount(Article article) {
@@ -131,14 +115,8 @@ public class ArticleServiceImpl implements ArticleService {
     public Page<Article> getAllAricle(int pageNo, int pageSize) {
         Page<Article> page = articleDAO.getAllArticle(pageNo, pageSize);
         List<Article> list = page.getData();
-        List<Article> articles = new ArrayList<Article>();
-        for (Article article : list) {
-            String content = article.getContent();
-            content = decodeContent(content);
-            article.setContent(content);
-            articles.add(article);
-        }
-        page.setData(articles);
+        list = list.stream().map(article -> decodeContent(article)).collect(toList());
+        page.setData(list);
         return page;
     }
 
@@ -174,14 +152,8 @@ public class ArticleServiceImpl implements ArticleService {
     public Page<Article> getArticleByTypeId(int typeId, int pageNo, int pageSize) {
         Page<Article> page = articleDAO.selectArticleByTypeId(typeId, pageNo, pageSize);
         List<Article> list = page.getData();
-        List<Article> articles = new ArrayList<Article>();
-        for (Article article : list) {
-            String content = article.getContent();
-            content = decodeContent(content);
-            article.setContent(content);
-            articles.add(article);
-        }
-        page.setData(articles);
+        list = list.stream().map(article -> decodeContent(article)).collect(toList());
+        page.setData(list);
         return page;
     }
 
@@ -200,9 +172,10 @@ public class ArticleServiceImpl implements ArticleService {
     public Article getPreviousArticle(Article article) {
         return articleDAO.getPreviousArticle(article);
     }
-    
+
     // 转化文章内容去HTML，并省略为400字
-    private String decodeContent(String content) {
+    private Article decodeContent(Article article) {
+        String content = article.getContent();
         content = content.replaceAll("(?i)<style([\\s\\S]+?)</style>|(?i)<script([\\s\\S]+?)</script>", "");
         content = content.replaceAll("<.*?>", "");
         content = content.replaceAll("(\\s)+", " ");
@@ -211,7 +184,8 @@ public class ArticleServiceImpl implements ArticleService {
             content = content.substring(0, 400);
             content += "...";
         }
-        return content;
+        article.setContent(content);
+        return article;
     }
 
     @Override
