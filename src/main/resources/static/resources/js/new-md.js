@@ -237,6 +237,17 @@ $(function () {
             window.location.href = $("#context-path").text() + "/article/newhtml.html";
         }
     });
+    window.onbeforeunload = function (evt) {
+        var message = '文章是否已保存, 确定要离开?';
+        if (typeof evt == 'undefined') {
+            evt = window.event;
+        }
+        if (evt) {
+            evt.returnValue = message;
+        }
+
+        return message;
+    }
 });
 
 function check_article_input() {
