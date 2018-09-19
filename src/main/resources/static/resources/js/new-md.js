@@ -238,6 +238,7 @@ $(function () {
         }
     });
     window.onbeforeunload = function (evt) {
+        evt.preventDefault();
         var message = '文章是否已保存, 确定要离开?';
         if (typeof evt == 'undefined') {
             evt = window.event;
@@ -251,6 +252,7 @@ $(function () {
 });
 
 function check_article_input() {
+    window.onbeforeunload = null;
     var prompt_info = $("#prompt_info");
     var pattern_type = $("#patternTypeId").val();
     if (pattern_type == null || pattern_type == "" || pattern_type == "0") {
