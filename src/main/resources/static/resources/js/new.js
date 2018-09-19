@@ -70,6 +70,7 @@ editor = KindEditor.ready(function (K) {
 });
 
 function check_article_input() {
+    window.onbeforeunload = null;
     editor.sync();
     var prompt_info = $("#prompt_info");
     var pattern_type = $("#patternTypeId").val();
@@ -153,6 +154,7 @@ $(function () {
         }
     });
     window.onbeforeunload = function (evt) {
+        evt.preventDefault();
         var message = '文章是否已保存, 确定要离开?';
         if (typeof evt == 'undefined') {
             evt = window.event;
