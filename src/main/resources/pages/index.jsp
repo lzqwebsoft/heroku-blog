@@ -175,7 +175,6 @@
                     <div class="list-group">
                         <a href="http://blog.csdn.net/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> CSDN</a>
                         <a href="http://my.oschina.net/websoft" class="list-group-item glyphicon glyphicon-link"> 开源中国</a>
-                        <a href="http://weibo.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> 新浪微博</a>
                         <a href="https://www.facebook.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Facebook</a>
                         <a href="https://twitter.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Tiwtter</a>
                     </div>
