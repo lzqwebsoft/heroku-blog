@@ -4,6 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.herokuapp.lzqwebsoft.util.SearchUtils;
+import org.apache.lucene.search.Query;
+import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +28,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleDAO articleDAO;
+
+    public void initializeHibernateSearch() {
+        try {
+            FullTextSession fullTextSession = Search.getFullTextSession(articleDAO.getSession());
+            fullTextSession.createIndexer().startAndWait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void save(Article article, String typeName, boolean modelNew, boolean isDraft) {
         saveOrUpdate(article, typeName, modelNew, isDraft, true);
@@ -155,6 +170,23 @@ public class ArticleServiceImpl implements ArticleService {
         list = list.stream().map(article -> decodeContent(article)).collect(toList());
         page.setData(list);
         return page;
+    }
+
+    public Page<Article> search(String keyword, int pageNo, int pageSize) {
+        FullTextSession fts = Search.getFullTextSession(articleDAO.getSession());
+        QueryBuilder qb = fts.getSearchFactory().buildQueryBuilder().forEntity(Article.class).get();
+        Query luceneQuery = qb.bool().must(qb.keyword().onField("status").matching(1).createQuery()) // 已发布的
+                .must(qb.keyword().onFields("title", "content").matching(keyword).createQuery()).createQuery();
+        FullTextQuery query = fts.createFullTextQuery(luceneQuery, Article.class);
+        query.setFirstResult((pageNo - 1) * pageSize);
+        query.setMaxResults(pageSize);
+        // 得到数据并将数据高亮
+        List<Article> list = SearchUtils.hightLightArtilce(luceneQuery, query.list(), 400, "title", "content");
+        // 封装分页数据
+        Page<Article> model = new Page(query.getFirstResult(), query.getResultSize(), pageSize, 5, list);
+        model.setData(list);
+
+        return model;
     }
 
     public List<Article> getReadedTop10() {

@@ -1,5 +1,7 @@
 package com.herokuapp.lzqwebsoft;
 
+import com.herokuapp.lzqwebsoft.service.ArticleService;
+import com.herokuapp.lzqwebsoft.service.ArticleServiceImpl;
 import io.undertow.Undertow;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,6 +11,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(exclude = {
@@ -31,7 +34,9 @@ public class StartApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(StartApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(StartApplication.class, args);
+        // 初始化索引与数据库同步
+        context.getBean(ArticleService.class).initializeHibernateSearch();
     }
 
 }

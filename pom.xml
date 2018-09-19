@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.4.RELEASE</version>
+        <version>2.0.5.RELEASE</version>
     </parent>
 
     <properties>
@@ -28,6 +28,8 @@
         <flexmark.version>0.34.12</flexmark.version>
         <!-- JAXB API被认为是Java EE API，因此不再包含在Java SE 9中的默认类路径中。在Java 11中，它们完全从JDK中删除。 -->
         <jaxb.version>2.3.0</jaxb.version>
+        <hibernate.search.version>5.9.3.Final</hibernate.search.version>
+        <lucene.version>5.5.5</lucene.version>
     </properties>
 
     <dependencies>
@@ -151,6 +153,24 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+            <version>${hibernate.search.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>${lucene.version}</version>
         </dependency>
 
         <!-- JSP支持在undertow下 -->

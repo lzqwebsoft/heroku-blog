@@ -27,6 +27,7 @@
             <mvc:mapping path="/show/*.html" />
             <mvc:mapping path="/index.html" />
             <mvc:mapping path="/select/*.html" />
+            <mvc:mapping path="/search.html" />
             <bean class="com.herokuapp.lzqwebsoft.interceptor.BlogInfoInterceptor" />
         </mvc:interceptor>
         <!-- 当网友评论博文时，邮件通知博主 -->

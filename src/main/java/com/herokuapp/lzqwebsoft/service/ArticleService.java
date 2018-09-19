@@ -175,4 +175,19 @@ public interface ArticleService {
      * @param article  文章对象
      */
     void update(Article article);
+
+    /**
+     * hibernate search 文章查询
+     * @param keyword  关键字
+     * @param pageNo  页面数
+     * @param pageSize 页面每页数
+     *
+     * @return Page<Article> 文章翻页数量
+     */
+    Page<Article> search(String keyword, int pageNo, int pageSize);
+
+    /**
+     * 初始化Hibernate Search中的索引与现存数据库中的数据同步
+     */
+    void initializeHibernateSearch();
 }

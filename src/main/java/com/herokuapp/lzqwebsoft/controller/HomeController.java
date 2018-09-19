@@ -79,6 +79,34 @@ public class HomeController extends BaseController {
         return "index";
     }
 
+    @RequestMapping(value = "/search.html")
+    public String select(String q, Integer pageNo, ModelMap model) {
+        if(q.trim().length() == 0) {
+            return "redirect:/";
+        }
+
+        if (pageNo == null || pageNo <= 0)
+            pageNo = 1;
+
+        Page<Article> articles = articleService.search(q, pageNo, 15);
+        // 当请求的页面数中没有数据，则重定向到最后一页
+        if (pageNo > 1 && pageNo > articles.getTotalPageCount() && articles.getData().size() <= 0) {
+            model.addAttribute("pageNo", articles.getTotalPageCount());
+            model.addAttribute("q", q);
+            return "redirect:/search.html";
+        }
+        model.addAttribute("page", articles);
+
+        List<Article> top10Articles = articleService.getReadedTop10();
+        model.addAttribute("top10Articles", top10Articles);
+
+        List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
+        model.addAttribute("articleTypes", articleTypes);
+
+        model.addAttribute("q", q);
+        return "index";
+    }
+
     @RequestMapping(value = "/change_password.html")
     public String changePassword(ModelMap model) {
         model.addAttribute("userBean", new ChangePasswordUserBean());
