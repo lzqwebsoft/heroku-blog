@@ -69,14 +69,13 @@
                 <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">分类</button>
             </p>
             <div class="col-xs-12 col-sm-9 blog-list">
-                
                 <c:choose>
                     <c:when test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
                         <c:forEach items="${page.data}" var="article">
                             <div class="media">
                                 <div class="media-body">
                                     <h4 class="media-heading article-index-title">
-                                        <c:out value="${article.patternTypeLabel}" escapeXml="false" /> <a href="${pageContext.request.contextPath}/show/${article.id}.html"><c:out value="${article.title}" /></a>
+                                        <c:out value="${article.patternTypeLabel}" escapeXml="false" /> <a href="${pageContext.request.contextPath}/show/${article.id}.html"><c:out value="${article.title}" escapeXml="false" /></a>
                                         <c:if test="${article.isTop}">
                                             <span class="label label-danger">置顶</span>
                                         </c:if>
@@ -86,7 +85,6 @@
                                         <c:out value="${article.content}" escapeXml="false" />
                                     </p>
                                     <p class="article-operate-zone">
-                                        
                                         <a class="btn btn-default" role="button" href="<%=request.getContextPath()%>/show/${article.id}.html"><span>阅读(${article.readCountLabel})</span></a> <a class="btn btn-default" role="button" href="<%=request.getContextPath()%>/show/${article.id}.html#reply_comment"><span>评论(${article.commentCount})</span></a>
                                         <c:if test="${sessionScope.user!=null}">
                                             <a class="btn btn-danger pull-right" style="margin-right: 0;" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
@@ -103,14 +101,15 @@
                 </c:choose>
                 <!-- 翻页 -->
                 <c:if test="${page!=null&&page.data!=null&&fn:length(page.data)>0}">
+                    <c:set var="keywords" value="${q == '' ? '' : '&q='}${q}" />
                     <ul class="pagination">
                         <c:if test="${page.hasPreviousPage}">
-                            <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo-1}">&laquo;</a></li>
+                            <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo-1}<c:out value="${keywords}"/>">&laquo;</a></li>
                         </c:if>
                         <c:forEach var="index" begin="${page.pageRangeStart}" end="${page.pageRangeEnd}" step="1">
                             <c:choose>
                                 <c:when test="${index!=page.currentPageNo}">
-                                    <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${index}">${index}</a></li>
+                                    <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${index}<c:out value="${keywords}"/>">${index}</a></li>
                                 </c:when>
                                 <c:otherwise>
                                     <li class="active"><a>${index}<span class="sr-only">(current)</span></a></li>
@@ -118,7 +117,7 @@
                             </c:choose>
                         </c:forEach>
                         <c:if test="${page.hasNextPage}">
-                            <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo+1}">&raquo;</a></li>
+                            <li><a href="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>?pageNo=${page.currentPageNo+1}<c:out value="${keywords}"/>">&raquo;</a></li>
                         </c:if>
                     </ul>
                     <div id="page_description">${page.totalCount}篇文章, 共${page.totalPageCount}页</div>
@@ -127,6 +126,16 @@
 
             <!-- 右导航菜单 -->
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                <div id="imaginary_container">
+                    <form method="get" action="<%= request.getContextPath() %>/search.html">
+                        <div class="input-group stylish-input-group">
+                            <input type="text" name="q" class="form-control" placeholder="搜索" value="<c:out value="${q}"/>">
+                            <span class="input-group-addon">
+                                <button type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">文章分类</div>
                     <c:choose>

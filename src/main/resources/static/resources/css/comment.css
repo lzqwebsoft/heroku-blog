@@ -138,3 +138,21 @@ h3.article-show-title span.label{
     width: 16px;
     height: 16px;
 }
+/* 添加的搜索框 */
+#imaginary_container {
+    margin-bottom: 10px;
+}
+.stylish-input-group .input-group-addon{
+    background: white !important;
+    border-color: #EEE;
+    color: #999;
+}
+.stylish-input-group .form-control{
+    border-right:0;
+    box-shadow:0 0 0;
+    border-color: #EEE;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
