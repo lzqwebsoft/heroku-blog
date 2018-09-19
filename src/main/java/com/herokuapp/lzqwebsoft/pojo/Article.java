@@ -1,26 +1,37 @@
 package com.herokuapp.lzqwebsoft.pojo;
 
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import java.util.Date;
 import java.util.Set;
 
 /**
  * 封装文章对象
- * 
+ *
  * @author zqluo
- * 
  */
+@Indexed
+@Analyzer(impl = SmartChineseAnalyzer.class)
 public class Article {
+    @DocumentId
     private String id;
     private User author;
     private ArticleType type; // 关联一个文章类型
     private int patternTypeId;
+    @Field
     private String title;
     private boolean allowComment;
     private String codeTheme; // 代码的主题
     private boolean isTop;
+    @Field
     private String content; // HTML内容
     private String contentMD; // Markdown内容
     private int contentType; // 源始内容格式，0: html格式，1：markdown格式
+    @Field
     private int status;
     private long readedNum;
     private Date createAt;
