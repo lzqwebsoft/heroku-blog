@@ -71,10 +71,10 @@ public class ArticleController extends BaseController {
                 session.setAttribute(CommonConstant.VIEWED_ARTICLES, viewedArticles);
             }
             // 用户未登录，则替换文章中内容使用的IMG标签SRC属性改为七牛云
-            String domain = messageSource.getMessage("qiniu.bucket.domain", null, locale);
-            String content = article.getContent();
-            content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).(html|jpg)", domain + "$1");
-            article.setContent(content);
+            // String domain = messageSource.getMessage("qiniu.bucket.domain", null, locale);
+            // String content = article.getContent();
+            // content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).(html|jpg)", domain + "$1");
+            // article.setContent(content);
         }
         model.addAttribute("article", article);
 

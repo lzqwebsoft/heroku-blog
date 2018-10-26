@@ -34,7 +34,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             image.setContent(file.getBytes());
             // 添加七牛云文件备份
-            image = QiniuUtil.upload(image);
+            // image = QiniuUtil.upload(image);
             imageDAO.save(image);
             return "images/show/" + image.getId() + ".jpg";
         } catch (IOException e) {
@@ -64,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
         Image image = imageDAO.getImageById(id);
         if (image != null) {
             // 添加七牛云删除文件
-            QiniuUtil.delete(image);
+            // QiniuUtil.delete(image);
             imageDAO.delete(image);
         }
     }
