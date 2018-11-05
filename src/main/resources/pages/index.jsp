@@ -187,6 +187,8 @@
                         <a href="mailto:751939573@qq.com" class="list-group-item glyphicon glyphicon-envelope"> 751939573@qq.com</a>
                     </div>
                 </div>
+
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=260 height=110 src="//music.163.com/outchain/player?type=0&id=75000240&auto=1&height=90"></iframe>
             </div>
         </div>
 
