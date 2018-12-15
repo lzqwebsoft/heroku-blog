@@ -137,7 +137,69 @@ content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).html", domain 
 article.setContent(content);
 ```
 
-##### 6. 上传部署
+##### 6. 一些问题说明
+1. java.sql.SQLException: The server time zone value
+
+**问题详情**
+
+> Error getting a new connection.  Cause: java.sql.SQLException: The server time zone value 'ÖÐ¹ú±ê×¼Ê±¼ä' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+
+**解决办法**
+
+修改`src/main/resources/database.properties`，设置`database.url`添加参数`serverTimezone=GMT%2B8`即设置连接时区为GMT+8，北京时间。
+
+2. Jdbc javax.net.ssl.SSLException: closing inbound before receiving peer's close_notify
+
+**问题详情**
+
+> javax.net.ssl.SSLException
+> MESSAGE: closing inbound before receiving peer's close_notify
+>
+> STACKTRACE:
+>
+> javax.net.ssl.SSLException: closing inbound before receiving peer's close_notify
+>    at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:129)
+>    at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:117)
+>    at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:308)
+>    at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:264)
+>    at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:255)
+>    at java.base/sun.security.ssl.SSLSocketImpl.shutdownInput(SSLSocketImpl.java:645)
+>    at java.base/sun.security.ssl.SSLSocketImpl.shutdownInput(SSLSocketImpl.java:624)
+>    at com.mysql.cj.protocol.a.NativeProtocol.quit(NativeProtocol.java:1312)
+>    at com.mysql.cj.NativeSession.quit(NativeSession.java:182)
+>    at com.mysql.cj.jdbc.ConnectionImpl.realClose(ConnectionImpl.java:1750)
+>    at com.mysql.cj.jdbc.ConnectionImpl.close(ConnectionImpl.java:720)
+>    at com.zaxxer.hikari.pool.PoolBase.quietlyCloseConnection(PoolBase.java:135)
+>    at com.zaxxer.hikari.pool.HikariPool.lambda$closeConnection$1(HikariPool.java:441)
+>    at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+>    at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+>    at java.base/java.lang.Thread.run(Thread.java:834)
+
+**解决办法**
+
+修改`src/main/resources/database.properties`，设置`database.url`添加参数`useSSL=false&allowPublicKeyRetrieval=true`即设置关闭数据库SSL连接。
+
+3. JDK11的支持在spring boot 2.1.0开始，原先的spring boot 2.0.5不支持JDK11，选择spring boot必须选用GA版本，即为稳定版。
+
+4. The bean 'mvcUriComponentsContributor', defined in null, could not be registered.
+
+**问题详情**
+> The bean 'mvcUriComponentsContributor', defined in null, could not be registered. A bean with that name has already been defined in class path resource [org/springframework/web/servlet/config/annotation/DelegatingWebMvcConfiguration.class] and overriding is disabled.
+>
+> Action:
+>
+> Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+**解决办法**
+
+如上所述，修改`src/main/resources/application.yaml`,添加如下配置：
+```yum
+spring:
+    main:
+        allow-bean-definition-overriding: true
+```
+
+##### 7. 上传部署
 决定部置在heroku的运行环境的两个决定文件是：`Procfile`与`system.properties`,需根据最新的heroku文档来修改(这里未测试,因为项目预览己转为虚拟主机).
 
 根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，在上传之前最好先在本地跑一下，看是否成功；

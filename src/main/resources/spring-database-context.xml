@@ -41,6 +41,9 @@
         <property name="hibernateProperties">
             <props>
                 <!--使用的数据库方言 -->
+                <!--Mariadb方言-->
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MariaDB53Dialect</prop>-->
+                <!--Mysql方言-->
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.format_sql">true</prop>
