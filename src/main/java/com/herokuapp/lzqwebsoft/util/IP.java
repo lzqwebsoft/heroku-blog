@@ -29,14 +29,11 @@ public class IP {
     private static ReentrantLock lock = new ReentrantLock();
 
     static {
-        IP.load("classpath:static/17monipdb.dat");
-        if (ipFile == null) {
-            IP.load("static/17monipdb.dat");
-        }
+        IP.load("static/17monipdb.dat");
     }
 
     public static void load(String filename) {
-        Resource resource = new ClassPathResource(filename);
+        Resource resource = new ClassPathResource(filename, IP.class);
         try {
             ipFile = resource.getFile();
             load();
@@ -49,7 +46,7 @@ public class IP {
     }
 
     public static void load(String filename, boolean strict) throws Exception {
-        Resource resource = new ClassPathResource(filename);
+        Resource resource = new ClassPathResource(filename, IP.class);
         ipFile = resource.getFile();
         if (strict) {
             int contentLength = Long.valueOf(ipFile.length()).intValue();
