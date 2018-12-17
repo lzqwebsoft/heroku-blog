@@ -1,0 +1,18 @@
+[Unit]
+Description=My Blog service
+After=syslog.target
+After=network.target
+
+[Service]
+User=zqluo
+Group=zqluo
+PIDFile=/tmp/myblog_pid.file
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/jdk-home-path/bin:/opt/apache-maven/bin"
+WorkingDirectory=/path/top/heroku-blog
+ExecStart=/opt/jdk-home-path/bin/java -Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=512m -XX:MaxNewSize=512m -jar target/heroku-blog-3.0.0.jar >> /tmp/myblog.log & echo $! > /tmp/myblog_pid.file &
+ExecStop=/bin/kill -TERM $MAINPID
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

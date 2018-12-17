@@ -1,0 +1,72 @@
+#!/bin/sh
+# chkconfig: 2345 90 10
+# description: Start or stop the heroku-blog server
+#
+name=heroku-blog
+BLOGPATH=/PATH/TO/heroku-blog
+MVN=/PATH/TO/apache-maven/bin/mvn
+
+export JAVA_HOME=/PATH/TO/jdk_home_path
+start() {
+    cd $BLOGPATH
+    $MVN spring-boot:run >> runtime.log & echo $! > /tmp/myblog_pid.file &
+    RETVAL=$?
+    if [ "$RETVAL" = "0" ]; then
+        echo "$name start success"
+    else
+        echo "$name start failed"
+    fi
+}
+
+stop(){
+    pid=`ps -ef | grep -v grep | grep -v ps | grep -i "maven" | awk '{print $2}'`
+    if [ ! -z $pid ]; then
+        cd $BLOGPATH
+        # $MVN spring-boot:stop > /dev/null 2>&1
+        kill -9 $(cat /tmp/myblog_pid.file)
+        RETVAL=$?
+        if [ "$RETVAL" = "0" ]; then
+            echo "$name stop success"
+        else
+            echo "$name stop failed"
+        fi
+    else
+        echo "$name is not running"
+        RETVAL=1
+    fi
+}
+
+status(){
+    pid=`ps -ef | grep -v grep | grep -v ps | grep -i "maven" | awk '{print $2}'`
+    if [ -z $pid ]; then
+        echo "$name is not running"
+        RETVAL=1
+    else
+        echo "$name is running with PID $pid"
+        RETVAL=0
+    fi
+}
+
+case "$1" in
+'start')
+    start
+    ;;
+'stop')
+    stop
+    ;;
+'status')
+    status
+    ;;
+'restart')
+    stop
+    start
+    RETVAL=$?
+    ;;
+*)
+    echo "Usage: $0 { start | stop | restart | status }"
+    RETVAL=1
+    ;;
+esac
+
+
+exit $RETVAL
