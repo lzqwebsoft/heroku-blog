@@ -32,6 +32,7 @@ public class AppConfigCore implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 静态资源配置
         registry.addResourceHandler("/robots.txt").addResourceLocations("/static/robots.txt");
+        registry.addResourceHandler("/favicon.ico").addResourceLocations("/static/favicon.ico");
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/static/resources/")
                 .setCachePeriod(3600).resourceChain(true)
