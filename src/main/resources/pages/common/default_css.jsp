@@ -1,3 +1,4 @@
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 <!-- PACE: Automatic page load progress bar -->
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/pace-theme-minimal.css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/pace.min.js"></script>
