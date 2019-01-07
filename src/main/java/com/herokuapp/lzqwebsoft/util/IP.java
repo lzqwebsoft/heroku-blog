@@ -29,7 +29,7 @@ public class IP {
     private static ReentrantLock lock = new ReentrantLock();
 
     static {
-        IP.load("static/17monipdb.dat");
+        IP.load("/static/17monipdb.dat");
     }
 
     public static void load(String filename) {

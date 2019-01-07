@@ -53,7 +53,7 @@ public class CommentController extends BaseController {
         } else {
             // 只有未登录的用户才需要验证图片验证码
             String captcha = (String) session.getAttribute(CommonConstant.CAPTCHA);
-            if (!validateCode.equalsIgnoreCase(captcha)) {
+            if (validateCode!=null && !validateCode.equalsIgnoreCase(captcha)) {
                 errors.add(messageSource.getMessage("info.invalid.captcha", null, locale));
             }
             // 验证通过后清除SESSION验证码
