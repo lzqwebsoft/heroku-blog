@@ -26,8 +26,7 @@ server:
     whitelabel:
       enabled: false
 logging:
-  path: /var/log/
-  file: heroku-blog-info.log
+  file: logs/heroku-blog-info.log
   level:
     root: info
     org.hibernate: WARN
