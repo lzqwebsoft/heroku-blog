@@ -1,16 +1,14 @@
 package com.herokuapp.lzqwebsoft.util;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -18,14 +16,11 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class IP {
 
-    public static boolean enableFileWatch = false;
-
     private static int offset;
     private static int[] index = new int[256];
     private static ByteBuffer dataBuffer;
     private static ByteBuffer indexBuffer;
-    private static Long lastModifyTime = 0L;
-    private static File ipFile;
+    private static InputStream ipStream;   // IP数据流
     private static ReentrantLock lock = new ReentrantLock();
 
     static {
@@ -35,28 +30,10 @@ public class IP {
     public static void load(String filename) {
         Resource resource = new ClassPathResource(filename, IP.class);
         try {
-            ipFile = resource.getFile();
+            ipStream = resource.getInputStream();
             load();
-            if (enableFileWatch) {
-                watch();
-            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void load(String filename, boolean strict) throws Exception {
-        Resource resource = new ClassPathResource(filename, IP.class);
-        ipFile = resource.getFile();
-        if (strict) {
-            int contentLength = Long.valueOf(ipFile.length()).intValue();
-            if (contentLength < 512 * 1024) {
-                throw new Exception("ip data file error.");
-            }
-        }
-        load();
-        if (enableFileWatch) {
-            watch();
         }
     }
 
@@ -90,32 +67,15 @@ public class IP {
         return new String(areaBytes, Charset.forName("UTF-8")).split("\t", -1);
     }
 
-    private static void watch() {
-        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                long time = ipFile.lastModified();
-                if (time > lastModifyTime) {
-                    lastModifyTime = time;
-                    load();
-                }
-            }
-        }, 1000L, 5000L, TimeUnit.MILLISECONDS);
-    }
-
     private static void load() {
-        lastModifyTime = ipFile.lastModified();
-        FileInputStream fin = null;
+        InputStream fin = null;
         lock.lock();
         try {
-            dataBuffer = ByteBuffer.allocate(Long.valueOf(ipFile.length()).intValue());
-            fin = new FileInputStream(ipFile);
-            int readBytesLength;
-            byte[] chunk = new byte[4096];
-            while (fin.available() > 0) {
-                readBytesLength = fin.read(chunk);
-                dataBuffer.put(chunk, 0, readBytesLength);
-            }
+            dataBuffer = ByteBuffer.allocate(ipStream.available());
+            fin = ipStream;
+            // 读取字节流
+            byte[] bytes = IOUtils.toByteArray(ipStream);
+            dataBuffer = ByteBuffer.wrap(bytes);
             dataBuffer.position(0);
             int indexLength = dataBuffer.getInt();
             byte[] indexBytes = new byte[indexLength];
