@@ -29,10 +29,10 @@ $(function () {
         }
     });
     // PC端添加背景
-    var browser = browserVersions();
+    /*var browser = browserVersions();
     if (!browser.mobile && !browser.android && !browser.iPhone && !browser.iPad) {
         $('body').append('<script type="text/javascript" color="249,145,87" opacity="0.7" zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>');
-    }
+    }*/
     // 回到顶端
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300)

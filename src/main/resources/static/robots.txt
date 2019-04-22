@@ -1,2 +1,4 @@
 User-agent: MJ12bot
+User-agent: SemrushBot
+User-agent: SemrushBot-SA
 Disallow: /
