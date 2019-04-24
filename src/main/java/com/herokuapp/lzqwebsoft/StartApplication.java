@@ -1,7 +1,6 @@
 package com.herokuapp.lzqwebsoft;
 
 import com.herokuapp.lzqwebsoft.service.ArticleService;
-import com.herokuapp.lzqwebsoft.service.ArticleServiceImpl;
 import io.undertow.Undertow;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -37,11 +37,6 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <bean id="viewResover" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/pages/" />
-        <property name="suffix" value=".jsp" />
-    </bean>
-
     <!-- properties 资源文件 -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">

@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ViewResolver;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class BaseController {
 
@@ -19,7 +18,7 @@ public class BaseController {
     public static int SUCCESS = 0;
 
     @Autowired
-    private ViewResolver viewResover;
+    private ViewResolver thymeleafViewResolver;
 
     // 成功的JSON
     public String successJSON(String message) {
@@ -56,7 +55,7 @@ public class BaseController {
         View resolvedView = null;
         try {
             response = HtmlSingleLineWriter.wrapResponse(response);
-            resolvedView = viewResover.resolveViewName(view, request.getLocale());
+            resolvedView = thymeleafViewResolver.resolveViewName(view, request.getLocale());
             resolvedView.render(model, request, response);
         } catch (Exception e) {
             e.printStackTrace();

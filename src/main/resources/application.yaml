@@ -9,6 +9,14 @@ spring:
       charset: UTF-8
       force: true
       enabled: true
+  thymeleaf:
+    prefix: classpath:/pages/
+    suffix: .html
+    mode: HTML
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    cache: false
 server:
   # 启用GZIP压缩
   compression:
