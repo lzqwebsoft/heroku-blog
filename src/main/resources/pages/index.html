@@ -1,10 +1,134 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" slang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>学习使用Thymeleaf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <title th:text="#{page.title}">lzqwebsoft's blog</title>
+
+    <th:block th:replace="common/default::defaultCSS"></th:block>
 </head>
 <body>
-<h1>Hello Spring Boots Thymeleaf</h1>
+<th:block th:replace="common/default::header"></th:block>
+
+<!-- 主体内容 -->
+<div id="blog-header" class="container" style="overflow-x: hidden;">
+    <div class="page-header">
+        <h1 th:if="${blogInfo!=null}">
+            [[${blogInfo.head}]]&nbsp;<small th:text="${blogInfo.descriptions}"></small>
+        </h1>
+    </div>
+    <div class="row row-offcanvas row-offcanvas-right">
+        <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">分类</button>
+        </p>
+        <div class="col-xs-12 col-sm-9 blog-list">
+            <div class="media" th:if="${page!=null and not #lists.isEmpty(page.data)}" th:each="article : ${page.data}" th:with="baseUrl=${#request.getContextPath()}">
+                <div class="media-body" th:with="articleUrl=@{{baseUrl}/show/{id}.html(id=${article.id}, baseUrl=${baseUrl})}">
+                    <h4 class="media-heading article-index-title">
+                        <span th:utext="${article.patternTypeLabel}"></span>
+                        <a th:href="${articleUrl}" th:utext="${article.title}"></a>
+                        <span class="label label-danger" th:if="${article.isTop}">置顶</span>
+                    </h4>
+                    <p class="article_time" th:text="'发表于：' + ${#dates.format(article.createAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                    <p style="text-indent: 2em;" th:utext="${article.content}"></p>
+                    <p class="article-operate-zone">
+                        <a class="btn btn-default" role="button" th:href="${articleUrl}">
+                            <span th:text="'阅读('+${article.readCountLabel}+')'">阅读(10)</span>
+                        </a>
+                        <a class="btn btn-default" role="button" th:href="${articleUrl} + '#reply_comment'">
+                            <span th:text="'评论('+${article.commentCount}+')'"></span>
+                        </a>
+                        <th:block th:if="${session.user!=null}">
+                            <a class="btn btn-danger pull-right" style="margin-right: 0;" role="button"
+                               th:href="@{{baseUrl}/delete/{id}.html(id=${article.id}, baseUrl=${baseUrl})}"
+                               onclick="return confirm('[[#{page.confirm.delete.article(${article.title})}]]');">删除</a>
+                            <a class="btn btn-primary pull-right" role="button" th:href="@{{baseUrl}/edit/{id}.html(id=${article.id}, baseUrl=${baseUrl})}">编辑</a>
+                        </th:block>
+                    </p>
+                </div>
+            </div>
+            <p th:if="${page==null or #lists.isEmpty(page.data)}">暂无内容</p>
+
+            <!-- 翻页 -->
+            <th:block th:if="${page!=null and not #lists.isEmpty(page.data)}">
+                <ul class="pagination" th:with="keywords=${#strings.isEmpty(q) ? '' : q}, currentPath=${#httpServletRequest.requestURI}">
+                    <li th:if="${page.hasPreviousPage}">
+                        <a th:href="@{{url}(url=${currentPath},pageNo=${page.currentPageNo-1},q=${keywords})}">&laquo;</a>
+                    </li>
+                    <th:block th:each="index : ${#numbers.sequence(page.pageRangeStart, page.pageRangeEnd, 1)}">
+                        <li th:if="${index!=page.currentPageNo}">
+                            <a th:href="@{{url}(url=${currentPath},pageNo=${index},q=${keywords})}">[[${index}]]</a>
+                        </li>
+                        <li th:if="${index==page.currentPageNo}" class="active"><a>[[${index}]]<span class="sr-only">(current)</span></a></li>
+                    </th:block>
+                    <li th:if="${page.hasNextPage}">
+                        <a th:href="@{{url}(url=${currentPath},pageNo=${page.currentPageNo+1},q=${keywords})}">&raquo;</a>
+                    </li>
+                </ul>
+                <div id="page_description" th:text="${page.totalCount}+'篇文章, 共'+${page.totalPageCount}+'页'"></div>
+            </th:block>
+        </div>
+
+        <!-- 右导航菜单 -->
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+            <div id="imaginary_container">
+                <form method="get" th:action="@{__${#request.getContextPath()}__/search.html}">
+                    <div class="input-group stylish-input-group">
+                        <input type="text" name="q" class="form-control" placeholder="搜索" th:value="${q}"/>
+                        <span class="input-group-addon">
+                            <button type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">文章分类</div>
+                <div class="list-group" th:if="${not #lists.isEmpty(articleTypes)}">
+                    <a th:each="articleType :${articleTypes}" th:if="${!articleType.disable}"
+                       th:href="@{__${#request.getContextPath()}__/select/__${articleType.id}__.html}"
+                       class="list-group-item " th:attrappend="class=${articleTypeId!=null && articleTypeId==articleType.id ? 'active':''}">
+                        [[${articleType.name}]]<span class="badge" th:text="${#lists.size(articleType.articles)}">1</span>
+                    </a>
+                </div>
+                <p th:if="${#lists.isEmpty(articleTypes)}">暂无</p>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">阅读排行</div>
+                <div class="list-group" th:unless="${#lists.isEmpty(top10Articles)}">
+                    <a th:each="top10 : ${top10Articles}" th:href="@{__${#request.getContextPath()}__/show/__${top10.id}__.html}" th:title="${top10.title}"
+                       class="list-group-item" style="overflow: hidden;">[[${top10.title}]]<span class="badge pull-right" th:text="${top10.readCountLabel}">1</span></a>
+                </div>
+                <div th:if="${#lists.isEmpty(top10Articles)}" class="panel-body"><p>暂无</p></div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">相关链接</div>
+                <div class="list-group">
+                    <a href="http://blog.csdn.net/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> CSDN</a>
+                    <a href="http://my.oschina.net/websoft" class="list-group-item glyphicon glyphicon-link"> 开源中国</a>
+                    <a href="https://www.facebook.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Facebook</a>
+                    <a href="https://twitter.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Tiwtter</a>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">联系我</div>
+                <div class="list-group" style="font-size: 14px;">
+                    <a href="mailto:lzqwebsoft@gmail.com" class="list-group-item glyphicon glyphicon-envelope"> lzqwebsoft@gmail.com</a>
+                    <a href="mailto:751939573@qq.com" class="list-group-item glyphicon glyphicon-envelope"> 751939573@qq.com</a>
+                </div>
+            </div>
+
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=260 height=110 src="//music.163.com/outchain/player?type=0&id=75000240&auto=1&height=90"></iframe>
+        </div>
+    </div>
+
+    <!-- 页面底端说明 -->
+    <th:block th:replace="common/default::footer"></th:block>
+</div>
+
+<th:block th:replace="common/default::defaultJS"></th:block>
 </body>
 </html>

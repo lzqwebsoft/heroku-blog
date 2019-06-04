@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" slang="zh-cmn-Hans">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <title th:text="#{page.title}"></title>
+    <th:block th:replace="common/default::defaultCSS"></th:block>
+</head>
+
+<body>
+<th:block th:replace="common/default::header"></th:block>
+
+<div id="blog-header" class="container">
+    <h2 th:text="#{info.error503.title}"></h2>
+    <div class="media">
+        <a class="pull-left" href="javascript:void(0);">
+            <img class="media-object" th:src="@{__${#request.getContextPath()}__/resources/images/error503.jpg}"/>
+        </a>
+        <div class="media-body">
+            <h4>&nbsp;</h4>
+            <p th:utext="#{info.error503.content}"></p>
+        </div>
+    </div>
+
+    <!-- 页面底端说明 -->
+    <th:block th:replace="common/default::footer"></th:block>
+</div>
+
+<th:block th:replace="common/default::defaultJS"></th:block>
+</body>
+</html>

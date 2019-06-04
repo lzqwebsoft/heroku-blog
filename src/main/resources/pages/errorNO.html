@@ -13,8 +13,8 @@
 
 <div id="blog-header" class="container">
 
-    <h2 th:text="#{info.error404.title}"></h2>
-    <h3 th:utext="#{info.error404.content}"></h3>
+    <h2 th:text="#{info.errorNO.title(${errorCode})}"></h2>
+    <h3 th:utext="#{info.errorNO.content}"></h3>
 
     <!-- 页面底端说明 -->
     <th:block th:replace="common/default::footer"></th:block>

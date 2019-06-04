@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 引入的公共CSS文件 -->
+    <th:block th:fragment="defaultCSS" th:with="baseUrl=${#request.getContextPath()}">
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+        <!-- PACE: Automatic page load progress bar -->
+        <link type="text/css" rel="stylesheet" th:href="${baseUrl}+'/resources/css/pace-theme-minimal.css'"/>
+        <script type="text/javascript" th:src="${baseUrl}+'/resources/js/pace.min.js'"></script>
+
+        <link type="text/css" rel="stylesheet" th:href="'/resources/css/bootstrap.min.css?_v=3.3.7'"/>
+        <link type="text/css" rel="stylesheet" th:href="${baseUrl}+'/resources/css/comment.css?_v=1.0.3'"/>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </th:block>
+</head>
+<body>
+
+<!-- 公共的头文件 -->
+<th:block th:fragment="header" th:with="baseUrl=${#request.getContextPath()}">
+    <!-- 导航菜单 -->
+    <div id="context-path" style="display:none" th:text="${baseUrl}"></div>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- 左导航菜单 -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menus">
+                    <span class="sr-only">菜单</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/}">飘痕の博客</a>
+                <p class="navbar-text">
+                    <a class="navbar-link" id="about-button"
+                       th:href="@{{baseUrl}/about.html(baseUrl=${baseUrl})}">关于</a>
+                </p>
+            </div>
+
+            <!-- 右导航菜单 -->
+            <div class="collapse navbar-collapse" id="navbar-menus">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+                            管理<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li th:if="${session.user == null}">
+                                <a th:href="@{{baseUrl}/signIn.html(baseUrl=${baseUrl})}">登&nbsp;&nbsp;录</a>
+                            </li>
+                            <li th:unless="${session.user == null}">
+                                <a th:href="@{{baseUrl}/logout.html(baseUrl=${baseUrl})}">注&nbsp;&nbsp;销</a>
+                            </li>
+                            <th:block th:each="menu , s : ${menus}">
+                                <li th:if="s.odd" class="divider"></li>
+                                <li>
+                                    <a th:href="@{{baseUrl}/{path}(baseUrl=${baseUrl}, path=${menu.path})}"
+                                       th:text="${menu.label}"></a>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </li>
+                    <li th:if="${session.user == null}" class="mobile-menu-item">
+                        <a th:href="@{{baseUrl}/signIn.html(baseUrl=${baseUrl})}">登&nbsp;&nbsp;录</a>
+                    </li>
+                    <li th:unless="${session.user == null}" class="mobile-menu-item">
+                        <a th:href="@{{baseUrl}/logout.html(baseUrl=${baseUrl})}">注&nbsp;&nbsp;销</a>
+                    </li>
+                    <th:block th:each="menu , s : ${menus}">
+                        <li class="mobile-menu-item">
+                            <a th:href="@{{baseUrl}/{path}(baseUrl=${baseUrl}, path=${menu.path})}"
+                               th:text="${menu.label}"></a>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 回到页面顶点 -->
+    <div class="goBackToTop">
+        <a id="gototop" href="javascript:void(0);" title="回到顶端" style="display: none;">TOP</a>
+    </div>
+
+    <!-- 关于对话框主体 -->
+    <div class="modal fade" id="aboutDailog" tabindex="-1" role="dialog" aria-labelledby="aboutDailogLabel"
+         aria-hidden="true"></div>
+
+    <!--[if lte IE 7]>
+    <div class="bs-header container alert alert-warning">
+        <h1>骚年：</h1>
+        <p>如果您在使用IE6、IE7浏览器以及也可能是带壳儿的国产浏览器，可能会看到本站丑陋的一面，对不住了；请主动升级您的浏览器，我不想为落后买单！</p>
+    </div>
+    <![endif]-->
+</th:block>
+
+<!-- 页面脚文件 -->
+<th:block th:fragment="footer">
+    <hr/>
+    <footer>
+        <p>
+            Powered by <a href="https://spring.io/">Spring</a>, UI by <a href="http://www.bootcss.com/">Bootstrap</a>,
+            Design by <a href="https://twitter.com/lzqwebsoft">-ZQLUO-</a>.
+        </p>
+        <p>Copyright &copy; 2012 - [[${#dates.year(#dates.createNow())}]]</p>
+    </footer>
+</th:block>
+
+<!--引入公共的JS文件-->
+<th:block th:fragment="defaultJS" th:with="baseUrl=${#request.getContextPath()}">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" th:src="${baseUrl} + '/resources/js/jquery.min.js'"></script>
+    <script type="text/javascript" th:src="${baseUrl} + '/resources/js/bootstrap.min.js?_v=3.3.7'"></script>
+    <script type="text/javascript" th:src="${baseUrl} + '/resources/js/comment.js?_v=1.1.0'"></script>
+</th:block>
+</body>
+</html>
