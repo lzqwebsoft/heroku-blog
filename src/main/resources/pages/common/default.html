@@ -36,8 +36,7 @@
                 </button>
                 <a class="navbar-brand" th:href="@{/}">飘痕の博客</a>
                 <p class="navbar-text">
-                    <a class="navbar-link" id="about-button"
-                       th:href="@{{baseUrl}/about.html(baseUrl=${baseUrl})}">关于</a>
+                    <a class="navbar-link" id="about-button" th:href="@{{baseUrl}/about.html(baseUrl=${baseUrl})}">关于</a>
                 </p>
             </div>
 
@@ -58,8 +57,7 @@
                             <th:block th:each="menu , s : ${menus}">
                                 <li th:if="s.odd" class="divider"></li>
                                 <li>
-                                    <a th:href="@{{baseUrl}/{path}(baseUrl=${baseUrl}, path=${menu.path})}"
-                                       th:text="${menu.label}"></a>
+                                    <a th:href="@{{baseUrl}/{path}(baseUrl=${baseUrl}, path=${menu.path})}" th:text="${menu.label}"></a>
                                 </li>
                             </th:block>
                         </ul>
@@ -70,12 +68,9 @@
                     <li th:unless="${session.user == null}" class="mobile-menu-item">
                         <a th:href="@{{baseUrl}/logout.html(baseUrl=${baseUrl})}">注&nbsp;&nbsp;销</a>
                     </li>
-                    <th:block th:each="menu , s : ${menus}">
-                        <li class="mobile-menu-item">
-                            <a th:href="@{{baseUrl}/{path}(baseUrl=${baseUrl}, path=${menu.path})}"
-                               th:text="${menu.label}"></a>
-                        </li>
-                    </th:block>
+                    <li class="mobile-menu-item" th:each="menu , s : ${menus}">
+                        <a th:href="@{{baseUrl}/{path}(baseUrl=${baseUrl}, path=${menu.path})}" th:text="${menu.label}"></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -87,8 +82,7 @@
     </div>
 
     <!-- 关于对话框主体 -->
-    <div class="modal fade" id="aboutDailog" tabindex="-1" role="dialog" aria-labelledby="aboutDailogLabel"
-         aria-hidden="true"></div>
+    <div class="modal fade" id="aboutDailog" tabindex="-1" role="dialog" aria-labelledby="aboutDailogLabel" aria-hidden="true"></div>
 
     <!--[if lte IE 7]>
     <div class="bs-header container alert alert-warning">

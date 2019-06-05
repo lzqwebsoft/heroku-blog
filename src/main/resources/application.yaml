@@ -16,7 +16,7 @@ spring:
     encoding: utf-8
     servlet:
       content-type: text/html
-    cache: false
+    cache: true
 server:
   # 启用GZIP压缩
   compression:

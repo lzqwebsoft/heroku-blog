@@ -113,8 +113,8 @@ public class HtmlSingleLineWriter extends PrintWriter {
     // 去除HTML标签中无用的行内空格
     private String cleanEmptyChar(String text) {
         return text.replaceAll("^\\s+?<", "<").replaceAll(">(\\s)+?<", "><")
-                .replaceAll(">\\s+?$", ">").replaceAll("(\\s)+", "$1")
-                .replaceAll("^\\s$", "");
+                .replaceAll(">\\s+?$", ">").replaceAll("(\\s)+", "$1");
+                //.replaceAll("^\\s$", "");
     }
 
     private String join(String[] array, String separator) {
