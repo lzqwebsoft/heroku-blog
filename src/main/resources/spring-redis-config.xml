@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- 引入redis配置 -->
-    <context:property-placeholder location="classpath:redis.properties" ignore-unresolvable="true"/>
     <!-- Redis 配置 -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${redis.pool.maxTotal}"/>
@@ -13,12 +12,15 @@
         <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}"/>
         <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
     </bean>
-    <!-- redis单节点数据库连接配置 -->
-    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <bean id="standaloneConfig" class="org.springframework.data.redis.connection.RedisStandaloneConfiguration">
         <property name="hostName" value="${redis.ip}"/>
         <property name="port" value="${redis.port}"/>
         <!-- <property name="password" value="${redis.pass}" /> -->
-        <property name="poolConfig" ref="jedisPoolConfig"/>
+    </bean>
+    <!-- redis单节点数据库连接配置 -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:pool-config-ref="jedisPoolConfig">
+        <constructor-arg ref="standaloneConfig"/>
     </bean>
     <!-- redisTemplate配置，redisTemplate是对Jedis的对redis操作的扩展，有更多的操作，封装使操作更便捷 -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import com.herokuapp.lzqwebsoft.exception.HttpNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -47,6 +48,9 @@ public class ArticleController extends BaseController {
 
     @Autowired
     private CodeTheme themes;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/show/{articleId}.html")
@@ -197,6 +201,8 @@ public class ArticleController extends BaseController {
                 articleService.save(article, new_type, modelNew, isDraft);
             }
 
+            redisTemplate.delete(CommonConstant.HOME_CACHE_NAME);  // 刷新主页面缓存
+
             if (isConvert) {
                 return "redirect:/edit/" + article.getId() + ".html";
             } else {
@@ -288,7 +294,7 @@ public class ArticleController extends BaseController {
 
         // 如果删除的一条数据刚好是这一页的最后一条数据，则显示最后一页
         if (pageNo > 1 && articles.getData().size() <= 0) {
-            articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, (int)articles.getTotalPageCount(), 15);
+            articles = articleService.getArticleByTypeAndTitle(articleTypeId, title, (int) articles.getTotalPageCount(), 15);
         }
 
         request.setAttribute("page", articles);
@@ -310,7 +316,7 @@ public class ArticleController extends BaseController {
 
         // 如果删除的一条数据刚好是这一页的最后一条数据，则显示最后一页
         if (pageNo > 1 && page_drafts.getData().size() <= 0)
-            page_drafts = articleService.getAllDrafts((int)page_drafts.getTotalPageCount(), 15);
+            page_drafts = articleService.getAllDrafts((int) page_drafts.getTotalPageCount(), 15);
 
         request.setAttribute("page_drafts", page_drafts);
 

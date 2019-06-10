@@ -42,4 +42,9 @@ public class CommonConstant {
 	 * 标记用户阅读的文章Id
 	 */
 	public static final String VIEWED_ARTICLES = "viewed_articles";
+
+	/**
+	 * 首页面缓存KEY名
+	 */
+	public static final String HOME_CACHE_NAME = "home";
 }

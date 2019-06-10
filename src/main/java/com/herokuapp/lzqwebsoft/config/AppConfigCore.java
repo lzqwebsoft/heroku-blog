@@ -1,5 +1,6 @@
 package com.herokuapp.lzqwebsoft.config;
 
+import com.herokuapp.lzqwebsoft.filter.CacheFilter;
 import com.herokuapp.lzqwebsoft.filter.WhitespaceFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,8 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 @Configuration
 @ImportResource({
         "classpath:spring-mvc-config.xml",
-        "classpath:spring-database-context.xml"
+        "classpath:spring-database-context.xml",
+        "classpath:spring-redis-config.xml"
 })
 public class AppConfigCore implements WebMvcConfigurer {
 
@@ -28,13 +30,23 @@ public class AppConfigCore implements WebMvcConfigurer {
         return registrationBean;
     }
 
+    // HTML去空格压缩过滤器
+    @Bean
+    public FilterRegistrationBean<CacheFilter> cacheFilter() {
+        FilterRegistrationBean<CacheFilter> cacheFilterBean = new FilterRegistrationBean<>();
+        CacheFilter cacheFilter = new CacheFilter();
+        cacheFilterBean.setFilter(cacheFilter);
+        cacheFilterBean.addUrlPatterns("*.html", "/");
+        return cacheFilterBean;
+    }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 静态资源配置
-        registry.addResourceHandler("/robots.txt").addResourceLocations("/static/robots.txt");
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/static/favicon.ico");
+        registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");
+        registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/favicon.ico");
         registry.addResourceHandler("/resources/**")
-                .addResourceLocations("/static/resources/")
+                .addResourceLocations("classpath:/static/resources/")
                 .setCachePeriod(3600).resourceChain(true)
                 .addResolver(new GzipResourceResolver())
                 .addResolver(new PathResourceResolver());

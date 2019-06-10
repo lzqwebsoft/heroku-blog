@@ -11,6 +11,7 @@
         <property name="locations">
             <list>
                 <value>classpath:database.properties</value>
+                <value>classpath:redis.properties</value>
             </list>
         </property>
     </bean>
