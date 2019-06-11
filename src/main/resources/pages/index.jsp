@@ -181,7 +181,7 @@
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <p>暂无</p>
+                            <div class="panel-body"><p>暂无</p></div>
                         </c:otherwise>
                     </c:choose>
                 </div>
