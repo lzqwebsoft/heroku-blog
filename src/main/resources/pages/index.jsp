@@ -172,12 +172,18 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">相关链接</div>
-                    <div class="list-group">
-                        <a href="http://blog.csdn.net/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> CSDN</a>
-                        <a href="http://my.oschina.net/websoft" class="list-group-item glyphicon glyphicon-link"> 开源中国</a>
-                        <a href="https://www.facebook.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Facebook</a>
-                        <a href="https://twitter.com/lzqwebsoft" class="list-group-item glyphicon glyphicon-link"> Tiwtter</a>
-                    </div>
+                    <c:choose>
+                        <c:when test="${links!=null&&fn:length(links)>0}">
+                            <div class="list-group">
+                                <c:forEach items="${links}" var="link">
+                                    <a href="<c:out value="${link.path}" />" target="_blank" class="list-group-item glyphicon glyphicon-link"> <c:out value="${link.name}"/></a>
+                                </c:forEach>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <p>暂无</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
 
                 <div class="panel panel-default">

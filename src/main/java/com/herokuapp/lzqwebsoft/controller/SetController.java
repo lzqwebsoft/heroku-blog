@@ -18,10 +18,12 @@ import com.herokuapp.lzqwebsoft.pojo.ArticleType;
 import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
 import com.herokuapp.lzqwebsoft.pojo.Image;
 import com.herokuapp.lzqwebsoft.pojo.Page;
+import com.herokuapp.lzqwebsoft.pojo.Link;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
 import com.herokuapp.lzqwebsoft.service.ImageService;
+import com.herokuapp.lzqwebsoft.service.LinkService;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -42,6 +44,9 @@ public class SetController extends BaseController {
 
     @Autowired
     private ImageService imageSerivce;
+
+    @Autowired
+    private LinkService linkService;
 
     @Autowired
     private MessageSource messageSource;
@@ -67,6 +72,10 @@ public class SetController extends BaseController {
         // 所有的草稿
         Page<Article> page_drafts = articleService.getAllDrafts(1, 15);
         request.setAttribute("page_drafts", page_drafts);
+        // 所有的友情链接
+        Page<Link> links = linkService.getAllLinksByPage(1, 15);
+        model.addAttribute("links", links);
+        model.addAttribute("link", new Link());
 
         return "set";
     }

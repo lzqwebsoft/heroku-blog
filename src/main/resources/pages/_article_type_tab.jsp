@@ -33,7 +33,7 @@
         <div class="form-group">
             <input id="txtArticleType" class="form-control" type="text" size="50" placeholder="请输入新的类别名称" />
         </div>
-        <button id="btnAdd" class="btn btn-default" onclick="add_article_type()">添加分类</button>
+        <button id="btnAdd" class="btn btn-default" onclick="add_article_type()" style="margin-left: 15px;">添加分类</button>
         <c:if test="${requestScope.errorInfo!=null}">
            <label id="type-info" style="color: red;"><c:out value="${requestScope.errorInfo}" /></label>
        </c:if>

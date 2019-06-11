@@ -221,6 +221,109 @@ function edit_article_type(dom_id, type_id) {
 
 //===================================================================
 
+//===========================link tab===============================
+// 实现相关链接翻页
+function link_page_update(url, pageNo) {
+    $.ajax({
+        url: url,
+        type: "post",
+        data: {
+            "pageNo": pageNo
+        },
+        success: function (data, status) {
+            $("#links_list").html(data);
+        },
+        error: function (xhr, strError, errorObj) {
+            alert(errorObj);
+        }
+    });
+}
+
+// 保存相关链接
+function save_link(pageNo) {
+    pageNo = !pageNo ? $("#links_list .pagination li.active").text() : pageNo;
+    pageNo = pageNo < 1 ? 1 : pageNo;
+    var form = $("#linkForm");
+    var name = $("#linkname").val();
+    var path = $("#linkpath").val();
+    if (!name || $.trim(name) == "") {
+        alert("链接名称不能为空！");
+        $("#linkname").focus();
+        return false;
+    }
+    if (!path || $.trim(path) == "") {
+        alert("链接URL不能为空！");
+        $("#linkpath").focus();
+        return false;
+    }
+    var httpRegx = /^((http[s]?)(:\/\/))(\w+(-\w+)*)(.(\w+(-\w+)*))*((:\d+)?)(\/(\w+(-\w+)*))*$/;
+    if (!httpRegx.test(path)) {
+        alert("无效的链接URL！");
+        $("#linkpath").focus();
+        return false;
+    }
+    $.post(form.attr("action"), form.serialize(), function (data) {
+        var json = data;
+        $('#link-edit-modal').modal('hide');
+        if (json && json.status == 0) {
+            // 保存成功后则刷新相关链接列表
+            $("#linkForm :text").val("");
+            $("#linkid").val(0);
+            $.get("/link/page.html", {pageNo: pageNo}, function (data) {
+                $("#links_list").html(data);
+            });
+        } else {
+            var message = json.messages && Array.isArray(json.messages) ? json.messages.join(",") : "发生了错误，请检查输入的数据是否合法";
+            alert(message);
+        }
+    });
+    return false;
+}
+
+// 删除草稿
+function confirm_link_delete(message, id, pageNo) {
+    var option = confirm(message);
+    if (option) {
+        $.ajax({
+            url: $("#context-path").text() + "/link/delete/" + id + ".html",
+            type: "post",
+            data: {
+                "pageNo": pageNo
+            },
+            success: function (data, status) {
+                $("#links_list").html(data);
+            },
+            error: function (xhr, strError, errorObj) {
+                alert(errorObj);
+            }
+        });
+    }
+}
+
+// 编辑相关链接
+function edit_link(linkId, pageNo) {
+    var pageNo = !pageNo || pageNo < 1 ? 1 : pageNo;
+    $.get("/link/get/" + linkId + ".html", {}, function (data) {
+        var json = data;
+        if (json && json.status == 0 && json.datas != null && json.datas.link) {
+            var link = json.datas.link;
+            $("#linkname").val(link.name);
+            $("#linkpath").val(link.path);
+            $("#linkremark").val(link.remark);
+            $("#linkid").val(link.id);
+            $('#link-edit-modal .modal-title').text("编辑链接");
+            $('#link-edit-modal').modal('show');
+        } else {
+            var message = json.messages && Array.isArray(json.messages) ? json.messages.join(",") : "发生了错误，获取链接信息失败";
+            alert(message);
+        }
+    });
+}
+
+
+//===================================================================
+
+
 //===========================draft tab===============================
 //实现草稿翻页
 function draft_page_update(url, pageNo) {
@@ -349,5 +452,18 @@ $(function () {
                 alert(errorObj);
             }
         });
+    });
+
+    //点击显示新建相关链接对话框
+    $("#links_list").on("click", "#add-link-button", function () {
+        $("#linkForm :text").val("");
+        $("#linkid").val(0);
+        $('#link-edit-modal .modal-title').text("添加链接");
+        $('#link-edit-modal').modal('show');
+    });
+
+    // 提交添加相关链接表单
+    $("#add-link-div").on("click", "#submit-link-button", function () {
+        $('#linkForm').submit();
     });
 });

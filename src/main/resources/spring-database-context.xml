@@ -36,6 +36,7 @@
                 <value>com/herokuapp/lzqwebsoft/pojo/Image.hbm.xml</value>
                 <value>com/herokuapp/lzqwebsoft/pojo/Comment.hbm.xml</value>
                 <value>com/herokuapp/lzqwebsoft/pojo/BlogInfo.hbm.xml</value>
+                <value>com/herokuapp/lzqwebsoft/pojo/Link.hbm.xml</value>
             </list>
         </property>
         <!-- hibernate的一些配置 -->

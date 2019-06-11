@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.herokuapp.lzqwebsoft.pojo.*;
+import com.herokuapp.lzqwebsoft.service.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -17,11 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.herokuapp.lzqwebsoft.pojo.Article;
-import com.herokuapp.lzqwebsoft.pojo.ArticleType;
-import com.herokuapp.lzqwebsoft.pojo.BlogInfo;
-import com.herokuapp.lzqwebsoft.pojo.ChangePasswordUserBean;
-import com.herokuapp.lzqwebsoft.pojo.Page;
 import com.herokuapp.lzqwebsoft.service.ArticleService;
 import com.herokuapp.lzqwebsoft.service.ArticleTypeService;
 import com.herokuapp.lzqwebsoft.service.BlogInfoService;
@@ -36,6 +33,8 @@ public class HomeController extends BaseController {
     private ArticleService articleService;
     @Autowired
     private ArticleTypeService articleTypeService;
+    @Autowired
+    private LinkService linkService;
 
     @RequestMapping(value = {"/", "/index.html"})
     public String home(ModelMap model, Integer pageNo) {
@@ -55,6 +54,10 @@ public class HomeController extends BaseController {
 
         List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
         model.addAttribute("articleTypes", articleTypes);
+
+        // 相关链接
+        List<Link> links = linkService.getAllLinks();
+        model.addAttribute("links", links);
         return "index";
     }
 
@@ -76,6 +79,10 @@ public class HomeController extends BaseController {
 
         List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
         model.addAttribute("articleTypes", articleTypes);
+
+        // 相关链接
+        List<Link> links = linkService.getAllLinks();
+        model.addAttribute("links", links);
         return "index";
     }
 
@@ -102,6 +109,10 @@ public class HomeController extends BaseController {
 
         List<ArticleType> articleTypes = articleTypeService.getAllArticleType();
         model.addAttribute("articleTypes", articleTypes);
+
+        // 相关链接
+        List<Link> links = linkService.getAllLinks();
+        model.addAttribute("links", links);
 
         model.addAttribute("q", q);
         return "index";
