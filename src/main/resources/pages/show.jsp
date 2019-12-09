@@ -34,7 +34,16 @@ pre.my_pre {
     background-color: #f7f5fa;
     border-radius: 5px;
 }
-
+.breadcrumb {
+    padding: 8px 0;
+    background-color: #FFF;
+    margin-bottom: 10px;
+}
+.blog-content {
+    padding: 15px;
+    border: 1px solid #EEE;
+    border-radius: 4px;
+}
 .bs-sidenav-title {
     padding: 5px 10px;
     cursor: pointer;
@@ -70,29 +79,37 @@ pre.my_pre {
 /* 评论CSS */
 .root_comment {
     margin-bottom: 10px;
+    border: 1px solid #EEE;
+    border-radius: 4px;
 }
-
-.root_comment p,#prompt_replay_info p {
-    background-image: linear-gradient(to bottom, #F5F5F5 0px, #E8E8E8 100%);
-    background-repeat: repeat-x;
+.root_comment p, #prompt_replay_info p {
     border-color: #DCDCDC;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset, 0 1px 0 rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
     padding: 5px;
     background-color: #F5F5F5;
     min-height: 20px;
-    margin: 2px 0 5px 0;
+    margin: 0 0 5px 0;
 }
 
 .child_comment {
-    margin-left: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
     margin-bottom: 10px;
+    border-left: 3px solid #F5F5F5;
+    border: 1px solid #EEE;
+    border-radius: 4px;
 }
 .comment_content,.comment_content p {
     background-color: #FFF;
-    background-image: none;
     padding-left: 4px;
     box-shadow: none;
+}
+.comment_content,.comment_content > p {
+    padding: 7px;
+}
+.root_comment .comment-time {
+    font-size: 12px;
+    color: #BBB;
+    margin-left: 7px;
 }
 .article_comment a {
     margin-right: 5px;
@@ -127,14 +144,11 @@ code {
 #article_content h5 {
     font-size: 16px;
 }
-.pager {
-    padding: 0px 10px;
-}
 .previous a, .next a{
     max-width: 49%;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 .next a {
     direction: rtl;
@@ -173,81 +187,77 @@ code {
     <%@ include file="/pages/common/header.jsp"%>
 
     <div class="container" id="blog-header">
-        <div class="page-header">
-            <c:if test="${requestScope.blogInfo!=null}">
-                <h1>
-                    ${requestScope.blogInfo.head}&nbsp;<small>${requestScope.blogInfo.descriptions}</small>
-                </h1>
-            </c:if>
-        </div>
-
         <ol class="breadcrumb">
             <li><a href="<c:url value="/" />">首页</a></li>
             <li><a href="<%= request.getContextPath() %>/select/${article.type.id}.html"><c:out value="${article.type.name}" /></a></li>
             <li class="active">博客正文</li>
         </ol>
 
-        <h3 class="media-heading article-show-title">
-            <c:out value="${article.patternTypeLabel}" escapeXml="false" />
-            <c:out value="${article.title}" />
-            <c:if test="${article.isTop}">
-                <span class="label label-danger">置顶</span>
-            </c:if>
-        </h3>
-        <div class="row article_time_detail">
-            <div class="col-xs-8" style="font-size:14px; padding: 0;">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />，已有${article.readedNum}次阅读</div>
-            <div class="col-xs-4 text-right" style="padding: 0;">
-                <a class="btn btn-default btn-sm" role="button" href="#reply_comment">评论(${fn:length(comments)})</a>
-                <c:if test="${sessionScope.user!=null}">
-                    <a class="btn btn-primary btn-sm" role="button" href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>
-                    <a class="btn btn-danger btn-sm" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
+        <div class="blog-content">
+            <h3 class="media-heading article-show-title">
+                <c:out value="${article.patternTypeLabel}" escapeXml="false" />
+                <c:out value="${article.title}" />
+                <c:if test="${article.isTop}">
+                    <span class="label label-danger">置顶</span>
                 </c:if>
-            </div>
-        </div>
+            </h3>
 
-        <!-- 文章目录，自动生成 -->
-        <div id="table_of_contents" class="row hidden">
-            <div class="col-md-6">
-                <div class="bs-sidebar hidden-print" role="complementary">
-                    <div class="bs-sidenav-title" data-toggle="collapse" data-target="#auto_contents">
-                        <b>目录</b>
-                    </div>
-                    <ul id="auto_contents" class="nav bs-sidenav collapse">
-                    </ul>
+            <div class="row article_time_detail">
+                <div class="col-xs-8" style="font-size:14px; padding: 0;">发表于：<fmt:formatDate value="${article.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />，已有${article.readedNum}次阅读</div>
+                <div class="col-xs-4 text-right" style="padding: 0;">
+                    <a class="btn btn-default btn-sm" role="button" href="#reply_comment">评论(${fn:length(comments)})</a>
+                    <c:if test="${sessionScope.user!=null}">
+                        <a class="btn btn-primary btn-sm" role="button" href="<%=request.getContextPath()%>/edit/${article.id}.html">编辑</a>
+                        <a class="btn btn-danger btn-sm" role="button" href="<%=request.getContextPath()%>/delete/${article.id}.html" onclick="return confirm('<spring:message code="page.confirm.delete.article" arguments="${fn:escapeXml(article.title)}"  />');">删除</a>
+                    </c:if>
                 </div>
             </div>
-        </div>
 
-        <!-- 文章内容 -->
-        <div id="article_content" style="margin-top: 10px; word-break:break-all;">
-            <c:out value="${article.content}" escapeXml="false" />
-        </div>
-        <div class="share_zone">
-            <div id="sns_share" class="cf">
-                <span class="sns_share_to fl">分享到：</span>
-                <a class="share_weixin share_icon fl" href="javascript:void(0);" title="查看本文二维码，分享至微信"><em>二维码</em></a>
-                <a class="share_tsina share_icon fl" href="javascript:void(0);" title="分享到新浪微博"><em>新浪微博</em></a>
-                <a class="share_tqzone share_icon fl" href="javascript:void(0);" title="分享到QQ空间"><em>QQ空间</em></a>
-                <a class="share_twitter share_icon fl" href="javascript:void(0);" title="分享到Twitter"><em>twitter</em></a>
-                <a class="share_facebook share_icon fl" href="javascript:void(0);" title="分享到Facebook"><em>Facebook</em></a>
-    
-                <div class="wemcn" id="wemcn">
-                    <div id="ewm" class="ewmDiv clearfix">
-                        <div class="rwmtext">
-                            <p>扫一扫，用手机观看！</p>
-                            <p>用微信扫描还可以</p>
-                            <p>分享至好友和朋友圈</p>
+            <!-- 文章目录，自动生成 -->
+            <div id="table_of_contents" class="row hidden">
+                <div class="col-md-6">
+                    <div class="bs-sidebar hidden-print" role="complementary">
+                        <div class="bs-sidenav-title" data-toggle="collapse" data-target="#auto_contents">
+                            <b>目录</b>
                         </div>
-                        <div class="qrcode"></div>
-                        <img id='ewmimg' class='ewmimg' width='85' height='85' alt='二维码分享' />
+                        <ul id="auto_contents" class="nav bs-sidenav collapse">
+                        </ul>
                     </div>
-                    <a class="share_icon" href="javascript:void(0)" id="ewmkg"></a>
-                    <i class="ewmsj share_icon"></i>
                 </div>
             </div>
+
+            <!-- 文章内容 -->
+            <div id="article_content" style="margin-top: 10px; word-break:break-all;">
+                <c:out value="${article.content}" escapeXml="false" />
+            </div>
+            <div class="share_zone">
+                <div id="sns_share" class="cf">
+                    <span class="sns_share_to fl">分享到：</span>
+                    <a class="share_weixin share_icon fl" href="javascript:void(0);" title="查看本文二维码，分享至微信"><em>二维码</em></a>
+                    <a class="share_tsina share_icon fl" href="javascript:void(0);" title="分享到新浪微博"><em>新浪微博</em></a>
+                    <a class="share_tqzone share_icon fl" href="javascript:void(0);" title="分享到QQ空间"><em>QQ空间</em></a>
+                    <a class="share_twitter share_icon fl" href="javascript:void(0);" title="分享到Twitter"><em>twitter</em></a>
+                    <a class="share_facebook share_icon fl" href="javascript:void(0);" title="分享到Facebook"><em>Facebook</em></a>
+
+                    <div class="wemcn" id="wemcn">
+                        <div id="ewm" class="ewmDiv clearfix">
+                            <div class="rwmtext">
+                                <p>扫一扫，用手机观看！</p>
+                                <p>用微信扫描还可以</p>
+                                <p>分享至好友和朋友圈</p>
+                            </div>
+                            <div class="qrcode"></div>
+                            <img id='ewmimg' class='ewmimg' width='85' height='85' alt='二维码分享' />
+                        </div>
+                        <a class="share_icon" href="javascript:void(0)" id="ewmkg"></a>
+                        <i class="ewmsj share_icon"></i>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="row">
+        <div class="row" style="margin-left: 0; margin-right: 0;">
             <ul class="pager">
                 <c:if test="${previousArticle!=null}">
                     <li class="previous"><a href="${pageContext.request.contextPath}/show/${previousArticle.id}.html">&larr; ${previousArticle.title}</a></li>
@@ -347,7 +357,7 @@ code {
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/prism.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery.qrcode.min.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/share.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.1.5"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/resources/js/show.js?_v=1.1.6"></script>
     <script type="text/javascript">
         $(function() {
             $("#update-captcha-link").click(function() {

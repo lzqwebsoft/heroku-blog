@@ -46,12 +46,14 @@ function replay_comment(parent_id, reviewer, root_id) {
     $("#root_comment_id").val(root_id);
     $("#info_prompt_message").text("回复：" + reviewer);
     $("#prompt_replay_info").show("normal");
+    document.getElementById("reply_comment").scrollIntoView();
 }
 // 取消回复评论
 function cancel_replay_comment() {
     $("#prompt_replay_info").hide();
     $("#parent_comment_id").val("");
     $("#root_comment_id").val("");
+    document.getElementById("article_comment").scrollIntoView();
 }
 // 删除评论
 function delete_article_comment(commentId) {
@@ -160,6 +162,7 @@ $(function() {
                     });
                     info_context += "</ul>";
                     messages_div.removeClass("alert-success").removeClass("hidden").addClass("alert-danger show").html(info_context);
+                    document.getElementById("article_comment").scrollIntoView();
                 } else {
                     // 当评论后台验证成功
                     messages_div.removeClass("alert-danger").removeClass("hidden").addClass("alert-success show").html("评论成功！");

@@ -9,10 +9,10 @@
         <p>
             <c:choose>
                 <c:when test="${comment.isBlogger}">
-                    <font color="red">博主</font>发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                    <font color="red">博主</font> <span class="comment-time">发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
                 </c:when>
                 <c:otherwise>
-                    <a href="<c:out value="${comment.website}" default="javascript:void(0)" />">${comment.reviewer}</a>${comment.fromLocalLabel}发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                    <a href="<c:out value="${comment.website}" default="javascript:void(0)" />">${comment.reviewer}</a> ${comment.fromLocalLabel} <span class="comment-time">发表于：<fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
                 </c:otherwise>
             </c:choose>
             <span class="pull-right">
@@ -37,10 +37,10 @@
                 <p>
                     <c:choose>
                         <c:when test="${childComment.isBlogger}">
-                            <font color="red">博主</font>发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                            <font color="red">博主</font> <span class="comment-time"><span class="comment-time">发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
                         </c:when>
                         <c:otherwise>
-                            Re：<a href="<c:out value="${childComment.website}" default="javascript:void(0)" />">${childComment.reviewer}</a>${childComment.fromLocalLabel}发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />
+                            Re：<a href="<c:out value="${childComment.website}" default="javascript:void(0)" />">${childComment.reviewer}</a> ${childComment.fromLocalLabel} <span class="comment-time">发表于：<fmt:formatDate value="${childComment.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
                         </c:otherwise>
                     </c:choose>
                     <span class="pull-right">

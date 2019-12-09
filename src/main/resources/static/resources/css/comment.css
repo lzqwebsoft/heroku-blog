@@ -4,6 +4,58 @@ body {
     line-height: 24px;
     letter-spacing: .024em;
 }
+/*-------------------换色---------------------------*/
+a:hover {
+    color: #0056b3;
+}
+a {
+    color: #007bff;
+}
+.badge {
+    background-color: #BBB;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover {
+    background-color:#0069d9;
+    border-color: #0062cc;
+}
+.label-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+.btn-success, .label-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.btn-warning, .label-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.has-error .form-control:focus,.has-error .form-control {
+    border-color: #dc3545;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+/*-------------------------------------------------------------*/
 .navbar-default, .btn-default, .panel-default > .panel-heading {
     border-color: #EEE;
 }
