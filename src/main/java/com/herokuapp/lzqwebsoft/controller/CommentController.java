@@ -53,7 +53,7 @@ public class CommentController extends BaseController {
         } else {
             // 只有未登录的用户才需要验证图片验证码
             String captcha = (String) session.getAttribute(CommonConstant.CAPTCHA);
-            if (validateCode!=null && !validateCode.equalsIgnoreCase(captcha)) {
+            if (validateCode != null && !validateCode.equalsIgnoreCase(captcha)) {
                 errors.add(messageSource.getMessage("info.invalid.captcha", null, locale));
             }
             // 验证通过后清除SESSION验证码
@@ -92,7 +92,7 @@ public class CommentController extends BaseController {
         }
         // 验证当前博客是否允许评论
         Article article = comment.getArticle();
-        article = articleService.get(article.getId());
+        article = article != null ? articleService.get(article.getId()) : null;
         if (article == null || !article.getAllowComment()) {
             errors.add(messageSource.getMessage("info.article.notallowcomment", new Object[]{}, locale));
         }

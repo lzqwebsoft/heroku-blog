@@ -88,7 +88,7 @@ public class HomeController extends BaseController {
 
     @RequestMapping(value = "/search.html")
     public String select(String q, Integer pageNo, ModelMap model) {
-        if(q.trim().length() == 0) {
+        if (q == null || q.trim().length() == 0) {
             return "redirect:/";
         }
 
