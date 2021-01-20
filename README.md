@@ -1,6 +1,6 @@
 Heroku Blog
 ===========
-一个博客WEB应用，基于Spring MVC与Hibernate， 前台使用Bootstrap3， 并整合Spring Boot，可用于部署在Heroku等云端上，项目运行预览：[http://lzqwebsoft.net](http://lzqwebsoft.net "我的空间")。
+一个博客WEB应用，基于Spring MVC与Hibernate， 前台使用Bootstrap3， 并整合Spring Boot，可用于部署在Heroku等云端上，项目运行预览：[http://blog.zqluo.com](http://blog.zqluo.com "我的空间")。
 
 使用支付宝，打赏一下作者，请他喝瓶饮料。
 
