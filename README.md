@@ -1,3 +1,11 @@
+# 项目已归档
+
+当前项目已归档，由于时代再发展，前端发生了翻天覆地的变化，前后端分离技术大行其道，由于系统使用的是Java，升级JDK版本后，对于内存占用率居高不下，我的虚拟服务器只有1G内存，启动后直接占用到90%，其他服务都得靠边。
+故而使用Golang借助AI编程重写，改为新后端分离，具体如下：
+
+* [博客前端](https://github.com/lzqwebsoft/blog-frontend)
+* [博客后端](https://github.com/lzqwebsoft/blog-backend)
+
 Heroku Blog
 ===========
 一个博客WEB应用，基于Spring MVC与Hibernate， 前台使用Bootstrap3， 并整合Spring Boot，可用于部署在Heroku等云端上，项目运行预览：[http://blog.zqluo.com](http://blog.zqluo.com "我的空间")。
@@ -7,15 +15,15 @@ Heroku Blog
 ![二维码](https://user-images.githubusercontent.com/1137657/41339121-ad888ad8-6f26-11e8-92ab-eeba2cca8b49.jpg)
 
 
-#### 部署开发环境
+## 部署开发环境
 如果你想二次开发本应用，可以将其直接导入IDE开发（本应用使用Undertow作为容器运行）,并己迁移支持Sproing Boot 2.0打包管理.
 
-##### 1. 下载
+### 1. 下载
 点击[https://github.com/lzqwebsoft/heroku-blog](https://github.com/lzqwebsoft/heroku-blog)页面中的<b>ZIP</b>链接将其打包成zip文件，下载到本地。或使用git命令将其克隆到本地：
 
 `$git clone https://github.com/lzqwebsoft/heroku-blog.git`
 
-##### 2. 安装maven
+### 2. 安装maven
 本应用使用maven管理，因此事先要确保您的机器上已经安装maven，在命令行下输入:
 
 `$mvn --version`
@@ -33,21 +41,21 @@ OS name: "windows vista", version: "6.1", arch: "x86", family: "windows"
 
 请到[http://maven.apache.org/download.cgi](http://maven.apache.org/download.cgi)下载maven，然后将maven的bin目录加入到系统的环境变量中。
 
-##### 3. 导入IDE开发
+### 3. 导入IDE开发
 本项目可以直接导入支持maven的JAVA IDE进行开发，如Eclipse和IntelliJ IDEA.建议使用IntelliJ IDEA。
 由于本项目己迁移整合Spring Boot, 运行本项目可以直运行`com.herokuapp.lzqwebsoft.StartApplication`类中的`main`方法启动。
 也可以在运行maven命令`mvn spring-bot:run`启动，还可以使用`mvn package`直接打包本项目为JAR包，使用`java -jar target/xxxx.jar`命令直接运行。
 
 > 说明： 如果想使用传统的Spring MVC开发本项目，建议下载使用[v2.0](https://github.com/lzqwebsoft/heroku-blog/releases/tag/v2.0)版本，运行方式为`mvn jetty:run`.
 
-#### 部署到Heroku云端
+## 部署到Heroku云端
 
 使用本项目的源码，只需做一点点的更改，就可以将其部署在Heroku云端，从而拥有一个真正的博客。
 
-##### 1. 配置你的Heroku环境
+### 1. 配置你的Heroku环境
 首先你需要到Heroku官网上下载heroku客户端工具包，并申请一个heroku帐号，详情可以到Heroku的官网的[开发者中心](https://devcenter.heroku.com/articles/quickstart)，查看相应的博客，也可以到我的博客查看翻译后的文章：[http://blog.csdn.net/xianqiang1/article/category/1345606](http://blog.csdn.net/xianqiang1/article/category/1345606).
 
-##### 2. 配置数据库信息
+### 2. 配置数据库信息
 由于heroku提供的免费的数据库是PostgreSQL，因此需要修改数据库配置文件：`src/main/resources/spring-database-context.xml`，关于数据源的配署如下：
 ```xml
 <bean id="dbUrl" class="java.net.URI">
@@ -68,7 +76,7 @@ OS name: "windows vista", version: "6.1", arch: "x86", family: "windows"
 注意这里需要修改`pom.xml`中的依赖的驱动程序。
 当然了部署到heroku上的数据库是可以通过Add-ons功能更改的，也不一定要更改为PostgreSQL，这都要根据你为heroku上的应用添加的数据库来决定，详情可以参考heroku的帮助文档，这里个人还是比较推荐使用PostgreSQL数据库。
 
-##### 3. ~~配置程序自启动Servlet类~~ (弃用)
+### 3. ~~配置程序自启动Servlet类~~ (弃用)
 由于本程序在启动时，需要一些初始化的数据，因此需要一种方法，确保程序在第一次初始化时，将一些必要的数据导入数据库，这就是编写自启动Servlet类的目地；默认情况下自启动Servlet类的配置是关闭的，需要到`src/main/webapp/WEB-INF/web.xml`文件中将其打开，如下：
 ```xml
 <servlet>
@@ -82,7 +90,7 @@ OS name: "windows vista", version: "6.1", arch: "x86", family: "windows"
 
 > 注意这里迁移到Spring Boot，没有配置该Servlet类，如有需要需自己手动配置，如果可以直接操作数据库，建议直接执行里面的初始化SQL语句即可，该Servlet建议弃用。 
 
-##### 4. 配置邮件服务
+### 4. 配置邮件服务
 本博客拥有博客新评论邮件提示与邮件验证找回密码的功能，也就是说当你博客有网友的新评论或进行找回密码时，会由你事先配置好的邮件服务器中发送一份邮件到你指定的邮箱中，予以提示。<br />
 控制新评论的邮箱是由`blog_infos`表中的邮件项控制，可到`com.herokuapp.lzqwebsoft.servlet.InitDatabaseServlet`中修改，默认情况下设置如下：
 ```java
@@ -111,7 +119,7 @@ mail.isDebug=false
 ```
 上面使用的配置邮件服务采用的是google的邮件服务，你可以根据个人的情况修改，可能对于你的邮箱，上面的有些项可能不是必须的，那么你可能还要修改`src/main/java/com/herokuapp/lzqwebsoft/util/MailUtil.java`文件中的邮件配置代码。
 
-##### 5.配置七牛云服务器（可选）
+### 5.配置七牛云服务器（可选）
 七牛云提供了免费的10G个人账户的云存储加速，对于开发者来说非常的友好，由于本博客部署在国外，服务器的性能很差劲，为了减轻服务器的负担，加速国内用户的访问，因此增加了对于七牛云服务的支持，作用是前台用户未登录时，显示给用户的图片链接地址替换成为七牛云的，同时在后台编辑博客上传新图片后也会同步上传到七牛云上，这样做的目地就是加速国内用户访问图片。
 
 使用七牛云的服务，只需要根据注册的七牛云API权限，配置`src/main/resources/qiniu-keys.properties`文件，如下：
@@ -137,7 +145,7 @@ content = content.replaceAll("\\/images\\/show\\/(\\d{14}\\w{30}).html", domain 
 article.setContent(content);
 ```
 
-##### 6. 一些问题说明
+### 6. 一些问题说明
 1. java.sql.SQLException: The server time zone value
 
 **问题详情**
@@ -199,7 +207,7 @@ spring:
         allow-bean-definition-overriding: true
 ```
 
-##### 7. 上传部署
+### 7. 上传部署
 决定部置在heroku的运行环境的两个决定文件是：`Procfile`与`system.properties`,需根据最新的heroku文档来修改(这里未测试,因为项目预览己转为虚拟主机).
 
 根据上面的步骤修改后，最后就可以使用Git将本应用上传至Heroku上了，在上传之前最好先在本地跑一下，看是否成功；
